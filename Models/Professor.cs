@@ -34,7 +34,6 @@ namespace HealthUp.Models
         public string NumCC { get; set; }
         public string NumAdmin { get; set; }
         public string IdSolicitacao { get; set; }
-        [Required]
         [StringLength(200)]
         public string Motivo { get; set; }
         public DateTime? DataSuspensao { get; set; }

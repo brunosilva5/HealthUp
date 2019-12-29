@@ -17,6 +17,8 @@ namespace HealthUp.Controllers
         public UtilizadoresController(HealthUpContext contexto)
         {
             _context = contexto;
+            
+
 
         }
         #region PedidoSocio
@@ -119,6 +121,26 @@ namespace HealthUp.Controllers
             HttpContext.Response.Cookies.Delete("CookieSessao");
             return LocalRedirect("/");
         }
+        #endregion
+
+        #region PlanoSemanal
+
+        public IActionResult PlanoSemanal()
+        {
+            DateTime agora = DateTime.Now;
+            DateTime segunda = HelperFunctions.GetMonday(agora);
+            DateTime domingo = HelperFunctions.Next(agora, DayOfWeek.Monday);
+
+            ViewBag.Segunda = segunda.ToShortDateString();
+            ViewBag.Domingo = domingo.ToShortDateString();
+            var lista = _context.Aulas.Where(x => x.ValidoAte >= domingo && x.ValidoDe <= segunda);//limitar a uma certa semana
+            lista = lista.Include(x => x.AulaGrupo).Where(x => x.AulaGrupo.IdAula == x.IdAula);// limitar às aulas de grupo
+
+
+            return View(lista);
+        }
+
+
         #endregion
 
     }
