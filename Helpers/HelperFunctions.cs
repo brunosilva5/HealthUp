@@ -13,6 +13,7 @@ namespace HealthUp.Helpers
 {
     public static class HelperFunctions
     {
+
         // Retira todos os espaços em branco extra
         public static string NormalizeWhiteSpace(string input)
         {
@@ -96,6 +97,24 @@ namespace HealthUp.Helpers
             else
                 return false;
         }
+
+        public static DateTime GetMonday(DateTime time)
+        {
+            if (time.DayOfWeek != DayOfWeek.Monday)
+                return time.Subtract(new TimeSpan((int)time.DayOfWeek - 1, 0, 0, 0)).Date;
+
+            return time.Date;
+        }
+
+        public static DateTime Next(this DateTime from, DayOfWeek dayOfWeek)
+        {
+            int start = (int)from.DayOfWeek;
+            int target = (int)dayOfWeek;
+            if (target <= start)
+                target += 7;
+            return from.AddDays(target - start).Date;
+        }
+
 
     }
 }
