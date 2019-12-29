@@ -13,7 +13,7 @@ namespace HealthUp.Data
             : base(options)
         {
         }
-        // change
+        // change  
         public DbSet<HealthUp.Models.Admin> Admins { get; set; }
         public DbSet<HealthUp.Models.Aula> Aulas { get; set; }
         public DbSet<HealthUp.Models.AulaGrupo> AulasGrupo { get; set; }
