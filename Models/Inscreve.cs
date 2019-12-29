@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace HealthUp.Models
+{
+    public partial class Inscreve
+    {
+        [Key]
+        public string NumSocio { get; set; }
+        
+        public int IdAula { get; set; }
+        public DateTime? Data { get; set; }
+
+        [ForeignKey(nameof(IdAula))]
+        [InverseProperty(nameof(Aula.Inscreve))]
+        public virtual Aula IdAulaNavigation { get; set; }
+        [ForeignKey(nameof(NumSocio))]
+        [InverseProperty(nameof(Socio.Inscreve))]
+        public virtual Socio NumSocioNavigation { get; set; }
+    }
+}
