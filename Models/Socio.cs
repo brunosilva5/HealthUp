@@ -23,16 +23,16 @@ namespace HealthUp.Models
         [Display(Name = "Número de cartão de cidadão")]
         public string NumCC { get; set; }
 
-        public string NumProfessor { get; set; }
         public string NumAdmin { get; set; }
-        public string ID_Solicitacao { get; set; }
+        public int? ID_Solicitacao { get; set; }
         [StringLength(3)]
         public string Altura { get; set; }
         public int Peso { get; set; }
         [DataType(DataType.Date)]
-        public DateTime DataRegisto { get; set; }
+        public DateTime DataRegisto_Peso { get; set; }
         [StringLength(200)]
         public string Motivo { get; set; }
+        [DataType(DataType.Date)]
         public DateTime? DataSuspensao { get; set; }
 
 
@@ -44,9 +44,12 @@ namespace HealthUp.Models
         [InverseProperty(nameof(Admin.SociosSuspensos))]
         public virtual Admin NumAdminNavigation { get; set; }
 
+        //IDENTIFICAR QUEM PESOU
         [ForeignKey(nameof(NumProfessor))]
         [InverseProperty(nameof(Professor.Socio))]
         public virtual Professor NumProfessorNavigation { get; set; }
+        public string NumProfessor { get; set; }
+
 
         [ForeignKey(nameof(NumCC))]
         [InverseProperty(nameof(Pessoa.Socio))]

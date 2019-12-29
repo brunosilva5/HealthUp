@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using HealthUp.Data;
 using HealthUp.Helpers;
 using HealthUp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthUp.Controllers
 {
+    [AllowAnonymous]
     public class UtilizadoresController : Controller
     {
         private readonly HealthUpContext _context;

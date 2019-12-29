@@ -10,7 +10,7 @@ namespace HealthUp.Models
     public partial class Mensagem
     {
         [Key]
-        public string IdMensagem { get; set; }
+        public int IdMensagem { get; set; }
         public string IdPessoa { get; set; }
         public DateTime? DataEnvio { get; set; }
         public bool Lida { get; set; }

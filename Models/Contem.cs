@@ -10,6 +10,7 @@ namespace HealthUp.Models
 {
     public partial class Contem
     {
+        
         [Key]
         public int IdPlano { get; set; }
         public int IdExercicio { get; set; }

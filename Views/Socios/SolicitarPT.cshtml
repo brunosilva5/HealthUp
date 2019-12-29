@@ -1,0 +1,32 @@
+﻿@model HealthUp.Models.SolicitacaoProfessor
+
+@{
+    ViewData["Title"] = "Solicitação de PT";
+}
+
+<h1>Solicitar Personal Trainer</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SolicitarPT">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Professor" class="control-label"></label>
+                <select name="ProfessorEscolhido" class="form-control" asp-items="@ViewBag.Professores"></select>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Fazer solicitação" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar ao painel de sócio</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

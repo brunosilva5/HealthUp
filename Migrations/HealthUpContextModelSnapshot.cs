@@ -215,8 +215,10 @@ namespace HealthUp.Migrations
 
             modelBuilder.Entity("HealthUp.Models.Mensagem", b =>
                 {
-                    b.Property<string>("IdMensagem")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IdMensagem")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Arquivada")
                         .HasColumnType("bit");
@@ -398,11 +400,10 @@ namespace HealthUp.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<string>("IdSolicitacao")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("IdSolicitacao")
+                        .HasColumnType("int");
 
                     b.Property<string>("Motivo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
@@ -428,14 +429,14 @@ namespace HealthUp.Migrations
                         .HasColumnType("nvarchar(3)")
                         .HasMaxLength(3);
 
-                    b.Property<DateTime>("DataRegisto")
+                    b.Property<DateTime>("DataRegisto_Peso")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DataSuspensao")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ID_Solicitacao")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("ID_Solicitacao")
+                        .HasColumnType("int");
 
                     b.Property<string>("Motivo")
                         .HasColumnType("nvarchar(200)")
@@ -463,8 +464,10 @@ namespace HealthUp.Migrations
 
             modelBuilder.Entity("HealthUp.Models.SolicitacaoProfessor", b =>
                 {
-                    b.Property<string>("IdSolicitacao")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("IdSolicitacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("Data")
                         .HasColumnType("datetime2");

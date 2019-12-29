@@ -33,10 +33,10 @@ namespace HealthUp.Models
         [Display(Name = "Número de cartão de cidadão")]
         public string NumCC { get; set; }
         public string NumAdmin { get; set; }
-        public string IdSolicitacao { get; set; }
-        [Required]
+        public int? IdSolicitacao { get; set; }
         [StringLength(200)]
         public string Motivo { get; set; }
+        [DataType(DataType.Date)]
         public DateTime? DataSuspensao { get; set; }
         [Required]
         [StringLength(30)]

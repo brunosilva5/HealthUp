@@ -77,7 +77,8 @@ namespace HealthUp.Helpers
             // Check hash
             if (!IsHashSupported(hashedPassword))
             {
-                throw new NotSupportedException("The hashtype is not supported");
+                return false;
+                //throw new NotSupportedException("The hashtype is not supported");
             }
 
             // Extract iteration and Base64 string

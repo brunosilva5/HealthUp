@@ -55,7 +55,6 @@ namespace HealthUp.Controllers
             P.Telemovel = pedido.Telemovel;
             Socio S = new Socio()
             {
-                DataRegisto = DateTime.Now,
                 NumCC = P.NumCC,
                 NumSocioNavigation = P,
                 NumAdmin = (HttpContext.Session.GetString("UserId")),
@@ -128,7 +127,7 @@ namespace HealthUp.Controllers
         }
         public IActionResult PedidoProf_Aprovado(int id)
         {
-            var solicitacao = _context.SolicitacaoProfessores.Include(s => s.Socio).ThenInclude(s => s.NumSocioNavigation).Include(s => s.Professor).ThenInclude(p => p.NumProfessorNavigation).Include(a => a.NumAdminNavigation).ThenInclude(x => x.NumAdminNavigation).FirstOrDefault(s => s.IdSolicitacao == id.ToString());
+            var solicitacao = _context.SolicitacaoProfessores.Include(s => s.Socio).ThenInclude(s => s.NumSocioNavigation).Include(s => s.Professor).ThenInclude(p => p.NumProfessorNavigation).Include(a => a.NumAdminNavigation).ThenInclude(x => x.NumAdminNavigation).FirstOrDefault(s => s.IdSolicitacao == id);
 
             // Atribuir o ID do admin a esta solicitacao
             solicitacao.NumAdmin = HttpContext.Session.GetString("UserId");
@@ -146,7 +145,7 @@ namespace HealthUp.Controllers
 
         public IActionResult PedidoProf_Rejeitado(int id)
         {
-            var solicitacao = _context.SolicitacaoProfessores.FirstOrDefault(p => p.IdSolicitacao == id.ToString());
+            var solicitacao = _context.SolicitacaoProfessores.FirstOrDefault(p => p.IdSolicitacao == id);
             _context.SolicitacaoProfessores.Remove(solicitacao);
             _context.SaveChanges();
 
@@ -250,12 +249,70 @@ namespace HealthUp.Controllers
                 var professor = _context.Professores.SingleOrDefault(p => p.NumCC == id);
                 professor.DataSuspensao = DateTime.Now;
                 professor.Motivo = Motivo;
+                professor.NumAdmin = HttpContext.Session.GetString("UserId");
                 _context.Professores.Update(professor);
                 admin.ProfessoresSuspensos.Add(professor);
             }
             _context.Admins.Update(admin);
             _context.SaveChanges();
             return RedirectToAction(nameof(SuspenderUtilizador));
+        }
+        #endregion
+
+        #region LevantarSuspensao
+        public IActionResult LevantarSuspensao()
+        {
+            List<string> ListaIds = new List<string>();
+            // Construcao da lista de Pessoas que nao sao admins e estao suspensas
+            foreach (var socio in _context.Socios)
+            {
+                if (socio.DataSuspensao != null && socio.Motivo != null)    // double check
+                {
+                    ListaIds.Add(socio.NumCC);
+                }
+            }
+            foreach (var professor in _context.Professores)
+            {
+                if (professor.DataSuspensao != null && professor.Motivo != null)    // double check
+                {
+                    ListaIds.Add(professor.NumCC);
+                }
+            }
+
+
+            return View(_context.Pessoas.Include(p => p.Socio).Include(p => p.Professor).Where(x => ListaIds.Contains(x.NumCC)));
+        }
+
+        public IActionResult LevantarSuspensao_Selecionado(string id)
+        {
+            var Pessoa = _context.Pessoas.Include(p => p.Socio).Include(p => p.Professor).SingleOrDefault(p => p.NumCC == id);
+            if (Pessoa == null)
+            {
+                return RedirectToAction(nameof(SuspenderUtilizador));
+            }
+            var admin = _context.Admins.SingleOrDefault(a => a.NumCC == HttpContext.Session.GetString("UserId"));
+
+            if (HelperFunctions.IsSocio(_context, id))
+            {
+                var socio = _context.Socios.SingleOrDefault(s => s.NumCC == id);
+                socio.DataSuspensao = null;
+                socio.Motivo = null;
+                socio.NumAdmin = null;
+                _context.Socios.Update(socio);
+                admin.SociosSuspensos.Add(socio);
+            }
+            if (HelperFunctions.IsProfessor(_context, id))
+            {
+                var professor = _context.Professores.SingleOrDefault(p => p.NumCC == id);
+                professor.DataSuspensao = null;
+                professor.Motivo = null;
+                professor.NumAdmin = null;
+                _context.Professores.Update(professor);
+                admin.ProfessoresSuspensos.Add(professor);
+            }
+            _context.Admins.Update(admin);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(LevantarSuspensao));
         }
         #endregion
     }
