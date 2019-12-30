@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20191229215719_new_changes")]
-    partial class new_changes
+    [Migration("20191229231855_FirstCreate")]
+    partial class FirstCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

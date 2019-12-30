@@ -8,12 +8,13 @@ using HealthUp.Helpers;
 using HealthUp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil ="Admin")]
-    public class AdminController : Controller
+    public class AdminsController : Controller
     {
         #region PrivateVariables
         private readonly HealthUpContext _context;
@@ -21,7 +22,7 @@ namespace HealthUp.Controllers
 
 
         #region Constructors
-        public AdminController(HealthUpContext context)
+        public AdminsController(HealthUpContext context)
         {
             _context = context;
         }
@@ -315,5 +316,10 @@ namespace HealthUp.Controllers
             return RedirectToAction(nameof(LevantarSuspensao));
         }
         #endregion
+
+        public IActionResult EditarInfoHealthUp()
+        {
+            return RedirectToAction(nameof(Index), "Ginasios");
+        }
     }
 }

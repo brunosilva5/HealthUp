@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20191229172550_FirstCreate")]
-    partial class FirstCreate
+    [Migration("20191229232816_EmailSizeFix")]
+    partial class EmailSizeFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -310,8 +310,8 @@ namespace HealthUp.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Fotografia")
                         .IsRequired()
@@ -402,11 +402,10 @@ namespace HealthUp.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<int>("IdSolicitacao")
+                    b.Property<int?>("IdSolicitacao")
                         .HasColumnType("int");
 
                     b.Property<string>("Motivo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
@@ -432,13 +431,13 @@ namespace HealthUp.Migrations
                         .HasColumnType("nvarchar(3)")
                         .HasMaxLength(3);
 
-                    b.Property<DateTime>("DataRegisto")
+                    b.Property<DateTime>("DataRegisto_Peso")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DataSuspensao")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ID_Solicitacao")
+                    b.Property<int?>("ID_Solicitacao")
                         .HasColumnType("int");
 
                     b.Property<string>("Motivo")
@@ -467,7 +466,7 @@ namespace HealthUp.Migrations
 
             modelBuilder.Entity("HealthUp.Models.SolicitacaoProfessor", b =>
                 {
-                    b.Property<int>("IdSolicitacao")
+                    b.Property<int?>("IdSolicitacao")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -587,9 +586,7 @@ namespace HealthUp.Migrations
                 {
                     b.HasOne("HealthUp.Models.SolicitacaoProfessor", "IdSolicitacaoNavigation")
                         .WithMany("Professor")
-                        .HasForeignKey("IdSolicitacao")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdSolicitacao");
 
                     b.HasOne("HealthUp.Models.Admin", "NumAdminNavigation")
                         .WithMany("ProfessoresSuspensos")
@@ -606,9 +603,7 @@ namespace HealthUp.Migrations
                 {
                     b.HasOne("HealthUp.Models.SolicitacaoProfessor", "IdSolicitacaoNavigation")
                         .WithMany("Socio")
-                        .HasForeignKey("ID_Solicitacao")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ID_Solicitacao");
 
                     b.HasOne("HealthUp.Models.Admin", "NumAdminNavigation")
                         .WithMany("SociosSuspensos")

@@ -37,7 +37,7 @@ namespace HealthUp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, HealthUpContext context)
         {
             if (env.IsDevelopment())
             {
@@ -62,6 +62,8 @@ namespace HealthUp
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            InicializaBasedeDados.Iniciar(context);
         }
     }
 }

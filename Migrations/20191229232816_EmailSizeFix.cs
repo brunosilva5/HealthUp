@@ -2,31 +2,30 @@
 
 namespace HealthUp.Migrations
 {
-    public partial class fix : Migration
+    public partial class EmailSizeFix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Motivo",
-                table: "Professores",
-                maxLength: 200,
-                nullable: true,
+                name: "Email",
+                table: "Pessoas",
+                maxLength: 50,
+                nullable: false,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(200)",
-                oldMaxLength: 200);
+                oldType: "nvarchar(20)",
+                oldMaxLength: 20);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Motivo",
-                table: "Professores",
-                type: "nvarchar(200)",
-                maxLength: 200,
+                name: "Email",
+                table: "Pessoas",
+                type: "nvarchar(20)",
+                maxLength: 20,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldMaxLength: 200,
-                oldNullable: true);
+                oldMaxLength: 50);
         }
     }
 }

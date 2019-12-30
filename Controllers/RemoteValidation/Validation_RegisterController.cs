@@ -109,7 +109,10 @@ namespace HealthUp.Controllers
 
         public JsonResult IsValidPhoneNumber(string telemovel)
         {
-            
+            if (telemovel==null)
+            {
+                return Json(new string("O número inserido não é valido!"));
+            }
             Match match = Regex.Match(telemovel, @"^(\d+)$", RegexOptions.IgnoreCase);// verificar se a string apenas contem numeros
 
             if (match.Success) return Json(true);
@@ -119,6 +122,11 @@ namespace HealthUp.Controllers
         [HttpPost]
         public JsonResult IsValidPassword(string Password)
         {
+            if (Password == null)
+            {
+                return Json(new string("O número inserido não é valido!"));
+            }
+
 
             Match match = Regex.Match(Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$", RegexOptions.IgnoreCase);// verificar se contem 1 maiuscula, 1 minuscula e 1 numero
 

@@ -29,7 +29,13 @@
                         @if (Context.Session.GetString("Role") == "Admin")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Painel de gestão</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admins" asp-action="Index">Painel de gestão</a>
+                            </li>
+                        }
+                        @if (Context.Session.GetString("Role") == "Socio")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Socios" asp-action="Index">Painel de sócios</a>
                             </li>
                         }
                         @if (Context.Session.GetString("UserId") == null)

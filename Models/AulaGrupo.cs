@@ -11,13 +11,13 @@ namespace HealthUp.Models
     {
         [Key]
         public int IdAula { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(30)]
         public string Nome { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(100)]
         public string FotografiaDivulgacao { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(500)]
         public string Descricao { get; set; }
 

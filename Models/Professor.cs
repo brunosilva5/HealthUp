@@ -38,7 +38,7 @@ namespace HealthUp.Models
         public string Motivo { get; set; }
         [DataType(DataType.Date)]
         public DateTime? DataSuspensao { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(30)]
         public string Especialidade { get; set; }
 

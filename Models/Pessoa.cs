@@ -14,7 +14,7 @@ namespace HealthUp.Models
         {
             Mensagem = new HashSet<Mensagem>();
         }
-        [Required]
+        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [StringLength(8, MinimumLength = 8, ErrorMessage = "Tem de possuir 8 caracteres!")]
@@ -40,7 +40,7 @@ namespace HealthUp.Models
 
 
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
-        [StringLength(20)]
+        [StringLength(50)]
         [EmailAddress]
         public string Email { get; set; }
 

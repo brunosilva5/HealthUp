@@ -168,8 +168,8 @@ namespace HealthUp.Migrations
                 {
                     NumCC = table.Column<string>(maxLength: 8, nullable: false),
                     NumAdmin = table.Column<string>(nullable: true),
-                    IdSolicitacao = table.Column<int>(nullable: false),
-                    Motivo = table.Column<string>(maxLength: 200, nullable: false),
+                    IdSolicitacao = table.Column<int>(nullable: true),
+                    Motivo = table.Column<string>(maxLength: 200, nullable: true),
                     DataSuspensao = table.Column<DateTime>(nullable: true),
                     Especialidade = table.Column<string>(maxLength: 30, nullable: false)
                 },
@@ -181,7 +181,7 @@ namespace HealthUp.Migrations
                         column: x => x.IdSolicitacao,
                         principalTable: "SolicitacaoProfessores",
                         principalColumn: "IdSolicitacao",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Professores_Admins_NumAdmin",
                         column: x => x.NumAdmin,
@@ -232,14 +232,14 @@ namespace HealthUp.Migrations
                 columns: table => new
                 {
                     NumCC = table.Column<string>(maxLength: 8, nullable: false),
-                    NumProfessor = table.Column<string>(nullable: true),
                     NumAdmin = table.Column<string>(nullable: true),
-                    ID_Solicitacao = table.Column<int>(nullable: false),
+                    ID_Solicitacao = table.Column<int>(nullable: true),
                     Altura = table.Column<string>(maxLength: 3, nullable: true),
                     Peso = table.Column<int>(nullable: false),
-                    DataRegisto = table.Column<DateTime>(nullable: false),
+                    DataRegisto_Peso = table.Column<DateTime>(nullable: false),
                     Motivo = table.Column<string>(maxLength: 200, nullable: true),
-                    DataSuspensao = table.Column<DateTime>(nullable: true)
+                    DataSuspensao = table.Column<DateTime>(nullable: true),
+                    NumProfessor = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -249,7 +249,7 @@ namespace HealthUp.Migrations
                         column: x => x.ID_Solicitacao,
                         principalTable: "SolicitacaoProfessores",
                         principalColumn: "IdSolicitacao",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Socios_Admins_NumAdmin",
                         column: x => x.NumAdmin,
