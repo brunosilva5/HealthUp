@@ -59,7 +59,7 @@ namespace HealthUp.Migrations
                         column: x => x.NumCC,
                         principalTable: "Pessoas",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -209,7 +209,7 @@ namespace HealthUp.Migrations
                         column: x => x.NumCC,
                         principalTable: "Pessoas",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -233,19 +233,19 @@ namespace HealthUp.Migrations
                         column: x => x.IdAula,
                         principalTable: "AulasGrupo",
                         principalColumn: "IdAula",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Aulas_Admins_NumAdmin",
                         column: x => x.NumAdmin,
                         principalTable: "Admins",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Aulas_Professores_NumProfessor",
                         column: x => x.NumProfessor,
                         principalTable: "Professores",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -282,7 +282,7 @@ namespace HealthUp.Migrations
                         column: x => x.NumCC,
                         principalTable: "Pessoas",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Socios_Professores_NumProfessor",
                         column: x => x.NumProfessor,
@@ -307,13 +307,13 @@ namespace HealthUp.Migrations
                         column: x => x.IdAula,
                         principalTable: "Aulas",
                         principalColumn: "IdAula",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Inscricoes_Socios_NumSocio",
                         column: x => x.NumSocio,
                         principalTable: "Socios",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -362,13 +362,13 @@ namespace HealthUp.Migrations
                         column: x => x.IdExercicio,
                         principalTable: "Exercicios",
                         principalColumn: "IdExercicio",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Contem_PlanosTreino_IdPlano",
                         column: x => x.IdPlano,
                         principalTable: "PlanosTreino",
                         principalColumn: "IdPlano",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
