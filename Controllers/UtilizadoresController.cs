@@ -139,7 +139,7 @@ namespace HealthUp.Controllers
             //lista = lista.Include(x => x.AulaGrupo).Where(x => x.AulaGrupo.IdAula == x.IdAula);// limitar às aulas de grupo
 
 
-            return View(lista.ToList());
+            return View();
         }
 
 
