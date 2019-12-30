@@ -16,12 +16,20 @@ namespace HealthUp.Models
 
         [Key]
         public int IdAula { get; set; }
+        [Required(ErrorMessage ="Este campo é obrigatório")]
         public string NumProfessor { get; set; }
+        [Required(ErrorMessage = "Este campo é obrigatório")]
         public string NumAdmin { get; set; }
+        [Required(ErrorMessage = "Este campo é obrigatório")]
+        [DataType(DataType.Date)]
         public DateTime? ValidoDe { get; set; }
+        [DataType(DataType.Date)]
         public DateTime? ValidoAte { get; set; }
+        [Required(ErrorMessage = "Este campo é obrigatório")]
         public int Lotacao { get; set; }
+        [Required(ErrorMessage = "Este campo é obrigatório")]
         public TimeSpan? HoraInicio { get; set; }
+        [Required(ErrorMessage = "Este campo é obrigatório")]
         public int DiaSemana { get; set; }
 
         [ForeignKey(nameof(NumAdmin))]
@@ -30,8 +38,11 @@ namespace HealthUp.Models
         [ForeignKey(nameof(NumProfessor))]
         [InverseProperty(nameof(Professor.Aula))]
         public virtual Professor NumProfessorNavigation { get; set; }
-        [InverseProperty("IdAulaNavigation")]
-        public virtual AulaGrupo AulaGrupo { get; set; }
+
+        [ForeignKey(nameof(IdAula))]
+        [InverseProperty(nameof(AulaGrupo.Aula))]
+        public virtual AulaGrupo IdAulaNavigation { get; set; }
+
         [InverseProperty("IdAulaNavigation")]
         public virtual ICollection<Inscreve> Inscreve { get; set; }
     }

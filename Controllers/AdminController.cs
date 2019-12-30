@@ -258,5 +258,19 @@ namespace HealthUp.Controllers
             return RedirectToAction(nameof(SuspenderUtilizador));
         }
         #endregion
+
+        #region Aulas
+        public IActionResult Aulas()
+        {
+            return View(_context.Aulas.ToList());
+        }
+        #endregion
+
+        #region AulasDeGrupo
+        public IActionResult  AulasGrupo()
+        {
+            return View(_context.AulasGrupo.ToList());
+        }
+        #endregion
     }
 }

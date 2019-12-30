@@ -4,14 +4,16 @@ using HealthUp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    partial class HealthUpContextModelSnapshot : ModelSnapshot
+    [Migration("20191229172625_fix1")]
+    partial class fix1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,25 +43,21 @@ namespace HealthUp.Migrations
                         .HasColumnType("int");
 
                     b.Property<TimeSpan?>("HoraInicio")
-                        .IsRequired()
                         .HasColumnType("time");
 
                     b.Property<int>("Lotacao")
                         .HasColumnType("int");
 
                     b.Property<string>("NumAdmin")
-                        .IsRequired()
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("NumProfessor")
-                        .IsRequired()
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<DateTime?>("ValidoAte")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("ValidoDe")
-                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.HasKey("IdAula");
@@ -500,15 +498,11 @@ namespace HealthUp.Migrations
                 {
                     b.HasOne("HealthUp.Models.Admin", "NumAdminNavigation")
                         .WithMany("Aula")
-                        .HasForeignKey("NumAdmin")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("NumAdmin");
 
                     b.HasOne("HealthUp.Models.Professor", "NumProfessorNavigation")
                         .WithMany("Aula")
-                        .HasForeignKey("NumProfessor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("NumProfessor");
                 });
 
             modelBuilder.Entity("HealthUp.Models.AulaGrupo", b =>

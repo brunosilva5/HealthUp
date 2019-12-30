@@ -46,8 +46,6 @@ namespace HealthUp.Helpers
             return new string(output, 0, current);
         }
 
-        
-
         public static bool IsJustNumbers(string str)
         {
             Match match = Regex.Match(str, @"^(\d+)$", RegexOptions.IgnoreCase);// verificar se a string apenas contem numeros
@@ -113,6 +111,21 @@ namespace HealthUp.Helpers
             if (target <= start)
                 target += 7;
             return from.AddDays(target - start).Date;
+        }
+
+        public static int GetDay(string dia)
+        {
+            switch(dia)
+            {
+                case "Segunda-Feira": return 1;
+                case "Terça-Feira": return 2;
+                case "Quarta-Feira": return 3;
+                case "Quinta-Feira": return 4;
+                case "Sexta-Feira": return 5;
+                case "Sábado": return 6;
+                case "Domingo": return 7;
+                default: return 1;
+            }
         }
 
 
