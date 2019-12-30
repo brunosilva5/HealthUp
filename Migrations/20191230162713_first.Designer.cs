@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20191229232816_EmailSizeFix")]
-    partial class EmailSizeFix
+    [Migration("20191230162713_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,29 +35,31 @@ namespace HealthUp.Migrations
             modelBuilder.Entity("HealthUp.Models.Aula", b =>
                 {
                     b.Property<int>("IdAula")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("DiaSemana")
                         .HasColumnType("int");
 
                     b.Property<TimeSpan?>("HoraInicio")
+                        .IsRequired()
                         .HasColumnType("time");
 
                     b.Property<int>("Lotacao")
                         .HasColumnType("int");
 
                     b.Property<string>("NumAdmin")
+                        .IsRequired()
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("NumProfessor")
+                        .IsRequired()
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<DateTime?>("ValidoAte")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("ValidoDe")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.HasKey("IdAula");
@@ -72,7 +74,9 @@ namespace HealthUp.Migrations
             modelBuilder.Entity("HealthUp.Models.AulaGrupo", b =>
                 {
                     b.Property<int>("IdAula")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -88,6 +92,11 @@ namespace HealthUp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
+
+                    b.Property<string>("VideoDivulgacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.HasKey("IdAula");
 
@@ -164,8 +173,8 @@ namespace HealthUp.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Endereco")
                         .IsRequired()
@@ -495,20 +504,21 @@ namespace HealthUp.Migrations
 
             modelBuilder.Entity("HealthUp.Models.Aula", b =>
                 {
+                    b.HasOne("HealthUp.Models.AulaGrupo", "IdAulaNavigation")
+                        .WithOne("Aula")
+                        .HasForeignKey("HealthUp.Models.Aula", "IdAula")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HealthUp.Models.Admin", "NumAdminNavigation")
                         .WithMany("Aula")
-                        .HasForeignKey("NumAdmin");
+                        .HasForeignKey("NumAdmin")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HealthUp.Models.Professor", "NumProfessorNavigation")
                         .WithMany("Aula")
-                        .HasForeignKey("NumProfessor");
-                });
-
-            modelBuilder.Entity("HealthUp.Models.AulaGrupo", b =>
-                {
-                    b.HasOne("HealthUp.Models.Aula", "IdAulaNavigation")
-                        .WithOne("AulaGrupo")
-                        .HasForeignKey("HealthUp.Models.AulaGrupo", "IdAula")
+                        .HasForeignKey("NumProfessor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -129,16 +129,21 @@ namespace HealthUp.Controllers
 
         public IActionResult PlanoSemanal()
         {
-            //DateTime agora = DateTime.Now;
-            //DateTime segunda = HelperFunctions.GetMonday(agora);
-            //DateTime domingo = HelperFunctions.Next(agora, DayOfWeek.Monday);
+             return View();
+        }
 
-            //ViewBag.Segunda = segunda.ToShortDateString();
-            //ViewBag.Domingo = domingo.ToShortDateString();
-            //var lista = _context.Aulas.Where(x => x.ValidoAte >= domingo && x.ValidoDe <= segunda);//limitar a uma certa semana
-            //lista = lista.Include(x => x.AulaGrupo).Where(x => x.AulaGrupo.IdAula == x.IdAula);// limitar às aulas de grupo
+        public IActionResult PartialPlanoSemanal(string week)
+        {
+            DateTime data =HelperFunctions.GetData(week);
+            DateTime segunda = HelperFunctions.GetMonday(data);
+            DateTime domingo = HelperFunctions.Next(data, DayOfWeek.Monday);
 
+            ViewBag.Segunda = segunda.ToShortDateString();
+            ViewBag.Domingo = domingo.ToShortDateString();
+            var lista = _context.Aulas.Where(x => x.ValidoAte >= domingo && x.ValidoDe <= segunda);//limitar a uma certa semana
+         //   lista = lista.Include(x => x.AulaGrupo).Where(x => x.AulaGrupo.IdAula == x.IdAula);// limitar às aulas de grupo
 
+            
             return View(lista.ToList());
         }
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -126,6 +127,32 @@ namespace HealthUp.Helpers
                 case "Domingo": return 7;
                 default: return 1;
             }
+        }
+
+        public static DateTime GetData(string data)
+        {
+            string[] dados = data.Split('-', 'W');
+            return GetDateFromWeekNumberAndDayOfWeek(int.Parse(dados[0]), int.Parse(dados[2]));
+        }
+
+        public static DateTime GetDateFromWeekNumberAndDayOfWeek(int year, int weekNumber, int dayOfWeek=1)
+        {
+            DateTime jan1 = new DateTime(year, 1, 1);
+            int daysOffset = DayOfWeek.Tuesday - jan1.DayOfWeek;
+
+            DateTime firstMonday = jan1.AddDays(daysOffset);
+
+            var cal = CultureInfo.CurrentCulture.Calendar;
+            int firstWeek = cal.GetWeekOfYear(jan1, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+            var weekNum = weekNumber;
+            if (firstWeek <= 1)
+            {
+                weekNum -= 1;
+            }
+
+            var result = firstMonday.AddDays(weekNum * 7 + dayOfWeek - 1);
+            return result;
         }
 
 

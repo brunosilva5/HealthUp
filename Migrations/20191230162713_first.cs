@@ -3,10 +3,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HealthUp.Migrations
 {
-    public partial class FirstCreate : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AulasGrupo",
+                columns: table => new
+                {
+                    IdAula = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(maxLength: 30, nullable: false),
+                    FotografiaDivulgacao = table.Column<string>(maxLength: 100, nullable: false),
+                    VideoDivulgacao = table.Column<string>(maxLength: 100, nullable: false),
+                    Descricao = table.Column<string>(maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AulasGrupo", x => x.IdAula);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Pessoas",
                 columns: table => new
@@ -17,7 +33,7 @@ namespace HealthUp.Migrations
                     Sexo = table.Column<string>(maxLength: 3, nullable: false),
                     Fotografia = table.Column<string>(maxLength: 100, nullable: false),
                     DataNascimento = table.Column<DateTime>(type: "smalldatetime", nullable: false),
-                    Email = table.Column<string>(maxLength: 20, nullable: false),
+                    Email = table.Column<string>(maxLength: 50, nullable: false),
                     Telemovel = table.Column<string>(maxLength: 13, nullable: false),
                     Nacionalidade = table.Column<string>(maxLength: 20, nullable: false),
                     Username = table.Column<string>(maxLength: 20, nullable: false),
@@ -101,7 +117,7 @@ namespace HealthUp.Migrations
                     NumAdmin = table.Column<string>(nullable: true),
                     Nome = table.Column<string>(maxLength: 30, nullable: false),
                     Endereco = table.Column<string>(maxLength: 200, nullable: false),
-                    Email = table.Column<string>(maxLength: 20, nullable: false),
+                    Email = table.Column<string>(maxLength: 50, nullable: false),
                     Telemovel = table.Column<string>(maxLength: 13, nullable: false),
                     LocalizacaoGps = table.Column<string>(maxLength: 200, nullable: false)
                 },
@@ -200,31 +216,36 @@ namespace HealthUp.Migrations
                 name: "Aulas",
                 columns: table => new
                 {
-                    IdAula = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NumProfessor = table.Column<string>(nullable: true),
-                    NumAdmin = table.Column<string>(nullable: true),
-                    ValidoDe = table.Column<DateTime>(nullable: true),
+                    IdAula = table.Column<int>(nullable: false),
+                    NumProfessor = table.Column<string>(nullable: false),
+                    NumAdmin = table.Column<string>(nullable: false),
+                    ValidoDe = table.Column<DateTime>(nullable: false),
                     ValidoAte = table.Column<DateTime>(nullable: true),
                     Lotacao = table.Column<int>(nullable: false),
-                    HoraInicio = table.Column<TimeSpan>(nullable: true),
+                    HoraInicio = table.Column<TimeSpan>(nullable: false),
                     DiaSemana = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Aulas", x => x.IdAula);
                     table.ForeignKey(
+                        name: "FK_Aulas_AulasGrupo_IdAula",
+                        column: x => x.IdAula,
+                        principalTable: "AulasGrupo",
+                        principalColumn: "IdAula",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Aulas_Admins_NumAdmin",
                         column: x => x.NumAdmin,
                         principalTable: "Admins",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Aulas_Professores_NumProfessor",
                         column: x => x.NumProfessor,
                         principalTable: "Professores",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -268,26 +289,6 @@ namespace HealthUp.Migrations
                         principalTable: "Professores",
                         principalColumn: "NumCC",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AulasGrupo",
-                columns: table => new
-                {
-                    IdAula = table.Column<int>(nullable: false),
-                    Nome = table.Column<string>(maxLength: 30, nullable: false),
-                    FotografiaDivulgacao = table.Column<string>(maxLength: 100, nullable: false),
-                    Descricao = table.Column<string>(maxLength: 500, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AulasGrupo", x => x.IdAula);
-                    table.ForeignKey(
-                        name: "FK_AulasGrupo_Aulas_IdAula",
-                        column: x => x.IdAula,
-                        principalTable: "Aulas",
-                        principalColumn: "IdAula",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -454,9 +455,6 @@ namespace HealthUp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AulasGrupo");
-
-            migrationBuilder.DropTable(
                 name: "Contem");
 
             migrationBuilder.DropTable(
@@ -482,6 +480,9 @@ namespace HealthUp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Socios");
+
+            migrationBuilder.DropTable(
+                name: "AulasGrupo");
 
             migrationBuilder.DropTable(
                 name: "Professores");
