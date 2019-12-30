@@ -39,9 +39,12 @@ namespace HealthUp.Models
         [InverseProperty(nameof(Professor.Aula))]
         public virtual Professor NumProfessorNavigation { get; set; }
 
-        [ForeignKey(nameof(IdAula))]
-        [InverseProperty(nameof(AulaGrupo.Aula))]
-        public virtual AulaGrupo IdAulaNavigation { get; set; }
+       
+
+
+        [InverseProperty("AulaNavigation")]
+        public virtual AulaGrupo AulaGrupo { get; set; }
+
 
         [InverseProperty("IdAulaNavigation")]
         public virtual ICollection<Inscreve> Inscreve { get; set; }
