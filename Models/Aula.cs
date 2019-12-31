@@ -35,6 +35,7 @@ namespace HealthUp.Models
         [ForeignKey(nameof(NumAdmin))]
         [InverseProperty(nameof(Admin.Aula))]
         public virtual Admin NumAdminNavigation { get; set; }
+        
         [ForeignKey(nameof(NumProfessor))]
         [InverseProperty(nameof(Professor.Aula))]
         public virtual Professor NumProfessorNavigation { get; set; }

@@ -132,7 +132,7 @@ namespace HealthUp.Controllers
             {
                 lstModel.Add(new SimpleReportViewModel()
                 {
-                    DimensionOne = item.DataRegisto_Peso.Date.ToString(),
+                    DimensionOne = item.DataRegisto_Peso.Date.ToString().Substring(0,10),
                     Quantity = item.Peso
                 });
             }

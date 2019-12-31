@@ -27,7 +27,8 @@ namespace HealthUp.Models
         public int? ID_Solicitacao { get; set; }
         [StringLength(3)]
         public string Altura { get; set; }
-        public int Peso { get; set; }
+        [Range(0, 300,ErrorMessage ="Insira um valor entre 0 e 300")]
+        public double Peso { get; set; }
         [DataType(DataType.Date)]
         public DateTime DataRegisto_Peso { get; set; }
         [StringLength(200)]
