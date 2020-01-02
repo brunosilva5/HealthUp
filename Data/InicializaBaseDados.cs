@@ -11,7 +11,7 @@ namespace HealthUp.Data
     {
         public static void Iniciar(HealthUpContext context)
         {
-           // verifica e garante que a BD existe
+            //verifica e garante que a BD existe
             context.Database.EnsureCreated();
 
             // analiza a(s) tabela(s) onde pretendemos garantir os dados
@@ -75,6 +75,27 @@ namespace HealthUp.Data
                 };
 
                 context.Ginasios.Add(gym);
+            }
+            if (context.Professores.Any()==false)
+            {
+                var Pessoa = new Pessoa()
+                {
+                    NumCC = "48715479",
+                    Username = "spamzprof",
+                    Sexo = "M",
+                    DataNascimento = new DateTime(1999, 6, 23).Date,
+                    Fotografia = "admin.jpg",
+                    Email = "admin@healthup.pt",
+                    Nacionalidade = "PT",
+                    Nome = "Diogo Silva",
+                    Telemovel = "+351937372277",
+                    Password = SecurePasswordHasher.Hash("prof"),
+                    IsNotified = false,
+                    Professor = new Professor()
+                };
+                Pessoa.Professor.Especialidade = "KUNGU";
+                context.Pessoas.Add(Pessoa);
+
             }
 
             context.SaveChanges();

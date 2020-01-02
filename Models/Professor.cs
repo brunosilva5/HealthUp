@@ -57,7 +57,7 @@ namespace HealthUp.Models
         // -----------------------------------------------------------------------------------------
 
         [InverseProperty("NumProfessorNavigation")]
-        public virtual ICollection<Aula> Aula { get; set; }
+        public virtual ICollection<Aula>? Aula { get; set; }
 
         [InverseProperty("NumProfessorNavigation")]
         public virtual ICollection<PlanoTreino> PlanoTreino { get; set; }

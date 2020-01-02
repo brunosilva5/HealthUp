@@ -36,7 +36,7 @@ namespace HealthUp.Data
 
             modelBuilder.Entity<Inscreve>()
                 .HasKey(c => new { c.NumSocio, c.IdAula });
-        }
 
+        }
     }
 }
