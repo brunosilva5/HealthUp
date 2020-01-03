@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20191231163217_PesoDouble")]
-    partial class PesoDouble
+    [Migration("20200102162357_correction")]
+    partial class correction
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -420,6 +420,9 @@ namespace HealthUp.Migrations
 
                     b.Property<string>("NumAdmin")
                         .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("RegistoPesos")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("NumCC");
 

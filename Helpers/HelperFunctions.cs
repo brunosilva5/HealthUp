@@ -1,8 +1,10 @@
 ﻿using HealthUp.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
@@ -153,6 +155,25 @@ namespace HealthUp.Helpers
 
             var result = firstMonday.AddDays(weekNum * 7 + dayOfWeek - 1);
             return result;
+        }
+
+        public static string JSONSerialize(this NameValueCollection _nvc)
+        {
+            return JsonConvert.SerializeObject(_nvc.AllKeys.ToDictionary(k => k, k => _nvc.GetValues(k)));
+        }
+        public static NameValueCollection JSONDeserialize( string _serializedString)
+        {
+            NameValueCollection _nvc = new NameValueCollection();
+            if (_serializedString==null)
+            {
+                return _nvc;
+            }
+            var deserializedobject = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(_serializedString);
+            foreach (var strCol in deserializedobject.Values)
+                foreach (var str in strCol)
+                    _nvc.Add(deserializedobject.FirstOrDefault(x => x.Value.Contains(str)).Key, str);
+
+            return _nvc;
         }
 
 

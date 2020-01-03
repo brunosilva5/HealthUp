@@ -98,6 +98,30 @@ namespace HealthUp.Data
 
             }
 
+            if (context.Socios.Any() == false)
+            {
+                var pessoa = new Pessoa()
+                {
+                    NumCC = "48725479",
+                    Username = "spamzsocio",
+                    Sexo = "M",
+                    DataNascimento = new DateTime(1999, 6, 23).Date,
+                    Fotografia = "admin.jpg",
+                    Email = "admin@healthup.pt",
+                    Nacionalidade = "PT",
+                    Nome = "Diogo Silva",
+                    Telemovel = "+351937372277",
+                    Password = SecurePasswordHasher.Hash("socio"),
+                    IsNotified = false,
+                    Socio = new Socio()
+                };
+                pessoa.Socio.Peso = 50;
+                pessoa.Socio.Altura = "150";
+
+                context.Pessoas.Add(pessoa);
+
+            }
+
             context.SaveChanges();
 
 

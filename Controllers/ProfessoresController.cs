@@ -9,6 +9,9 @@ using HealthUp.Data;
 using HealthUp.Models;
 using Microsoft.AspNetCore.Http;
 using HealthUp.Filters;
+using Newtonsoft.Json;
+using System.Collections.Specialized;
+using HealthUp.Helpers;
 
 namespace HealthUp.Controllers
 {
@@ -59,21 +62,15 @@ namespace HealthUp.Controllers
                 socio.DataRegisto_Peso = DateTime.Now.Date;
                 socio.NumProfessor = HttpContext.Session.GetString("UserId");
 
-                var newsocio = socio;
                 _context.Socios.Update(socio);
                 
-
                 //--------------------------------------------------------------------------------------------------------------------------------------
-                // Adicionar na tabela de Socios do professor
+                // Adicionar à string json do professor
                 var professor = _context.Professores.Include(p => p.Socio).SingleOrDefault(p => p.NumCC == HttpContext.Session.GetString("UserId"));
-                newsocio.NumProfessor = null;
-                professor.Socio.Append(new Socio()
-                {
-                    NumCC=socio.NumCC,
-                    DataRegisto_Peso=socio.DataRegisto_Peso,
-                    Peso=socio.Peso,
-                });
+                professor.RegistarPesoSocio(Peso, DateTime.Now.ToShortDateString(), SocioEscolhido);
+
                 _context.Professores.Update(professor);
+
                 // --------------------------------------------------------------------------------------------------------------------------------------
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

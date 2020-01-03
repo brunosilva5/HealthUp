@@ -43,7 +43,7 @@ namespace HealthUp.Migrations
                         column: x => x.NumCC,
                         principalTable: "Pessoas",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,7 +171,8 @@ namespace HealthUp.Migrations
                     IdSolicitacao = table.Column<int>(nullable: true),
                     Motivo = table.Column<string>(maxLength: 200, nullable: true),
                     DataSuspensao = table.Column<DateTime>(nullable: true),
-                    Especialidade = table.Column<string>(maxLength: 30, nullable: false)
+                    Especialidade = table.Column<string>(maxLength: 30, nullable: false),
+                    RegistoPesos = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -193,7 +194,7 @@ namespace HealthUp.Migrations
                         column: x => x.NumCC,
                         principalTable: "Pessoas",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -218,7 +219,7 @@ namespace HealthUp.Migrations
                         column: x => x.NumAdmin,
                         principalTable: "Admins",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Aulas_Professores_NumProfessor",
                         column: x => x.NumProfessor,
@@ -235,7 +236,7 @@ namespace HealthUp.Migrations
                     NumAdmin = table.Column<string>(nullable: true),
                     ID_Solicitacao = table.Column<int>(nullable: true),
                     Altura = table.Column<string>(maxLength: 3, nullable: true),
-                    Peso = table.Column<int>(nullable: false),
+                    Peso = table.Column<double>(nullable: false),
                     DataRegisto_Peso = table.Column<DateTime>(nullable: false),
                     Motivo = table.Column<string>(maxLength: 200, nullable: true),
                     DataSuspensao = table.Column<DateTime>(nullable: true),
@@ -261,7 +262,7 @@ namespace HealthUp.Migrations
                         column: x => x.NumCC,
                         principalTable: "Pessoas",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Socios_Professores_NumProfessor",
                         column: x => x.NumProfessor,
@@ -362,13 +363,13 @@ namespace HealthUp.Migrations
                         column: x => x.IdExercicio,
                         principalTable: "Exercicios",
                         principalColumn: "IdExercicio",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Contem_PlanosTreino_IdPlano",
                         column: x => x.IdPlano,
                         principalTable: "PlanosTreino",
                         principalColumn: "IdPlano",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(

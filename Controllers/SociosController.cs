@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace HealthUp.Controllers
 {
@@ -111,55 +112,24 @@ namespace HealthUp.Controllers
 
             return View(lstModel);
         }
-
-        private List<SimpleReportViewModel> GetHistoricoPeso()
-        {
-            List<Socio> Lista = new List<Socio>();
-            var lstModel = new List<SimpleReportViewModel>();
-            foreach (var professor in _context.Professores.Include(x => x.Socio))
-            {
-                foreach (var SocioRegistado in professor.Socio)
-                {
-                    if (SocioRegistado.NumCC == HttpContext.Session.GetString("UserId"))
-                    {
-                        Lista.Add(SocioRegistado);
-                        
-                    }
-                }
-            }
-            Lista.OrderByDescending(x => x.DataRegisto_Peso);
-            foreach (var item in Lista)
-            {
-                lstModel.Add(new SimpleReportViewModel()
-                {
-                    DimensionOne = item.DataRegisto_Peso.Date.ToString().Substring(0,10),
-                    Quantity = item.Peso
-                });
-            }
-            
-            return lstModel;
-        }
         public IActionResult HistoricoPesoParaExcel()
         {
-            List<SimpleReportViewModel> lstModel = GetHistoricoPeso();
             
-            var socio = _context.Pessoas.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
-            string rootFolder = _he.ContentRootPath;
-            string fileName = @"HistoricoPeso_HealthUp.xls";
+            List<SimpleReportViewModel> lstModel = GetHistoricoPeso();
 
-            FileInfo file = new FileInfo(Path.Combine(rootFolder, fileName));
+            byte[] fileContents;
 
-            using (ExcelPackage package = new ExcelPackage(file))
+            using (var package = new ExcelPackage())
             {
+                var worksheet = package.Workbook.Worksheets.Add("Sheet1");
 
-
-                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("HistoricoPeso_"+socio.Nome);
+                // Put whatever you want here in the sheet
+                // For example, for cell on row1 col1
+                int i = 0;
                 int totalRows = lstModel.Count();
-
                 worksheet.Cells[1, 1].Value = "Data";
                 worksheet.Cells[1, 2].Value = "Peso";
-                    
-                int i = 0;
+
                 for (int row = 2; row <= totalRows + 1; row++)
                 {
                     worksheet.Cells[row, 1].Value = lstModel[i].DimensionOne;
@@ -167,14 +137,83 @@ namespace HealthUp.Controllers
                     i++;
                 }
 
-                package.Save();
+                // So many things you can try but you got the idea.
 
+                // Finally when you're done, export it to byte array.
+                fileContents = package.GetAsByteArray();
             }
 
-            byte[] fileBytes = System.IO.File.ReadAllBytes(file.FullName);
-            return File(fileBytes, "application/force-download", fileName);
+            if (fileContents == null || fileContents.Length == 0)
+            {
+                return RedirectToAction(nameof(ConsultarHistoricoPeso));
+            }
+
+            return File(
+                fileContents: fileContents,
+                contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                fileDownloadName: "HistoricoPesoHealthUp.xlsx"
+            );
+        }
+        private List<SimpleReportViewModel> GetHistoricoPeso()
+        {
+            return _context.Socios.SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId")).GetHistoricoPeso(_context);
+        }
+
+        #endregion
+
+        #region ConsultarInfoPT
+        public IActionResult ConsultarInfoPT()
+        {
+            var x = _context.Socios.Include(s => s.NumProfessorNavigation).ThenInclude(s => s.NumProfessorNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId")).NumProfessorNavigation.NumProfessorNavigation;
+            return View(x);
+        }
+
+        
+        public IActionResult DeixarSerAluno(string NumProf)
+        {
+            var prof = _context.Professores.SingleOrDefault(x => x.NumCC == NumProf);
+            var socio = _context.Socios.SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
+
+            socio.NumProfessor = null;
+            socio.NumProfessorNavigation = null;
+
+            prof.Socio.Remove(socio);
+
+            _context.Socios.Update(socio);
+            _context.Professores.Update(prof);
+
+            return RedirectToAction(nameof(Index));
+        }
+        #endregion
+
+        #region HistoricoAulas
+#warning "CODIGO AINDA NAO TESTADO"
+        public IActionResult HistoricoAulas()
+        {
+            var socio=_context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
+            // load de todas as properties usadas por esta collection
+            _context.Entry(socio).Collection(p => p.Inscreve).Load();
+            return View(socio.Inscreve);
+        }
+        #endregion
+
+        #region ConsultarPlanoTreino
+#warning "CODIGO AINDA NAO TESTADO"
+
+        public IActionResult ConsultarPlanoTreino()
+        {
+            var socio = _context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
+            // load de todas as properties usadas por esta collection
+            _context.Entry(socio).Collection(p => p.PlanoTreino).Load();
+            if (socio.PlanoTreino.Any()==false)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return View(socio.PlanoTreino);
 
         }
         #endregion
     }
 }
+
+    

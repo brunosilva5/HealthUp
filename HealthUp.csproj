@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\Ficheiros\**" />
+    <Content Remove="wwwroot\Ficheiros\**" />
+    <EmbeddedResource Remove="wwwroot\Ficheiros\**" />
+    <None Remove="wwwroot\Ficheiros\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="HistoricoPeso_HealthUp.xls" />
   </ItemGroup>
 
@@ -20,10 +27,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Ficheiros\" />
   </ItemGroup>
 
 

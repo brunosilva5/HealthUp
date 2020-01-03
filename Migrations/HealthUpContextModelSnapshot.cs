@@ -419,6 +419,9 @@ namespace HealthUp.Migrations
                     b.Property<string>("NumAdmin")
                         .HasColumnType("nvarchar(8)");
 
+                    b.Property<string>("RegistoPesos")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("NumCC");
 
                     b.HasIndex("IdSolicitacao");

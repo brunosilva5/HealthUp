@@ -1,0 +1,57 @@
+﻿@model IEnumerable<HealthUp.Models.Inscreve>
+
+@{
+    ViewData["Title"] = "Histórico de aulas";
+}
+
+<h1>Histórico de aulas</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Data)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdAulaNavigation.DiaSemana)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdAulaNavigation.HoraInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdAulaNavigation.Lotacao)
+            </th>
+            <th>
+                Nome do professor
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdAulaNavigation.GetDiaSemana())
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdAulaNavigation.HoraInicio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdAulaNavigation.Lotacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdAulaNavigation.NumProfessorNavigation.NumProfessorNavigation.Nome)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

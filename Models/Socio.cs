@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HealthUp.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -61,5 +63,19 @@ namespace HealthUp.Models
 
         [InverseProperty("NumSocioNavigation")]
         public virtual ICollection<PlanoTreino> PlanoTreino { get; set; }
+
+        public List<SimpleReportViewModel> GetHistoricoPeso(HealthUpContext context)
+        {
+            List<SimpleReportViewModel> ListaPesos = new List<SimpleReportViewModel>();
+            foreach (var professor in context.Professores.Include(x => x.Socio))
+            {
+                var aux=professor.GetRegistoPesosSocio(this.NumCC);
+                foreach (var item in aux)
+                {
+                    ListaPesos.Add(item);
+                }
+            }
+            return ListaPesos;
+        }
     }
 }
