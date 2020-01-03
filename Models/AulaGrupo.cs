@@ -29,9 +29,7 @@ namespace HealthUp.Models
         [StringLength(500)]
         public string Descricao { get; set; }
 
-        // 
-        [ForeignKey(nameof(IdAula))]
-        [InverseProperty(nameof(Aula.AulaGrupo))]
-        public virtual Aula AulaNavigation { get; set; }
+        [InverseProperty("AulaGrupoNavigation")]
+        public virtual Aula Aula { get; set; }
     }
 }

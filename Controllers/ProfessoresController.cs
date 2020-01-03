@@ -82,6 +82,7 @@ namespace HealthUp.Controllers
                 Text = "CC: " + s.NumCC + " | " + s.NumSocioNavigation.Nome,
                 Value = s.NumCC
             });
+
             return View(socio);
         }
     }

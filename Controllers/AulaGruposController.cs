@@ -139,7 +139,6 @@ namespace HealthUp.Controllers
         //    {
         //        return NotFound();
         //    }
-
         //    return View(aulaGrupo);
         //}
 
