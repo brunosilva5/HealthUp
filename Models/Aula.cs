@@ -47,7 +47,6 @@ namespace HealthUp.Models
         [InverseProperty("IdAulaNavigation")]
         public virtual ICollection<Inscreve> Inscreve { get; set; }
 
-
         public string GetDiaSemana()
         {
             switch (DiaSemana)
