@@ -49,6 +49,8 @@
             <a class="active" asp-controller="Home" asp-action="Index">Home</a>
 
             <a asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <a asp-controller="Utilizadores" asp-action="PlanoSemanal">Plano semanal de aulas</a>
+
 
             @if (Context.Session.GetString("Role") == "Admin")
             {
@@ -64,6 +66,7 @@
             {
                 <a asp-controller="Professores" asp-action="Index">Painel de professores</a>
             }
+
             <div class="topnav-right">
 
                 @if (Context.Session.GetString("UserId") == null)
