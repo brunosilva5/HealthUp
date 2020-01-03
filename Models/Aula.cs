@@ -44,6 +44,22 @@ namespace HealthUp.Models
         [InverseProperty("IdAulaNavigation")]
         public virtual ICollection<Inscreve> Inscreve { get; set; }
 
+        public string GetDiaSemana()
+        {
+            switch (DiaSemana)
+            {
+                case 1: return "Domingo";
+                case 2: return "Segunda-Feira";
+                case 3: return "Terça-Feira";
+                case 4: return "Quarta-Feira";
+                case 5: return "Quinta-Feira";
+                case 6: return "Sexta-Feira";
+                case 7: return "Sábado";
+                default: throw new ArgumentOutOfRangeException();
+            }
+        }
+
+
         [ForeignKey(nameof(IdAula))]
         [InverseProperty(nameof(AulaGrupo.Aula))]
         public virtual AulaGrupo AulaGrupoNavigation { get; set; }
