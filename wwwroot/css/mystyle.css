@@ -1,0 +1,476 @@
+﻿html{
+    position:relative;
+    min-height: 100%;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0px;
+    margin: 0px;
+    background: #ffffff;
+    font-family: "PT Sans", sans-serif;
+}
+
+header{
+    background: #ffffff;
+    height: 70px;
+}
+
+header * {
+    color: #82D026;
+}
+
+header .logo{
+    float: left;
+    height: 21px;
+    margin-left: 5em;
+}
+
+header ul{
+    float: right;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+header ul li{
+    float: left;
+    position:relative;
+    margin-right: 20px;
+}
+
+
+header ul li ul{
+    position:absolute;
+    top: 69px;
+    left:0px;
+    width: 150px;
+    display:none;
+}
+
+header ul li:hover ul{
+    display:block;
+    z-index:2;
+}
+
+header ul li ul li{
+    width: 100%;
+}
+
+header ul li ul li a{
+    padding: 13px;
+    background:#ffffff;
+
+}
+
+header ul li ul li a:hover {
+    background: #82D026;
+}
+
+header ul li a {
+    display: block;
+    padding: 21px;
+    font-size: 1.1em;
+    font-family: "Oswald", sans-serif;
+    text-decoration: none;
+}
+
+header ul li a:hover {
+    background: #82D026;
+    transition: 0.5s;
+    color: #ffffff;
+}
+header ul li.phone-num {
+    background: #F3F4FF;
+    padding: 17px 17px 17px 17px;
+    margin-right: 0px;
+}
+
+header ul li.phone-num i {
+    height: 34px;
+    width: 34px;
+    background: #82D026;
+    color: #ffffff;
+    display: inline-block;
+    text-align: center;
+    line-height: 34px;
+    border-radius: 50%;
+    margin-right: 11px;
+}
+
+/* botões */
+.primary-btn {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 22px 55px;
+    color: #ffffff;
+    background: #82D026;
+    letter-spacing: 0.5px;
+    font-family: "Oswald", sans-serif;
+    text-transform: uppercase;
+}
+
+.submit-btn {
+    color: #ffffff;
+    background: #82D026;
+    font-size: 14px;
+    font-weight: 400;
+    border: none;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+/*---------------------
+  Footer
+-----------------------*/
+
+.footer-section {
+    background: #081624;
+    padding-top: 35px;
+    padding-bottom: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
+
+
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    position: absolute;
+
+    z-index:3;
+}
+
+.footer-section .reserved {
+    float: left;
+    font-family: "Oswald", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    opacity: 0.37;
+}
+
+.footer-section .social-links {
+    float: right;
+}
+
+.footer-section .social-links a {
+    display: inline-block;
+    margin-left: 36px;
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
+}
+
+.footer-section .social-links a:hover:after {
+    opacity: 1;
+}
+
+.footer-section .social-links a:after {
+    position: absolute;
+    left: -18px;
+    top: -12px;
+    height: 48px;
+    width: 48px;
+    border-radius: 50%;
+    background: #82D026;
+    content: "";
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    z-index: -1;
+    opacity: 0;
+}
+
+
+
+
+
+
+
+
+/*---------------------
+  Helper CSS
+-----------------------*/
+
+.section-title {
+    margin-bottom: 76px;
+}
+
+.section-title h2 {
+    color: #081624;
+    font-size: 48px;
+    font-weight: 500;
+    line-height: 50px;
+    position: relative;
+}
+
+.section-title h2:after {
+    position: absolute;
+    left: 0;
+    top: -30px;
+    width: 52px;
+    height: 7px;
+    background: #82D026;
+    content: "";
+    right: 0;
+    margin: 0 auto;
+}
+
+.set-bg {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top center;
+}
+
+.spad {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.text-white h1,
+.text-white h2,
+.text-white h3,
+.text-white h4,
+.text-white h5,
+.text-white h6,
+.text-white p,
+.text-white span,
+.text-white li,
+.text-white a {
+    color: #ffffff;
+}
+
+/*---------------------
+  Hero Slider
+-----------------------*/
+
+.single-hero-item {
+    height: 703px;
+    padding-top: 220px;
+    z-index:1;
+}
+
+.hero-text h1 {
+    font-size: 90px;
+    color: #ffffff;
+    font-weight: 700;
+    position: relative;
+    opacity: 0;
+    top: 50px;
+}
+
+.hero-text p {
+    color: #ffffff;
+    margin-bottom: 30px;
+    position: relative;
+    opacity: 0;
+    top: 50px;
+}
+
+.hero-text .primary-btn {
+    position: relative;
+    opacity: 0;
+    top: 50px;
+}
+
+.hero-items .owl-nav button[type=button] {
+    width: 84px;
+    height: 84px;
+    background: #081624;
+    color: #fff;
+    font-size: 30px;
+    position: absolute;
+    left: 30px;
+    top: 50%;
+    -webkit-transform: translateY(-50px);
+    transform: translateY(-50px);
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+
+    .hero-items .owl-nav button[type=button]:hover {
+        background: #82D026;
+    }
+
+    .hero-items .owl-nav button[type=button].owl-next {
+        left: auto;
+        right: 30px;
+    }
+
+.hero-items .owl-item.active .hero-text h1,
+.hero-items .owl-item.active .hero-text p,
+.hero-items .owl-item.active .hero-text .primary-btn {
+    top: 0;
+    opacity: 1;
+}
+
+.hero-items .owl-item.active .hero-text h1 {
+    -webkit-transition: all 0.5s ease 0.2s;
+    transition: all 0.5s ease 0.2s;
+}
+
+.hero-items .owl-item.active .hero-text p {
+    -webkit-transition: all 0.5s ease 0.4s;
+    transition: all 0.5s ease 0.4s;
+}
+
+.hero-items .owl-item.active .hero-text .primary-btn {
+    -webkit-transition: all 0.5s ease 0.6s;
+    transition: all 0.5s ease 0.6s;
+}
+
+/*---------------------
+  Hero Section
+-----------------------*/
+
+.hero-section {
+    height: 239px;
+}
+
+.hero-section .hero-text {
+    padding-top: 174px;
+}
+
+.hero-section .hero-text h1 {
+    font-size: 72px;
+    line-height: 93%;
+    font-weight: 700;
+}
+
+
+
+/*---------------------
+  Calendário Semanal
+-----------------------*/
+
+.classes-time-section {
+    padding-top: 115px;
+    padding-bottom: 130px;
+}
+
+.week-name {
+    background: #38393F;
+    margin-left: -15px;
+    margin-right: -15px;
+    text-align: center;
+    color: #fff;
+    height: 50px;
+    line-height: 50px;
+    font-family: "Oswald", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.daily-work {
+    margin-left: -15px;
+    margin-right: -15px;
+    text-align: center;
+    margin-right: -11px;
+}
+
+.daily-work.last {
+    margin-right: -15px;
+}
+
+.daily-work .work-hours {
+    height: 64px;
+    background: #F3F4FF;
+    margin-bottom: 4px;
+}
+
+.daily-work .work-hours.bg-color {
+    background: #82D026;
+    padding-top: 7px;
+}
+
+.daily-work .work-hours ul li {
+    list-style: none;
+    font-size: 16px;
+    font-family: "PT Sans", sans-serif;
+    font-weight: 400;
+    color: #ffffff;
+}
+/*--------------------------
+  Fim do Calendário Semanal
+--------------------------*/
+
+
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1176px;
+    }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1450px) {
+    .single-blog-item.blog-item .blog-text h3 {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .single-blog-item.blog-item .blog-text p {
+        font-size: 14px;
+        line-height: 25px;
+    }
+
+    .single-blog-item.blog-video .blog-text h3 {
+        font-size: 20px;
+    }
+}
+
+/*Barra verde informativa - Com opcao de inscrição*/
+.callto-section {
+    background: #82D026;
+    padding-top: 65px;
+    padding-bottom: 52px;
+}
+
+.callto-text h2 {
+    font-size: 48px;
+    color: #ffffff;
+    line-height: 50px;
+    margin-bottom: 5px;
+    text-align: center;
+    
+}
+
+.callto-text p {
+    color: #ffffff;
+    margin-bottom: 21px;
+    text-align:center;
+}
+
+.callto-text .primary-btn.callto-btn {
+    background: #081624;
+    padding: 18px 45px;
+    text-align:center;
+}
+/*Fim dessa mesma barra verde*/
+
+/*Mapa*/
+.map{
+    height: 585px;
+    position: relative;
+    z-index:1;
+}
+
+.map iframe{
+    width: 100%;
+}
+/*----------------------*/

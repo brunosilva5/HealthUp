@@ -23,6 +23,26 @@ namespace HealthUp.Controllers
             return View();
         }
 
+        public IActionResult PedidoRegisto()
+        {
+            return View();
+        }
+
+        public IActionResult Sobrenos()
+        {
+            return View();
+        }
+
+        public IActionResult Contactos()
+        {
+            return View();
+        }
+
+        public IActionResult MapaAulas()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

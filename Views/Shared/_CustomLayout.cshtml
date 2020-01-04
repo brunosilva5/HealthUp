@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>@ViewData["Title"] - HealthUp</title>
+
+    <!--Fonte AweSome-->
+    <script src="https://kit.fontawesome.com/210c3af75f.js" crossorigin="anonymous"></script>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:400,500,600,700&display=swap" rel="stylesheet">
+
+    <!--Estilo css-->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/mystyle.css" type="text/css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a asp-controller="Home" asp-action="Index"><img src="~/img/logo.png" width="70" height="70"></a>
+        </div>
+        <ul class="nav">
+            <li><a asp-controller="Home" asp-action="Index">Página Inicial</a></li>
+            <li><a asp-controller="Home" asp-action="Sobrenos">Sobre Nós</a></li>
+            <li><a asp-controller="Home" asp-action="Index">Treinar</a></li>
+            <li><a asp-controller="Home" asp-action="Contactos">Contactos</a></li>
+            <li>
+                <a asp-controller="Home" asp-action="Perfil">
+                    Perfil
+                    <i class="fa fa-chevron-down" style="font-size: .8em;"></i>
+                </a>
+                <ul>
+                    <li><a href="packages.html">Ver Perfil</a></li>
+                    <li><a href="schedule.html">Mensagens</a></li>
+                    <li><a asp-controller="Home" asp-action="MapaAulas">Mapa de aulas</a></li>
+                    <li><a href="packages.html">Plano de exercícios</a></li>
+                    <li><a href="packages.html">Histórico de peso</a></li>
+                    <li><a href="packages.html">Histórico de aulas</a></li>
+                    <li><a href="packages.html">Solicitar Personal Trainer</a></li>
+                    <li><a href="packages.html">Sair</a></li>
+                </ul>
+            </li>
+            <li class="phone-num"><i class="fa fa-phone"></i><span>253 123 123</span></li>
+        </ul>
+    </header>
+
+    <div>
+        @RenderBody()
+    </div>
+
+
+
+
+    <!-- Footer Section Begin -->
+    <footer class="footer-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer-text">
+                        <div class="reserved">
+                            Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script> All rights reserved
+                        </div>
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/neei.utad/"><i class="fab fa-facebook"></i></a>
+                            <a href="https://www.instagram.com/neei.utad/?hl=pt"><i class="fab fa-instagram"></i></a>
+                            <a href="https://twitter.com/7Andamos"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/circle-progress.min.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>
