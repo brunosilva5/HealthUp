@@ -80,18 +80,18 @@ namespace HealthUp.Controllers
             string Password = data["Password"];
             string Username = data["Username"];
 
-            if (String.IsNullOrWhiteSpace(Password) || String.IsNullOrWhiteSpace(Username))
-            {
-                ModelState.AddModelError("", "Por favor preencha todos os campos!");
-            }
-           
             Pessoa p = _context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).SingleOrDefault(p => p.Username == Username);
-
-            
-           
 
             if (ModelState.IsValid)
             {
+                // Definir a password (primeiro login)
+                if (p.Password==null)
+                {
+                    p.Password = Password;
+                    _context.Pessoas.Update(p);
+                    _context.SaveChanges();
+                }
+
                 HttpContext.Session.SetString("Nome", p.Nome);
                 HttpContext.Session.SetString("UserId", p.NumCC);
 
@@ -149,6 +149,5 @@ namespace HealthUp.Controllers
 
 
         #endregion
-
     }
 }

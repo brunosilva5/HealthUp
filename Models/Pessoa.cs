@@ -18,7 +18,6 @@ namespace HealthUp.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [StringLength(8, MinimumLength = 8, ErrorMessage = "Tem de possuir 8 caracteres!")]
-        [Remote("IsValidNumCC", "Validation", HttpMethod = "POST", ErrorMessage = "Número de cartão de cidadão inválido!")]
         [Display(Name = "Número de cartão de cidadão")]
         public string NumCC { get; set; }
         public string NumAdmin { get; set; }

@@ -32,7 +32,8 @@ namespace HealthUp.Models
         [DataType(DataType.Date)]
         public DateTime DataNascimento { get; set; }
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
-        [StringLength(20)]
+        [StringLength(50)]
+        [Remote("IsValidEmail", "Validation_Register", HttpMethod = "POST", ErrorMessage = "Insira um email válido!")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Display(Name = "Número de telemóvel")]

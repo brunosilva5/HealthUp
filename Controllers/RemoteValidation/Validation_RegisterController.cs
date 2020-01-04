@@ -24,13 +24,30 @@ namespace HealthUp.Controllers
         public JsonResult IsValidUsername(string Username)
         {
             var P = _context.Pessoas.FirstOrDefault(p => p.Username == Username);
-            if (P == null)
+            var Pedido = _context.PedidosSocios.FirstOrDefault(p => p.Username == Username);
+            if (P == null && Pedido==null)
             {
                 return Json(true);
             }
             else
             {
                 return Json(new string("Este username já se encontra em utilização!"));
+            }
+
+        }
+
+        [HttpPost]
+        public JsonResult IsValidEmail(string Email)
+        {
+            var P = _context.Pessoas.FirstOrDefault(p => p.Email == Email);
+            var Pedido = _context.PedidosSocios.FirstOrDefault(p => p.Email == Email);
+            if (P == null && Pedido==null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json(new string("Este email já se encontra em utilização!"));
             }
 
         }
@@ -148,22 +165,13 @@ namespace HealthUp.Controllers
             }
 
         }
+        
         [HttpPost]
-        public JsonResult IsValidEmail(string Email)
-        {
-            var P = _context.Pessoas.FirstOrDefault(p => p.Email == Email);
-            if (P == null)
-            {
-                return Json(true);
-            }
-            return Json(new string("Este email já se encontra em utilização!"));
-        }
-
-        [HttpPost]
-        public JsonResult IsValidNumCC(int numCC)
+        public JsonResult IsValidNumCC(string numCC)
         {
             var P = _context.Pessoas.FirstOrDefault(p => p.NumCC == numCC.ToString());
-            if (P == null)
+            var Pedido = _context.PedidosSocios.FirstOrDefault(p => p.NumCC == numCC);
+            if (P == null && Pedido==null)
             {
                 return Json(true);
             }

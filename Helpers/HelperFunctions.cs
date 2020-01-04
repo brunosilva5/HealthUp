@@ -1,5 +1,6 @@
 ﻿using HealthUp.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -7,6 +8,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -176,6 +179,51 @@ namespace HealthUp.Helpers
             return _nvc;
         }
 
+        public static string SendEmailConfirmacao(bool aceite, string Email)
+        {
+            string mensagem;
+            if (aceite)
+            {
+                mensagem = "O presente email serve para confirmar que o seu pedido de adesão ao HealthUp foi aceite com sucesso!\n" +
+                    "Poderá agora aceder à sua conta através da página Login, definindo a sua password.";
+            }
+            else
+            {
+                mensagem = "O presente email serve para confirmar que o seu pedido de adesão ao HealthUp foi rejeitado. Lamentamos!";
+            }
+            try
+            {
+                
+                // Mail message
+                var mail = new MailMessage()
+                {
+                    From = new MailAddress("healthupgym@gmail.com"),
+                    Subject = "Confirmação do pedido sócio",
+                    Body = mensagem
+                };
+                mail.IsBodyHtml = true;
+                mail.To.Add(new MailAddress(Email));
+                // Smtp client
+
+                var client = new SmtpClient();
+
+
+                client.Port = 587;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Host = "smtp.gmail.com";
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential("healthupgym@gmail.com", "healthup2019");
+                
+                client.Send(mail);
+                return "Email Sent Successfully!";
+            }
+            catch (System.Exception e)
+            {
+                return e.Message;
+            }
+
+        }
 
     }
 }

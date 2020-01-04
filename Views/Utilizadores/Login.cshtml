@@ -7,6 +7,7 @@
 <h1>Efetuar Login</h1>
 
 <hr />
+<p class="alert-danger">Se este for o seu primeiro login, após ter recebido o email de confirmação de aprovação do pedido sócio, a password inserida no campo abaixo será definida como a sua password.</p>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Login">
@@ -16,7 +17,7 @@
                 <label asp-for="Username" class="control-label"></label>
                 <input asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
+            </div>   
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" type="password" class="form-control" />
@@ -30,6 +31,8 @@
 </div>
 
 
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
 }
