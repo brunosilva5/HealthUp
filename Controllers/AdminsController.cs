@@ -80,16 +80,22 @@ namespace HealthUp.Controllers
 
             P.Password = null;
             _context.Pessoas.Add(P);
-
+            HelperFunctions.SendEmailConfirmacao(true, P.Email);
             // Apagar da tabela
-            RejeitarSocio(id);
+            RejeitarSocio(id,true);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult RejeitarSocio(int id)
+        public IActionResult RejeitarSocio(int id, bool? flag)
         {
             var pedido = _context.PedidosSocios.FirstOrDefault(p => p.NumCC == id.ToString());
+            if (flag==null)
+            {
+                HelperFunctions.SendEmailConfirmacao(false, pedido.Email);
+
+            }
+
             _context.PedidosSocios.Remove(pedido);
             _context.SaveChanges();
 
