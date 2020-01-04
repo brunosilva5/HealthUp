@@ -1,0 +1,61 @@
+﻿@model IEnumerable<HealthUp.Models.Pessoa>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 style="color:#4CAF50">Painel de Gestão do HealthUp</h1>
+<head>
+    <style>
+
+        .AdminMenu ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: auto;
+            background-color: #f1f1f1;
+            height: auto; /* tamanho automatico vertical */
+            position: fixed; /* Make it stick, even on scroll */
+            overflow: auto; /* Enable scrolling if the sidenav has too much content */
+        }
+
+        .AdminMenu li a {
+            display: block;
+            color: #000;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+            .AdminMenu li a:hover {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+        .AdminMenu active {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+
+<div class="AdminMenu">
+    <ul>
+
+        <li><a href="Admins/AprovarSocios">Aprovar pedidos de sócio pendentes</a></li>
+
+        <li><a href="Admins/CriarAdminProf">Criar Administrador/Professor </a></li>
+
+        <li><a href="Admins/AprovarPedidoProf">Aprovar pedidos de personal trainer</a></li>
+
+        <li><a href="Admins/CriarExercicio">Criar exercício</a></li>
+
+        <li><a href="Admins/SuspenderUtilizador">Suspender utilizador</a></li>
+
+        <li><a href="Admins/ListAulasGrupo">Aulas de Grupo</a></li>
+
+        <li><a href="Admins/ListAulas">Aulas</a></li>
+
+        <li><a href="Admins/EditarInfoHealthUp">Editar informação do HealhUp</a></li>
+    </ul>
+</div>
+

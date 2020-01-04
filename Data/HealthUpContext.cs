@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using HealthUp.Models;
+using Newtonsoft.Json;
+using System.Collections.Specialized;
+using HealthUp.Helpers;
 
 namespace HealthUp.Data
 {
@@ -31,12 +34,20 @@ namespace HealthUp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            base.OnModelCreating(modelBuilder);
+
+
             modelBuilder.Entity<Contem>()
                 .HasKey(c => new { c.IdPlano, c.IdExercicio });
 
             modelBuilder.Entity<Inscreve>()
                 .HasKey(c => new { c.NumSocio, c.IdAula });
-        }
 
+
+
+            
+
+        }
     }
 }

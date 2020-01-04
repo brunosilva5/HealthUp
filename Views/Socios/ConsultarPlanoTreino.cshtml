@@ -1,0 +1,41 @@
+﻿@model IEnumerable<HealthUp.Models.PlanoTreino>
+
+@{
+    ViewData["Title"] = "O meu plano de treino";
+}
+
+<h1>O meu plano de treino</h1>
+
+
+@foreach (var item in Model)
+{
+    if (item.Ativo)
+    {
+       <p>Plano de treino atual:</p>
+    
+        <div>
+            <p>Descrição do plano:</p>
+            @item.Descricao
+            <br />
+            <p>Exercícios:</p>
+    
+            @foreach (var exercicio in item.Contem)
+            {
+                <span>
+                    -Nome: @exercicio.IdExercicioNavigation.Nome
+                    <br />
+                    -Descrição: @exercicio.IdExercicioNavigation.Descricao
+                    <br />
+                    -Número de repetições: @exercicio.NumRepeticoes
+                    <br />
+                    -Tempo de descanso: @exercicio.PeriodoDescanso segundos
+                    <br />
+                    -Quantidade de séries: @exercicio.QuantidadeSeries
+                    <br />
+                </span>
+            }
+            -Atribuído por: @item.NumProfessorNavigation.NumProfessorNavigation.Nome
+
+        </div>
+    }
+}

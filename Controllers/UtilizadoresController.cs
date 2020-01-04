@@ -5,18 +5,22 @@ using System.Threading.Tasks;
 using HealthUp.Data;
 using HealthUp.Helpers;
 using HealthUp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthUp.Controllers
 {
+    [AllowAnonymous]
     public class UtilizadoresController : Controller
     {
         private readonly HealthUpContext _context;
         public UtilizadoresController(HealthUpContext contexto)
         {
             _context = contexto;
+            
+
 
         }
         #region PedidoSocio
@@ -76,18 +80,18 @@ namespace HealthUp.Controllers
             string Password = data["Password"];
             string Username = data["Username"];
 
-            if (String.IsNullOrWhiteSpace(Password) || String.IsNullOrWhiteSpace(Username))
-            {
-                ModelState.AddModelError("", "Por favor preencha todos os campos!");
-            }
-           
             Pessoa p = _context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).SingleOrDefault(p => p.Username == Username);
-
-            
-           
 
             if (ModelState.IsValid)
             {
+                // Definir a password (primeiro login)
+                if (p.Password==null)
+                {
+                    p.Password = Password;
+                    _context.Pessoas.Update(p);
+                    _context.SaveChanges();
+                }
+
                 HttpContext.Session.SetString("Nome", p.Nome);
                 HttpContext.Session.SetString("UserId", p.NumCC);
 
@@ -121,5 +125,29 @@ namespace HealthUp.Controllers
         }
         #endregion
 
+        #region PlanoSemanal
+
+        public IActionResult PlanoSemanal()
+        {
+             return View();
+        }
+
+        public IActionResult PartialPlanoSemanal(string week)
+        {
+            DateTime data =HelperFunctions.GetData(week);
+            DateTime segunda = HelperFunctions.GetMonday(data);
+            DateTime domingo = HelperFunctions.Next(data, DayOfWeek.Monday);
+
+            ViewBag.Segunda = segunda.ToShortDateString();
+            ViewBag.Domingo = domingo.ToShortDateString();
+            var lista = _context.Aulas.Where(x => x.ValidoAte >= domingo && x.ValidoDe <= segunda);//limitar a uma certa semana
+        //    lista = lista.Include(x => x.AulaGrupo).Where(x => x.AulaGrupo.IdAula == x.IdAula);// limitar às aulas de grupo
+
+            
+            return PartialView(nameof(PartialPlanoSemanal),lista.ToList());
+        }
+
+
+        #endregion
     }
 }

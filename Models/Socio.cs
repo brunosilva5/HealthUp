@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HealthUp.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,16 +25,17 @@ namespace HealthUp.Models
         [Display(Name = "Número de cartão de cidadão")]
         public string NumCC { get; set; }
 
-        public string NumProfessor { get; set; }
         public string NumAdmin { get; set; }
-        public string ID_Solicitacao { get; set; }
+        public int? ID_Solicitacao { get; set; }
         [StringLength(3)]
         public string Altura { get; set; }
-        public int Peso { get; set; }
+        [Range(0, 300,ErrorMessage ="Insira um valor entre 0 e 300")]
+        public double Peso { get; set; }
         [DataType(DataType.Date)]
-        public DateTime DataRegisto { get; set; }
+        public DateTime DataRegisto_Peso { get; set; }
         [StringLength(200)]
         public string Motivo { get; set; }
+        [DataType(DataType.Date)]
         public DateTime? DataSuspensao { get; set; }
 
 
@@ -44,9 +47,12 @@ namespace HealthUp.Models
         [InverseProperty(nameof(Admin.SociosSuspensos))]
         public virtual Admin NumAdminNavigation { get; set; }
 
+        //IDENTIFICAR QUEM PESOU
         [ForeignKey(nameof(NumProfessor))]
         [InverseProperty(nameof(Professor.Socio))]
         public virtual Professor NumProfessorNavigation { get; set; }
+        public string NumProfessor { get; set; }
+
 
         [ForeignKey(nameof(NumCC))]
         [InverseProperty(nameof(Pessoa.Socio))]
@@ -57,5 +63,19 @@ namespace HealthUp.Models
 
         [InverseProperty("NumSocioNavigation")]
         public virtual ICollection<PlanoTreino> PlanoTreino { get; set; }
+
+        public List<SimpleReportViewModel> GetHistoricoPeso(HealthUpContext context)
+        {
+            List<SimpleReportViewModel> ListaPesos = new List<SimpleReportViewModel>();
+            foreach (var professor in context.Professores.Include(x => x.Socio))
+            {
+                var aux=professor.GetRegistoPesosSocio(this.NumCC);
+                foreach (var item in aux)
+                {
+                    ListaPesos.Add(item);
+                }
+            }
+            return ListaPesos;
+        }
     }
 }

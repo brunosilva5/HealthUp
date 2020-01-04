@@ -24,7 +24,8 @@ namespace HealthUp.Controllers
         public JsonResult IsValidUsername(string Username)
         {
             var P = _context.Pessoas.FirstOrDefault(p => p.Username == Username);
-            if (P == null)
+            var Pedido = _context.PedidosSocios.FirstOrDefault(p => p.Username == Username);
+            if (P == null && Pedido==null)
             {
                 return Json(true);
             }
@@ -36,13 +37,29 @@ namespace HealthUp.Controllers
         }
 
         [HttpPost]
+        public JsonResult IsValidEmail(string Email)
+        {
+            var P = _context.Pessoas.FirstOrDefault(p => p.Email == Email);
+            var Pedido = _context.PedidosSocios.FirstOrDefault(p => p.Email == Email);
+            if (P == null && Pedido==null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json(new string("Este email já se encontra em utilização!"));
+            }
+
+        }
+
+        [HttpPost]
         public JsonResult DoesExerciceExist(string Nome)
         {
             var Ex = _context.Exercicios.SingleOrDefault(x => x.Nome == Nome);
             if (Ex == null)
                 return Json(true);
             return Json(new string("Este exercício já existe!"));
-            
+
         }
 
         [HttpPost]
@@ -109,16 +126,24 @@ namespace HealthUp.Controllers
 
         public JsonResult IsValidPhoneNumber(string telemovel)
         {
-            
+            if (telemovel == null)
+            {
+                return Json(new string("O número inserido não é valido!"));
+            }
             Match match = Regex.Match(telemovel, @"^(\d+)$", RegexOptions.IgnoreCase);// verificar se a string apenas contem numeros
 
             if (match.Success) return Json(true);
             return Json(new string("O número inserido não é valido!"));
-            
+
         }
         [HttpPost]
         public JsonResult IsValidPassword(string Password)
         {
+            if (Password == null)
+            {
+                return Json(new string("O número inserido não é valido!"));
+            }
+
 
             Match match = Regex.Match(Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$", RegexOptions.IgnoreCase);// verificar se contem 1 maiuscula, 1 minuscula e 1 numero
 
@@ -140,28 +165,40 @@ namespace HealthUp.Controllers
             }
 
         }
+        
         [HttpPost]
-        public JsonResult IsValidEmail(string Email)
-        {
-            var P = _context.Pessoas.FirstOrDefault(p => p.Email == Email);
-            if (P == null)
-            {
-                return Json(true);
-            }
-            return Json(new string("Este email já se encontra em utilização!"));
-        }
-
-        [HttpPost]
-        public JsonResult IsValidNumCC(int numCC)
+        public JsonResult IsValidNumCC(string numCC)
         {
             var P = _context.Pessoas.FirstOrDefault(p => p.NumCC == numCC.ToString());
-            if (P == null)
+            var Pedido = _context.PedidosSocios.FirstOrDefault(p => p.NumCC == numCC);
+            if (P == null && Pedido==null)
             {
                 return Json(true);
             }
             return Json(new string("Este número de cartão de cidadão já se encontra em utilização!"));
         }
 
+        [HttpPost]
+        public JsonResult IsValidCoordinates(string LocalizacaoGps)
+        {
+            try
+            {
+                string[] coordenadas = LocalizacaoGps.Split(',');
+                float latitude = float.Parse(coordenadas[0]);
+                float longitude = float.Parse(coordenadas[1]);
 
+                if (latitude <= 90 && latitude >= -90 && longitude <= 180 && longitude > -180)
+                {
+                    return Json(true);
+                }
+                return Json(new string("As coordenadas não tem o formato correto é: latitude,longitude"));
+            }
+            catch (Exception)
+            {
+                return Json(new string("As coordenadas não tem o formato correto é: latitude,longitude"));
+            }
+
+
+        }
     }
 }

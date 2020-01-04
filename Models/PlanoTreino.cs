@@ -19,7 +19,7 @@ namespace HealthUp.Models
         public string NumSocio { get; set; }
         public string NumProfessor { get; set; }
         public bool Ativo { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(500)]
         public string Descricao { get; set; }
 

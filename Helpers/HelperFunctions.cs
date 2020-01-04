@@ -1,9 +1,15 @@
 ﻿using HealthUp.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -13,6 +19,7 @@ namespace HealthUp.Helpers
 {
     public static class HelperFunctions
     {
+
         // Retira todos os espaços em branco extra
         public static string NormalizeWhiteSpace(string input)
         {
@@ -44,8 +51,6 @@ namespace HealthUp.Helpers
 
             return new string(output, 0, current);
         }
-
-        
 
         public static bool IsJustNumbers(string str)
         {
@@ -95,6 +100,129 @@ namespace HealthUp.Helpers
                 return true;
             else
                 return false;
+        }
+
+        public static DateTime GetMonday(DateTime time)
+        {
+            if (time.DayOfWeek != DayOfWeek.Monday)
+                return time.Subtract(new TimeSpan((int)time.DayOfWeek - 1, 0, 0, 0)).Date;
+
+            return time.Date;
+        }
+
+        public static DateTime Next(this DateTime from, DayOfWeek dayOfWeek)
+        {
+            int start = (int)from.DayOfWeek;
+            int target = (int)dayOfWeek;
+            if (target <= start)
+                target += 7;
+            return from.AddDays(target - start).Date;
+        }
+
+        public static int GetDay(string dia)
+        {
+            switch(dia)
+            {
+                case "Segunda-Feira": return 1;
+                case "Terça-Feira": return 2;
+                case "Quarta-Feira": return 3;
+                case "Quinta-Feira": return 4;
+                case "Sexta-Feira": return 5;
+                case "Sábado": return 6;
+                case "Domingo": return 7;
+                default: return 1;
+            }
+        }
+
+        public static DateTime GetData(string data)
+        {
+            string[] dados = data.Split('-', 'W');
+            return GetDateFromWeekNumberAndDayOfWeek(int.Parse(dados[0]), int.Parse(dados[2]));
+        }
+
+        public static DateTime GetDateFromWeekNumberAndDayOfWeek(int year, int weekNumber, int dayOfWeek=1)
+        {
+            DateTime jan1 = new DateTime(year, 1, 1);
+            int daysOffset = DayOfWeek.Tuesday - jan1.DayOfWeek;
+
+            DateTime firstMonday = jan1.AddDays(daysOffset);
+
+            var cal = CultureInfo.CurrentCulture.Calendar;
+            int firstWeek = cal.GetWeekOfYear(jan1, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+            var weekNum = weekNumber;
+            if (firstWeek <= 1)
+            {
+                weekNum -= 1;
+            }
+
+            var result = firstMonday.AddDays(weekNum * 7 + dayOfWeek - 1);
+            return result;
+        }
+
+        public static string JSONSerialize(this NameValueCollection _nvc)
+        {
+            return JsonConvert.SerializeObject(_nvc.AllKeys.ToDictionary(k => k, k => _nvc.GetValues(k)));
+        }
+        public static NameValueCollection JSONDeserialize( string _serializedString)
+        {
+            NameValueCollection _nvc = new NameValueCollection();
+            if (_serializedString==null)
+            {
+                return _nvc;
+            }
+            var deserializedobject = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(_serializedString);
+            foreach (var strCol in deserializedobject.Values)
+                foreach (var str in strCol)
+                    _nvc.Add(deserializedobject.FirstOrDefault(x => x.Value.Contains(str)).Key, str);
+
+            return _nvc;
+        }
+
+        public static string SendEmailConfirmacao(bool aceite, string Email)
+        {
+            string mensagem;
+            if (aceite)
+            {
+                mensagem = "O presente email serve para confirmar que o seu pedido de adesão ao HealthUp foi aceite com sucesso!\n" +
+                    "Poderá agora aceder à sua conta através da página Login, definindo a sua password.";
+            }
+            else
+            {
+                mensagem = "O presente email serve para confirmar que o seu pedido de adesão ao HealthUp foi rejeitado. Lamentamos!";
+            }
+            try
+            {
+                
+                // Mail message
+                var mail = new MailMessage()
+                {
+                    From = new MailAddress("healthupgym@gmail.com"),
+                    Subject = "Confirmação do pedido sócio",
+                    Body = mensagem
+                };
+                mail.IsBodyHtml = true;
+                mail.To.Add(new MailAddress(Email));
+                // Smtp client
+
+                var client = new SmtpClient();
+
+
+                client.Port = 587;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Host = "smtp.gmail.com";
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential("healthupgym@gmail.com", "healthup2019");
+                
+                client.Send(mail);
+                return "Email Sent Successfully!";
+            }
+            catch (System.Exception e)
+            {
+                return e.Message;
+            }
+
         }
 
     }

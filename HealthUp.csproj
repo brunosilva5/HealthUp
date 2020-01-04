@@ -6,6 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\Ficheiros\**" />
+    <Content Remove="wwwroot\Ficheiros\**" />
+    <EmbeddedResource Remove="wwwroot\Ficheiros\**" />
+    <None Remove="wwwroot\Ficheiros\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="HistoricoPeso_HealthUp.xls" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="4.5.3.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">

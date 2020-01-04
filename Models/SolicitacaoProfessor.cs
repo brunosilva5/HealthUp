@@ -16,7 +16,7 @@ namespace HealthUp.Models
         }
 
         [Key]
-        public string IdSolicitacao { get; set; }
+        public int? IdSolicitacao { get; set; }
         public string NumAdmin { get; set; }
         [DataType(DataType.Date)]
         public DateTime? Data { get; set; }

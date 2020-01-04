@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using HealthUp.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace HealthUp
 {
@@ -27,6 +28,15 @@ namespace HealthUp
         {
             services.AddControllersWithViews();
 
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                // requires using Microsoft.AspNetCore.Http;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             services.AddDbContext<HealthUpContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("HealthUpContext")));
 
@@ -37,7 +47,7 @@ namespace HealthUp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, HealthUpContext context)
         {
             if (env.IsDevelopment())
             {
@@ -51,6 +61,7 @@ namespace HealthUp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
             app.UseSession();
             app.UseRouting();
 
@@ -62,6 +73,8 @@ namespace HealthUp
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            InicializaBasedeDados.Iniciar(context);
         }
     }
 }

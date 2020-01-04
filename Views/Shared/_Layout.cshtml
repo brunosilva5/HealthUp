@@ -5,58 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - HealthUp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/jqueryui/jquery-ui.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+            .topnav a {
+                float: left;
+                color: #f2f2f2;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 17px;
+            }
+
+                .topnav a:hover {
+                    background-color: #ddd;
+                    color: black;
+                }
+
+                .topnav a.active {
+                    background-color: #4CAF50;
+                    color: white;
+                }
+
+        .topnav-right {
+            float: right;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Aplicação Web</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+        <div class="topnav">
+            <a class="active" asp-controller="Home" asp-action="Index">Home</a>
 
-                        @if (Context.Session.GetString("Role") == "Admin")
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Painel de gestão</a>
-                            </li>
-                        }
-                        @if (Context.Session.GetString("UserId") == null)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadores" asp-action="PedidoSocio">Aderir ao HealthUp</a>
-                            </li>
-                        }
-                        @if (Context.Session.GetString("UserId") == null)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadores" asp-action="Login">Login</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadores" asp-action="Logout">Logout</a>
-                            </li>
-                        }
+            <a asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <a asp-controller="Utilizadores" asp-action="PlanoSemanal">Plano semanal de aulas</a>
 
-                    </ul>
-                </div>
+
+            @if (Context.Session.GetString("Role") == "Admin")
+            {
+                <a asp-controller="Admins" asp-action="Index">Painel de gestão</a>
+            }
+
+            @if (Context.Session.GetString("Role") == "Socio")
+            {
+                <a asp-controller="Socios" asp-action="Index">Painel de sócios</a>
+            }
+
+            @if (Context.Session.GetString("Role") == "Professor")
+            {
+                <a asp-controller="Professores" asp-action="Index">Painel de professores</a>
+            }
+
+            <div class="topnav-right">
+
+                @if (Context.Session.GetString("UserId") == null)
+                {
+                    <a asp-controller="Utilizadores" asp-action="PedidoSocio">Aderir ao HealthUp</a>
+                }
+
+                @if (Context.Session.GetString("UserId") == null)
+                {
+                    <a asp-controller="Utilizadores" asp-action="Login">Login</a>
+                }
+                else
+                {
+                    <a asp-controller="Utilizadores" asp-action="Logout">Logout</a>
+                }
             </div>
-        </nav>
-    </header>
-
+        </div>
+</header>
     <div class="container">
+        <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -68,6 +98,9 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jqueryui/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
