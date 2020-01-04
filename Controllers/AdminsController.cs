@@ -125,6 +125,7 @@ namespace HealthUp.Controllers
         {
             Pessoa p = _context.Pessoas.FirstOrDefault(p => p.NumCC == id);
             Professor prof = new Professor(p);
+            prof.Especialidade = "Indefinido";
             _context.Professores.Add(prof);
             Socio s = _context.Socios.FirstOrDefault(p => p.NumCC == id.ToString());
             _context.Remove(s);
@@ -178,7 +179,7 @@ namespace HealthUp.Controllers
         // POST: Exercicios/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        
+        [RequestSizeLimit(100_000_000)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CriarExercicio(string Nome, string Descricao, IFormFile Fotografia, IFormFile Video)
