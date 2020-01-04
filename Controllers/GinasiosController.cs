@@ -23,7 +23,7 @@ namespace HealthUp.Controllers
         // GET: Ginasios
         public IActionResult Index()
         {
-            if (_context.Ginasios.FirstOrDefault()==null)
+            if (_context.Ginasios.FirstOrDefault() == null)
             {
                 return RedirectToAction(nameof(Edit), null);
             }
@@ -37,7 +37,7 @@ namespace HealthUp.Controllers
         {
             var ginasio = _context.Ginasios.FirstOrDefault();
             // apagar o indicativo
-            ginasio.Telemovel=ginasio.Telemovel.Substring(4);
+            ginasio.Telemovel = ginasio.Telemovel.Substring(4);
             return View(ginasio);
         }
 
@@ -46,25 +46,33 @@ namespace HealthUp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NumAdmin,Nome,Endereco,Email,Telemovel,LocalizacaoGps")] Ginasio ginasio, string Indicativo)
+        public async Task<IActionResult> Edit(IFormCollection dados)
         {
-            if (id != ginasio.Id)
+            Ginasio g = _context.Ginasios.FirstOrDefault();
+            if (dados["Id"] != g.Id.ToString())
             {
                 return NotFound();
             }
+
+            g.Telemovel = "+" + dados["Indicativo"] + dados["Telemovel"];
+            g.NumAdmin = HttpContext.Session.GetString("UserId");
+            g.Id = int.Parse(dados["Id"]);
+            g.LocalizacaoGps = dados["LocalizacaoGps"];
+            g.Email = dados["Email"];
+            g.Telemovel = dados["Telemovel"];
+            g.Endereco = dados["Endereco"];
+            g.Nome = dados["Nome"];
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    ginasio.Telemovel = "+" +Indicativo + ginasio.Telemovel;
-                    ginasio.NumAdmin = HttpContext.Session.GetString("UserId");
-                    _context.Update(ginasio);
+                    _context.Ginasios.Update(g);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GinasioExists(ginasio.Id))
+                    if (!GinasioExists(g.Id))
                     {
                         return NotFound();
                     }
@@ -75,10 +83,11 @@ namespace HealthUp.Controllers
                 }
                 return RedirectToAction(nameof(Index), "Admins");
             }
-            return View(ginasio);
+            return RedirectToAction(nameof(Index), "Admins");
+
         }
 
-       
+
 
         private bool GinasioExists(int id)
         {

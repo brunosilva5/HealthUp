@@ -18,7 +18,7 @@ namespace HealthUp.Models
         public string Nome { get; set; }
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(200)]
-        [Display(Name ="Endereço")]
+        [Display(Name = "Endereço")]
         public string Endereco { get; set; }
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(50)]
@@ -26,11 +26,12 @@ namespace HealthUp.Models
         public string Email { get; set; }
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(13)]
-        [Display(Name ="Telemóvel")]
+        [Display(Name = "Telemóvel")]
         [Remote("IsValidPhoneNumber", "Validation_Register", HttpMethod = "POST", ErrorMessage = "Insira um número de telemóvel válido!")]
         public string Telemovel { get; set; }
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(200)]
+        [Remote("IsValidCoordinates", "Validation_Register", HttpMethod = "POST", ErrorMessage = "Insira as coordernadas válidas!")]
         [Display(Name = "Coordenadas GPS")]
         public string LocalizacaoGps { get; set; }
 

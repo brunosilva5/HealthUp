@@ -42,7 +42,7 @@ namespace HealthUp.Controllers
             if (Ex == null)
                 return Json(true);
             return Json(new string("Este exercício já existe!"));
-            
+
         }
 
         [HttpPost]
@@ -109,7 +109,7 @@ namespace HealthUp.Controllers
 
         public JsonResult IsValidPhoneNumber(string telemovel)
         {
-            if (telemovel==null)
+            if (telemovel == null)
             {
                 return Json(new string("O número inserido não é valido!"));
             }
@@ -117,7 +117,7 @@ namespace HealthUp.Controllers
 
             if (match.Success) return Json(true);
             return Json(new string("O número inserido não é valido!"));
-            
+
         }
         [HttpPost]
         public JsonResult IsValidPassword(string Password)
@@ -170,6 +170,27 @@ namespace HealthUp.Controllers
             return Json(new string("Este número de cartão de cidadão já se encontra em utilização!"));
         }
 
+        [HttpPost]
+        public JsonResult IsValidCoordinates(string LocalizacaoGps)
+        {
+            try
+            {
+                string[] coordenadas = LocalizacaoGps.Split(',');
+                float latitude = float.Parse(coordenadas[0]);
+                float longitude = float.Parse(coordenadas[1]);
 
+                if (latitude <= 90 && latitude >= -90 && longitude <= 180 && longitude > -180)
+                {
+                    return Json(true);
+                }
+                return Json(new string("As coordenadas não tem o formato correto é: latitude,longitude"));
+            }
+            catch (Exception)
+            {
+                return Json(new string("As coordenadas não tem o formato correto é: latitude,longitude"));
+            }
+
+
+        }
     }
 }
