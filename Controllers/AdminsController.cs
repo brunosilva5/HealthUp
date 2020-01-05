@@ -24,7 +24,6 @@ namespace HealthUp.Controllers
 
         #endregion
 
-
         #region Constructors
         public AdminsController(HealthUpContext context, IHostEnvironment e)
         {
