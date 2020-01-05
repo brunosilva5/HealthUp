@@ -177,7 +177,6 @@ namespace HealthUp.Controllers
 
         #endregion
 
-
         #region CriarExercicio
 
         public IActionResult CriarExercicio()
