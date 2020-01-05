@@ -345,7 +345,6 @@ namespace HealthUp.Controllers
         }
         #endregion
 
-
         #region Aulas de Grupo
 
         public IActionResult ListAulasGrupo()
