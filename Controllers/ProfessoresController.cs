@@ -18,19 +18,26 @@ namespace HealthUp.Controllers
     [MyRoleFilter(Perfil = "Professor")]
     public class ProfessoresController : Controller
     {
+        #region PrivateVariables
         private readonly HealthUpContext _context;
+        #endregion
 
+        #region Constructor
         public ProfessoresController(HealthUpContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Index
         // GET: Professores
         public IActionResult Index()
         {
             return View();
         }
+        #endregion
 
+        #region RegistarPesoSocio
         public IActionResult RegistarPesoSocio()
         {
             List<Socio> Lista = _context.Socios.Include(s => s.NumSocioNavigation).Where(s => s.DataSuspensao == null && s.Motivo == null).ToList();
@@ -85,5 +92,14 @@ namespace HealthUp.Controllers
 
             return View(socio);
         }
+        #endregion
+
+        #region ConsultarMeusAlunos
+        public IActionResult ConsultarMeusAlunos()
+        {
+            var x = _context.Pessoas.Include(x => x.Socio).Where(x => x.Socio.NumProfessor == HttpContext.Session.GetString("UserId"));
+            return View(_context.Pessoas.Include(x => x.Socio).Where(x => x.Socio.NumProfessor == HttpContext.Session.GetString("UserId")));
+        }
+        #endregion
     }
 }

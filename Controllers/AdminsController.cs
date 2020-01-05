@@ -145,6 +145,16 @@ namespace HealthUp.Controllers
 
             // Atribuir o ID do admin a esta solicitacao
             solicitacao.NumAdmin = HttpContext.Session.GetString("UserId");
+            var socio=solicitacao.Socio.SingleOrDefault();
+            var prof = solicitacao.Professor.SingleOrDefault();
+
+            socio.NumProfessor = prof.NumCC;
+            socio.ID_Solicitacao = null;
+
+            prof.IdSolicitacao = null;
+            prof.Socio.Add(socio);
+            _context.Socios.Update(socio);
+            _context.Professores.Update(prof);
 
             // --------------------------------------------------------------------------------------------------------------------------------------
             // Adicionar na tabela de solicitacoes do admin

@@ -4,10 +4,9 @@
     ViewData["Title"] = "Consultar informação do meu personal trainer";
 }
 
-    <h1>Consultar informação do meu personal trainer</h1>
+    <h1>O meu personal trainer</h1>
 
 <div>
-    <h4>Pessoa</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -45,5 +44,5 @@
 </div>
 <div>
     <a asp-action="Index">Back to List</a> | 
-    <a asp-action="DeixarSerAluno" asp-route-id="@Model.NumCC" name="NumProf">Deixar de ser aluno</a> 
+    <a asp-action="DeixarSerAluno" asp-route-NumProf="@Model.NumCC">Deixar de ser aluno</a> 
 </div>
