@@ -23,15 +23,15 @@ namespace HealthUp.Models
         [Required(ErrorMessage = "Este campo é obrigatório")]
         [DataType(DataType.Date)]
         [Display(Name = "Válido de")]
-        public DateTime? ValidoDe { get; set; }
+        public DateTime ValidoDe { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Válido até")]
-        public DateTime? ValidoAte { get; set; }
+        public DateTime ValidoAte { get; set; }
         [Required(ErrorMessage = "Este campo é obrigatório")]
         public int Lotacao { get; set; }
         [Required(ErrorMessage = "Este campo é obrigatório")]
         [Display(Name = "Hora de início")]
-        public TimeSpan? HoraInicio { get; set; }
+        public TimeSpan HoraInicio { get; set; }
         [Required(ErrorMessage = "Este campo é obrigatório")]
         [Display(Name = "Dia da semana")]
         public int DiaSemana { get; set; }
