@@ -38,8 +38,7 @@ namespace HealthUp.Migrations
                     b.Property<int>("DiaSemana")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan?>("HoraInicio")
-                        .IsRequired()
+                    b.Property<TimeSpan>("HoraInicio")
                         .HasColumnType("time");
 
                     b.Property<int>("Lotacao")
@@ -53,11 +52,10 @@ namespace HealthUp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(8)");
 
-                    b.Property<DateTime?>("ValidoAte")
+                    b.Property<DateTime>("ValidoAte")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("ValidoDe")
-                        .IsRequired()
+                    b.Property<DateTime>("ValidoDe")
                         .HasColumnType("datetime2");
 
                     b.HasKey("IdAula");

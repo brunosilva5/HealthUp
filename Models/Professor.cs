@@ -80,7 +80,7 @@ namespace HealthUp.Models
         public List<SimpleReportViewModel> GetRegistoPesosSocio(string idSocio)
         {
             List<SimpleReportViewModel> ListaPesagens = new List<SimpleReportViewModel>();
-
+            
             var RegistosSocio = HelperFunctions.JSONDeserialize(RegistoPesos);
 
             string data=RegistosSocio.Get(idSocio);
