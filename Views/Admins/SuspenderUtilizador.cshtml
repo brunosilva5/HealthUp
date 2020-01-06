@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<HealthUp.Models.Pessoa>
 
 @{
-    ViewData["Title"] = "SuspenderUtilizador";
+    ViewData["Title"] = "Suspender Utilizador";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
 <h1>Suspender um Utilizador</h1>
 
 
-<a  class="btn btn-outline-primary" asp-action="LevantarSuspensao">Levantar suspensão</a>
+<a class="btn btn-outline-primary" asp-action="LevantarSuspensao">Levantar suspensão</a>
 <table class="table">
     <thead>
         <tr>
@@ -47,42 +48,42 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumCC)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sexo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fotografia)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataNascimento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telemovel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nacionalidade)
-            </td>
-            <td>
-                <a asp-action="SuspenderUtilizador_Selecionado" asp-route-id="@item.NumCC"
-                   data-ajax="true"
-                   data-ajax-method="GET"
-                   data-ajax-update="#target"
-                   data-ajax-mode="replace">Suspender</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumCC)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sexo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fotografia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataNascimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telemovel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nacionalidade)
+                </td>
+                <td>
+                    <a asp-action="SuspenderUtilizador_Selecionado" asp-route-id="@item.NumCC"
+                       data-ajax="true"
+                       data-ajax-method="GET"
+                       data-ajax-update="#target"
+                       data-ajax-mode="replace">Suspender</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

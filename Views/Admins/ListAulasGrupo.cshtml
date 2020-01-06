@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<HealthUp.Models.AulaGrupo>
 
 @{
-    ViewData["Title"] = "ListAulasGrupo";
+    ViewData["Title"] = "ListaAulasGrupo";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
 <h1>Aulas de Grupo</h1>
@@ -28,27 +29,28 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" height="200" />
-            </td>
-            <td>
-                <video width="320" height="240" controls>
-                    <source src="~/Ficheiros/@Html.DisplayFor(modelItem => item.VideoDivulgacao)" type="video/mp4">
-                </video>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                <a asp-action="EditAulaGrupo" asp-route-id="@item.IdAula">Editar</a> |
-                <a asp-action="DeleteAulaGrupo" asp-route-id="@item.IdAula">Eliminar</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" height="200" />
+                </td>
+                <td>
+                    <video width="320" height="240" controls>
+                        <source src="~/Ficheiros/@Html.DisplayFor(modelItem => item.VideoDivulgacao)" type="video/mp4">
+                    </video>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    <a asp-action="EditAulaGrupo" asp-route-id="@item.IdAula">Editar</a> |
+                    <a asp-action="DeleteAulaGrupo" asp-route-id="@item.IdAula">Eliminar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

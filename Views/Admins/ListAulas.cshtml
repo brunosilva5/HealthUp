@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<HealthUp.Models.Aula>
 
 @{
-    ViewData["Title"] = "ListAulas";
+    ViewData["Title"] = "Lista de Aulas";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
 <h1>Aulas</h1>
@@ -31,7 +32,7 @@
                 Administrador
             </th>
             <th>
-              Professor
+                Professor
             </th>
             <th>
                 Aula
@@ -40,64 +41,65 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValidoDe)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValidoAte)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lotacao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoraInicio)
-            </td>
-            <td>
-                @if (item.DiaSemana == 1)
-                {
-                    <p>Segunda-feira</p>
-                }
-                else if (item.DiaSemana == 2)
-                {
-                    <p>Terça-feira</p>
-                }
-                else if (item.DiaSemana == 3)
-                {
-                    <p>Quarta-feira</p>
-                }
-                else if (item.DiaSemana == 4)
-                {
-                    <p>Quinta-feira</p>
-                }
-                else if (item.DiaSemana == 5)
-                {
-                    <p>Sexta-feira</p>
-                }
-                else if (item.DiaSemana == 6)
-                {
-                    <p>Sábado</p>
-                }
-                else if (item.DiaSemana == 7)
-                {
-                    <p>Domingo</p>
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumAdminNavigation.NumAdminNavigation.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumProfessorNavigation.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
-            </td>
-            <td>
-                <a asp-action="EditAula" asp-route-id="@item.IdAula">Editar</a> |
-                <a asp-action="DeleteAula" asp-route-id="@item.IdAula">Eliminar</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValidoDe)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValidoAte)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lotacao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraInicio)
+                </td>
+                <td>
+                    @if (item.DiaSemana == 1)
+                    {
+                        <p>Segunda-feira</p>
+                    }
+                    else if (item.DiaSemana == 2)
+                    {
+                        <p>Terça-feira</p>
+                    }
+                    else if (item.DiaSemana == 3)
+                    {
+                        <p>Quarta-feira</p>
+                    }
+                    else if (item.DiaSemana == 4)
+                    {
+                        <p>Quinta-feira</p>
+                    }
+                    else if (item.DiaSemana == 5)
+                    {
+                        <p>Sexta-feira</p>
+                    }
+                    else if (item.DiaSemana == 6)
+                    {
+                        <p>Sábado</p>
+                    }
+                    else if (item.DiaSemana == 7)
+                    {
+                        <p>Domingo</p>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumAdminNavigation.NumAdminNavigation.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumProfessorNavigation.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                </td>
+                <td>
+                    <a asp-action="EditAula" asp-route-id="@item.IdAula">Editar</a> |
+                    <a asp-action="DeleteAula" asp-route-id="@item.IdAula">Eliminar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

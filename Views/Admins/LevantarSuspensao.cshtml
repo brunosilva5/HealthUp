@@ -2,7 +2,8 @@
 @model IEnumerable<HealthUp.Models.Pessoa>
 
 @{
-    ViewData["Title"] = "LevantarSuspensao";
+    ViewData["Title"] = "Levantar Suspensão";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
 <h1>Levantar uma suspensao</h1>
@@ -43,51 +44,51 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumCC)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sexo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fotografia)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataNascimento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telemovel)
-            </td>
-            @if (item.Socio != null)
-            {
+            <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Socio.DataSuspensao)
+                    @Html.DisplayFor(modelItem => item.NumCC)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Socio.Motivo)
-                </td>
-            }
-            @if (item.Professor != null)
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.Professor.DataSuspensao)
+                    @Html.DisplayFor(modelItem => item.Nome)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Professor.Motivo)
+                    @Html.DisplayFor(modelItem => item.Sexo)
                 </td>
-            }
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fotografia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataNascimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telemovel)
+                </td>
+                @if (item.Socio != null)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Socio.DataSuspensao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Socio.Motivo)
+                    </td>
+                }
+                @if (item.Professor != null)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Professor.DataSuspensao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Professor.Motivo)
+                    </td>
+                }
 
-            <td>
-                <a asp-action="LevantarSuspensao_Selecionado" asp-route-id="@item.NumCC">Levantar</a>
-            </td>
-        </tr>
+                <td>
+                    <a asp-action="LevantarSuspensao_Selecionado" asp-route-id="@item.NumCC">Levantar</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

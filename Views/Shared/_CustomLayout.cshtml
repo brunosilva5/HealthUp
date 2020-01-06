@@ -31,31 +31,78 @@
             <li><a asp-controller="Home" asp-action="Index">Treinar</a></li>
             <li><a asp-controller="Home" asp-action="Contactos">Contactos</a></li>
             <li>
-                <a asp-controller="Home" asp-action="Perfil">
-                    Perfil
-                    <i class="fa fa-chevron-down" style="font-size: .8em;"></i>
-                </a>
-                <ul>
-                    <li><a href="packages.html">Ver Perfil</a></li>
-                    <li><a href="schedule.html">Mensagens</a></li>
-                    <li><a asp-controller="Home" asp-action="MapaAulas">Mapa de aulas</a></li>
-                    <li><a href="packages.html">Plano de exercícios</a></li>
-                    <li><a href="packages.html">Histórico de peso</a></li>
-                    <li><a href="packages.html">Histórico de aulas</a></li>
-                    <li><a href="packages.html">Solicitar Personal Trainer</a></li>
-                    <li><a href="packages.html">Sair</a></li>
-                </ul>
+                @if (Context.Session.GetString("UserId") == null)
+                {
+                    <a asp-controller="Utilizadores" asp-action="Login">Entrar</a>
+                }
+
+                @if (Context.Session.GetString("Role") == "Socio")
+                {
+                    <a href="#">
+                        Perfil
+                        <i class="fa fa-chevron-down" style="font-size: .8em;"></i>
+                    </a>
+                    <ul>
+                        <li><a href="packages.html">Ver Perfil</a></li>
+                        <li><a href="schedule.html">Mensagens</a></li>
+                        <li><a asp-controller="Home" asp-action="MapaAulas">Mapa de aulas</a></li>
+                        <li><a href="packages.html">Plano de exercícios</a></li>
+                        <li><a href="packages.html">Histórico de peso</a></li>
+                        <li><a href="packages.html">Histórico de aulas</a></li>
+                        <li><a href="packages.html">Solicitar Personal Trainer</a></li>
+                        <li><a asp-controller="Utilizadores" asp-action="Logout">Sair</a></li>
+                    </ul>
+                }
+
+                @if (Context.Session.GetString("Role") == "Professor")
+                {
+                    <a href="#">
+                        Painel de professores
+                        <i class="fa fa-chevron-down" style="font-size: .8em;"></i>
+                    </a>
+                    <ul>
+                        <li><a href="Professores/RegistarPesoSocio">Registar peso de sócio</a></li>
+                        <li><a href="Professores/CriarPlanoExercicioSocio">Criar plano de exercício para sócio</a></li>
+                        <li><a href="Professores/ConsultarMapaAulas">Consultar mapa de aulas de grupo que leciono</a></li>
+                        <li><a href="Professores/ConsultarSociosInscritosAulas">Consultar sócios inscritos nas minhas aulas</a></li>
+                        <li><a href="Professores/ConsultarMeusAlunos">Consultar os meus alunos</a></li>
+                        <li><a href="Professores/LerArquivarMensagens">Ler/arquivar mensagens</a></li>
+                    </ul>
+                }
+
+                @if (Context.Session.GetString("Role") == "Admin")
+                {
+                    <a herf="#">
+                        Painel de gestão
+                        <i class="fa fa-chevron-down" style="font-size: .8em;"></i>
+                    </a>
+                    <ul>
+                        <li><a href="Admins/AprovarSocios">Aprovar pedidos de sócio pendentes</a></li>
+                        <li><a href="Admins/CriarAdminProf">Criar Administrador/Professor </a></li>
+                        <li><a href="Admins/AprovarPedidoProf">Aprovar pedidos de personal trainer</a></li>
+                        <li><a href="Admins/CriarExercicio">Criar exercício</a></li>
+                        <li><a href="Admins/SuspenderUtilizador">Suspender utilizador</a></li>
+                    </ul>
+                }
             </li>
-            <li class="phone-num"><i class="fa fa-phone"></i><span>253 123 123</span></li>
-        </ul>
+
+            <li>
+                @if (Context.Session.GetString("Role") == "Admin" || Context.Session.GetString("Role") == "Professor")
+                {
+                    <a asp-controller="Utilizadores" asp-action="Logout">Sair</a>
+                }
+            </li>
+
+                <li class="phone-num"><i class="fa fa-phone"></i><span>253 123 123</span></li>
+            </ul>
     </header>
 
     <div>
-        @RenderBody()
+        <partial name="_CookieConsentPartial" />
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
-
-
-
 
     <!-- Footer Section Begin -->
     <footer class="footer-section">

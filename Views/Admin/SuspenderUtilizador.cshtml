@@ -1,13 +1,19 @@
-﻿@model IEnumerable<HealthUp.Models.PedidoSocio>
+﻿@model IEnumerable<HealthUp.Models.Pessoa>
+
 @{
-    ViewData["Title"] = "AprovarSocios";
-    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    ViewData["Title"] = "SuspenderUtilizador";
 }
 
-<h1>Pedidos pendentes</h1>
+<h1>Suspender um Utilizador</h1>
+
+
+
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
@@ -30,13 +36,18 @@
                 @Html.DisplayNameFor(model => model.Nacionalidade)
             </th>
 
-            <th></th>
+            <th>
+                
+            </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nome)
                 </td>
@@ -58,16 +69,20 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Nacionalidade)
                 </td>
-
                 <td>
-                    <a asp-action="AprovarSocio" asp-route-id="@item.NumCC">Aprovar</a> |
-                    <a asp-action="RejeitarSocio" asp-route-id="@item.NumCC">Rejeitar</a>
+                    <a asp-action="SuspenderUtilizador_Selecionado" asp-route-id="@item.NumCC"
+                       data-ajax="true"
+                       data-ajax-method="GET"
+                       data-ajax-update="#target"
+                       data-ajax-mode="replace"
+                       >Suspender</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
+<div id="target"></div>
 
 <div>
     <a asp-action="Index">Voltar ao menu</a>
