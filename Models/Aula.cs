@@ -48,7 +48,6 @@ namespace HealthUp.Models
         [InverseProperty(nameof(AulaGrupo.Aula))]
         public virtual AulaGrupo AulaGrupoNavigation { get; set; }
 
-
         [InverseProperty("IdAulaNavigation")]
         public virtual ICollection<Inscreve> Inscreve { get; set; }
 

@@ -24,7 +24,6 @@ namespace HealthUp.Controllers
 
         #endregion
 
-
         #region Constructors
         public AdminsController(HealthUpContext context, IHostEnvironment e)
         {
@@ -177,7 +176,6 @@ namespace HealthUp.Controllers
         }
 
         #endregion
-
 
         #region CriarExercicio
 
@@ -346,7 +344,6 @@ namespace HealthUp.Controllers
             return RedirectToAction(nameof(Index), "Ginasios");
         }
         #endregion
-
 
         #region Aulas de Grupo
 
