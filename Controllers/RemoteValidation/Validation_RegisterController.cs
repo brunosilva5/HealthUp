@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -183,19 +184,22 @@ namespace HealthUp.Controllers
         {
             try
             {
+                CultureInfo ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+                ci.NumberFormat.CurrencyDecimalSeparator = ".";
+
                 string[] coordenadas = LocalizacaoGps.Split(',');
-                float latitude = float.Parse(coordenadas[0]);
-                float longitude = float.Parse(coordenadas[1]);
+                var latitude = double.Parse(coordenadas[0], NumberStyles.Any, ci);
+                var longitude = double.Parse(coordenadas[1], NumberStyles.Any, ci);
 
                 if (latitude <= 90 && latitude >= -90 && longitude <= 180 && longitude > -180)
                 {
                     return Json(true);
                 }
-                return Json(new string("As coordenadas não tem o formato correto é: latitude,longitude"));
+                return Json(new string("As coordenadas não tem o formato correto! (latitude,longitude)"));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return Json(new string("As coordenadas não tem o formato correto é: latitude,longitude"));
+                return Json(new string("As coordenadas não tem o formato correto! (latitude,longitude)"));
             }
 
 

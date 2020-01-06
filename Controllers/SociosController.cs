@@ -65,7 +65,7 @@ namespace HealthUp.Controllers
         public async Task<IActionResult> SolicitarPT(string ProfessorEscolhido)
         {
             var Prof = _context.Professores.SingleOrDefault(p => p.NumCC == ProfessorEscolhido);
-            var Socio = _context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
+            var Socio = _context.Socios.Include(s=>s.NumProfessorNavigation).SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
             SolicitacaoProfessor solicitacao = new SolicitacaoProfessor();
 
             if (_context.Socios.SingleOrDefault(s=>s.NumCC==HttpContext.Session.GetString("UserId")).ID_Solicitacao!=null)
@@ -182,6 +182,7 @@ namespace HealthUp.Controllers
             _context.Socios.Update(socio);
             _context.Professores.Update(prof);
 
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
         #endregion

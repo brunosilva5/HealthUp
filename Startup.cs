@@ -43,6 +43,7 @@ namespace HealthUp
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
                 options.Cookie.Name = "CookieSessao";
+                options.Cookie.IsEssential = true;
             });
         }
 
