@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HealthUp.Data;
 using HealthUp.Filters;
 using HealthUp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -65,7 +66,7 @@ namespace HealthUp.Controllers
         public async Task<IActionResult> SolicitarPT(string ProfessorEscolhido)
         {
             var Prof = _context.Professores.SingleOrDefault(p => p.NumCC == ProfessorEscolhido);
-            var Socio = _context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
+            var Socio = _context.Socios.Include(s=>s.NumProfessorNavigation).SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
             SolicitacaoProfessor solicitacao = new SolicitacaoProfessor();
 
             if (_context.Socios.SingleOrDefault(s=>s.NumCC==HttpContext.Session.GetString("UserId")).ID_Solicitacao!=null)
@@ -182,6 +183,7 @@ namespace HealthUp.Controllers
             _context.Socios.Update(socio);
             _context.Professores.Update(prof);
 
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
         #endregion
@@ -210,6 +212,46 @@ namespace HealthUp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(socio.PlanoTreino);
+
+        }
+        #endregion
+
+        #region Inscrever Aula
+
+        public IActionResult ListarAulas()
+        {
+            return View();
+        }
+
+        public IActionResult ListarAulasByData(DateTime data)
+        {
+            int dia = (int)data.DayOfWeek;
+            var lista = _context.Aulas.Include(x => x.AulaGrupoNavigation).Include(x=>x.Inscreve);
+            lista.Where(x => x.AulaGrupoNavigation.Aula.DiaSemana == dia && x.ValidoAte>data && x.ValidoDe<data );
+            ViewBag.Socio = _context.Socios.FirstOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId")).NumCC;
+            return PartialView(nameof(ListarAulasByData),lista.ToList());
+
+        }
+
+        public IActionResult Inscrever(int aula)
+        {
+            Inscreve i = new Inscreve();
+            i.IdAula = aula;
+            i.NumSocio = HttpContext.Session.GetString("UserId");
+            _context.Inscricoes.Add(i);
+            _context.SaveChanges();
+            return View(nameof(ListarAulas));
+
+        }
+
+        public IActionResult Desinscrever(int aula)
+        {
+            Inscreve i = new Inscreve();
+            i.IdAula = aula;
+            i.NumSocio = HttpContext.Session.GetString("UserId");
+            _context.Inscricoes.Remove(i);
+            _context.SaveChanges();
+            return View(nameof(ListarAulas));
 
         }
         #endregion

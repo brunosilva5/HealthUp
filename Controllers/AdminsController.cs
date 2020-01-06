@@ -24,7 +24,6 @@ namespace HealthUp.Controllers
 
         #endregion
 
-
         #region Constructors
         public AdminsController(HealthUpContext context, IHostEnvironment e)
         {
@@ -145,6 +144,16 @@ namespace HealthUp.Controllers
 
             // Atribuir o ID do admin a esta solicitacao
             solicitacao.NumAdmin = HttpContext.Session.GetString("UserId");
+            var socio=solicitacao.Socio.SingleOrDefault();
+            var prof = solicitacao.Professor.SingleOrDefault();
+
+            socio.NumProfessor = prof.NumCC;
+            socio.ID_Solicitacao = null;
+
+            prof.IdSolicitacao = null;
+            prof.Socio.Add(socio);
+            _context.Socios.Update(socio);
+            _context.Professores.Update(prof);
 
             // --------------------------------------------------------------------------------------------------------------------------------------
             // Adicionar na tabela de solicitacoes do admin
@@ -167,7 +176,6 @@ namespace HealthUp.Controllers
         }
 
         #endregion
-
 
         #region CriarExercicio
 
@@ -336,7 +344,6 @@ namespace HealthUp.Controllers
             return RedirectToAction(nameof(Index), "Ginasios");
         }
         #endregion
-
 
         #region Aulas de Grupo
 
@@ -520,12 +527,12 @@ namespace HealthUp.Controllers
 
         #endregion
 
-        #region Aulas
 
+        #region Aulas
         public async Task<IActionResult> ListAulas()
         {
 
-            var healthUpContext = _context.Aulas.Include(a => a.AulaGrupoNavigation).Include(a => a.NumAdminNavigation).Include(a => a.NumProfessorNavigation);
+            var healthUpContext = _context.Aulas.Include(a => a.AulaGrupoNavigation).Include(a => a.NumAdminNavigation).ThenInclude(a=>a.NumAdminNavigation).Include(a => a.NumProfessorNavigation).ThenInclude(p=>p.NumProfessorNavigation);
             return View(await healthUpContext.ToListAsync());
         }
 
@@ -548,9 +555,15 @@ namespace HealthUp.Controllers
                 string x = dados["IdAula"];
                 aula.AulaGrupoNavigation = _context.AulasGrupo.FirstOrDefault(x => x.IdAula == int.Parse(dados["IdAula"]));
                 aula.NumAdminNavigation = _context.Admins.FirstOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
-                string idP = dados["IdProfessor"];
-                aula.NumProfessorNavigation = _context.Professores.First(x => x.NumCC == idP);
+                string idP = 
+
+                // Guardar o id do admin que criou
+                aula.NumAdmin = HttpContext.Session.GetString("UserId");
+                // Guardar o professor associado a esta aula
+                aula.NumProfessor= dados["IdProfessor"];
+                // alterar
                 aula.DiaSemana = HelperFunctions.GetDay(dados["DiaSemana"]);
+
                 aula.HoraInicio = TimeSpan.Parse(dados["HoraInicio"]);
                 aula.Lotacao = int.Parse(dados["Lotacao"]);
                 aula.ValidoDe = DateTime.Parse(dados["ValidoDe"]);
@@ -678,7 +691,6 @@ namespace HealthUp.Controllers
         {
             return _context.Aulas.Any(e => e.IdAula == id);
         }
-
 
         #endregion
     }

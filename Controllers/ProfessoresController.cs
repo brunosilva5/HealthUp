@@ -18,19 +18,26 @@ namespace HealthUp.Controllers
     [MyRoleFilter(Perfil = "Professor")]
     public class ProfessoresController : Controller
     {
+        #region PrivateVariables
         private readonly HealthUpContext _context;
+        #endregion
 
+        #region Constructor
         public ProfessoresController(HealthUpContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Index
         // GET: Professores
         public IActionResult Index()
         {
             return View();
         }
+        #endregion
 
+        #region RegistarPesoSocio
         public IActionResult RegistarPesoSocio()
         {
             List<Socio> Lista = _context.Socios.Include(s => s.NumSocioNavigation).Where(s => s.DataSuspensao == null && s.Motivo == null).ToList();
@@ -85,5 +92,46 @@ namespace HealthUp.Controllers
 
             return View(socio);
         }
+        #endregion
+
+        #region ConsultarMeusAlunos
+        public IActionResult ConsultarMeusAlunos()
+        {
+            var x = _context.Pessoas.Include(x => x.Socio).Where(x => x.Socio.NumProfessor == HttpContext.Session.GetString("UserId"));
+            return View(_context.Pessoas.Include(x => x.Socio).Where(x => x.Socio.NumProfessor == HttpContext.Session.GetString("UserId")));
+        }
+        #endregion
+
+        #region ConsultarSociosInscritosAulas
+        public IActionResult ConsultarSociosInscritosAulas()
+        {
+            List<Aula> Lista = _context.Aulas.Include(a=>a.AulaGrupoNavigation).Where(a=>a.NumProfessor==HttpContext.Session.GetString("UserId")).ToList();
+
+            ViewBag.Aulas = Lista.Select(s => new SelectListItem()
+            {
+                Text = s.AulaGrupoNavigation.Nome,
+                Value = s.IdAula.ToString()
+            });
+
+            return View();
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConsultarSociosInscritosAulas(string AulaEscolhida)
+        {
+            List<Pessoa> ListaSocios = new List<Pessoa>();
+            foreach (var item in _context.Inscricoes.Include(i=>i.IdAulaNavigation))
+            {
+                if (item.IdAula==Convert.ToInt32(AulaEscolhida))
+                {
+                    var p = _context.Pessoas.SingleOrDefault(p => p.NumCC == item.NumSocio);
+                    ListaSocios.Add(p);
+                }
+            }
+            return PartialView("Partial_ConsultarSociosInscritosAulas", ListaSocios);
+
+        }
+        #endregion
     }
 }

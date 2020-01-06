@@ -42,15 +42,17 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        @if (item.DiaSemana == 1)
-                        {
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HoraInicio)
-                               
-                            </td>
-                        }
-                    </tr>
+                <tr>
+                    @if (item.DiaSemana == 1)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraInicio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                        </td>
+                    }
+                </tr>
                 }
             </tbody>
         </table>
@@ -69,15 +71,17 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        @if (item.DiaSemana == 2)
-                        {
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HoraInicio)
-                                
-                            </td>
-                        }
-                    </tr>
+                <tr>
+                    @if (item.DiaSemana == 2)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraInicio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                        </td>
+                    }
+                </tr>
                 }
             </tbody>
         </table>
@@ -96,15 +100,17 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        @if (item.DiaSemana == 3)
-                        {
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HoraInicio)
-                            
-                            </td>
-                        }
-                    </tr>
+                <tr>
+                    @if (item.DiaSemana == 3)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraInicio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                        </td>
+                    }
+                </tr>
                 }
             </tbody>
         </table>
@@ -123,15 +129,17 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        @if (item.DiaSemana == 4)
-                        {
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HoraInicio)
-                        
-                            </td>
-                        }
-                    </tr>
+                <tr>
+                    @if (item.DiaSemana == 4)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraInicio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                        </td>
+                    }
+                </tr>
                 }
             </tbody>
         </table>
@@ -150,15 +158,17 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        @if (item.DiaSemana == 5)
-                        {
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HoraInicio)
-
-                            </td>
-                        }
-                    </tr>
+                <tr>
+                    @if (item.DiaSemana == 5)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraInicio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                        </td>
+                    }
+                </tr>
                 }
             </tbody>
         </table>
@@ -177,15 +187,17 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        @if (item.DiaSemana == 6)
-                        {
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HoraInicio)
-                                
-                            </td>
-                        }
-                    </tr>
+                <tr>
+                    @if (item.DiaSemana == 6)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraInicio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                        </td>
+                    }
+                </tr>
                 }
             </tbody>
         </table>
@@ -204,15 +216,18 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        @if (item.DiaSemana == 7)
-                        {
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HoraInicio)
-                        
-                            </td>
-                        }
-                    </tr>
+                <tr>
+                    @if (item.DiaSemana == 7)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraInicio)
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                        </td>
+                    }
+                </tr>
                 }
             </tbody>
         </table>
