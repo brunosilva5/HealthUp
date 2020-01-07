@@ -14,19 +14,25 @@ namespace HealthUp.Models
         {
             Mensagem = new HashSet<Mensagem>();
         }
+        
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [StringLength(8, MinimumLength = 8, ErrorMessage = "Tem de possuir 8 caracteres!")]
         [Display(Name = "Número de cartão de cidadão")]
         public string NumCC { get; set; }
+
+        [Display(Name = "Número de administrador")]
         public string NumAdmin { get; set; }
+       
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(30)]
         public string Nome { get; set; }
+        
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(3)]
         public string Sexo { get; set; }
+        
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(100)]
         public string Fotografia { get; set; }
@@ -61,6 +67,8 @@ namespace HealthUp.Models
         [Remote("IsValidUserName", "Validation_Login", HttpMethod = "POST", ErrorMessage = "Este username não é válido!")]
 
         public string Username { get; set; }
+
+        [Display(Name = "Está notificado")]
         public bool IsNotified { get; set; } = false; // variavel auxiliar para a resposta do isvalid
 
         [StringLength(100)]
@@ -77,8 +85,10 @@ namespace HealthUp.Models
 
         [InverseProperty("NumProfessorNavigation")]
         public virtual Professor Professor { get; set; }
+        
         [InverseProperty("NumSocioNavigation")]
         public virtual Socio Socio { get; set; }
+        
         [InverseProperty("IdNavigation")]
         public virtual ICollection<Mensagem> Mensagem { get; set; }
 

@@ -11,23 +11,29 @@ namespace HealthUp.Models
     public partial class AulaGrupo
     {
         [Key]
+        [Display(Name = "Id da aula")]
         public int IdAula { get; set; }
-        [Required]
+        
+        [Required(ErrorMessage = "Este campo é obrigatório")]
         [StringLength(30)]
         [Display(Name = "Aula de Grupo")]
         public string Nome { get; set; }
-        [Required]
+        
+        [Required(ErrorMessage = "Este campo é obrigatório")]
         [StringLength(100)]
         [Remote("IsValidFotografiaDivulgacao", "Validation_Files", HttpMethod = "POST", ErrorMessage = "A fotografia tem de ser no formato .jpg")]
         [Display(Name = "Fotografia")]
         public string FotografiaDivulgacao { get; set; }
-        [Required]
+        
+        [Required(ErrorMessage = "Este campo é obrigatório")]
         [StringLength(100)]
         [Remote("IsValidVideoDivulgacao", "Validation_Files", HttpMethod = "POST", ErrorMessage = "O video tem de ser no formato .mp4")]
         [Display(Name = "Video")]
         public string VideoDivulgacao { get; set; }
-        [Required]
+        
+        [Required(ErrorMessage = "Este campo é obrigatório")]
         [StringLength(500)]
+        [Display(Name = "Descrição")]
         public string Descricao { get; set; }
 
         // 

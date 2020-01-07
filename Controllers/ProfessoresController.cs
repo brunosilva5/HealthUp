@@ -133,5 +133,12 @@ namespace HealthUp.Controllers
 
         }
         #endregion
+
+        #region CriarPlanoExercicioSocio
+        public IActionResult PlanosExercicioSocios()
+        {
+            return RedirectToAction("Index", "PlanoTreinos");
+        }
+        #endregion
     }
 }
