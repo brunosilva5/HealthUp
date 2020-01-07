@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "ListarAulas";
+}
+    <h1></h1>
+    <h1></h1>
+
+<form asp-action="ListarAulasByData"
+      data-ajax="true"
+      data-ajax-method="GET"
+      data-ajax-mode="replace"
+      data-ajax-update="#lista">
+    <label>Selecione o dia:</label>
+    <input type="date" name="data" min="2015-W1" max="2030-W1" required>
+    <input type="submit" value="Visualizar aulas" />
+</form>
+
+
+
+<div id="lista"></div>
+
