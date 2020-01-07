@@ -11,6 +11,7 @@ namespace HealthUp.Models
     public partial class AulaGrupo
     {
         [Key]
+        [Display(Name = "Id da aula")]
         public int IdAula { get; set; }
         
         [Required(ErrorMessage = "Este campo é obrigatório")]

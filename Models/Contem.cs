@@ -12,7 +12,10 @@ namespace HealthUp.Models
     {
         
         [Key]
+        [Display(Name = "Id do plano de treino")]
         public int IdPlano { get; set; }
+
+        [Display(Name = "Id do exercício")]
         public int IdExercicio { get; set; }
         
         [Display(Name ="Número de repetições")]
