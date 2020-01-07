@@ -12,6 +12,7 @@ body {
     margin: 0px;
     background: #ffffff;
     font-family: "PT Sans", sans-serif;
+    padding-bottom: 60px;
 }
 
 header{
@@ -36,9 +37,9 @@ header ul{
     list-style: none;
 }
 
-header ul li{
+header ul li {
     float: left;
-    position:relative;
+    position: relative;
     margin-right: 20px;
 }
 
@@ -47,7 +48,8 @@ header ul li ul{
     position:absolute;
     top: 69px;
     left:0px;
-    width: 150px;
+    /*width: 150px;*/
+    width: auto;
     display:none;
 }
 
@@ -63,7 +65,6 @@ header ul li ul li{
 header ul li ul li a{
     padding: 13px;
     background:#ffffff;
-
 }
 
 header ul li ul li a:hover {
@@ -114,6 +115,12 @@ header ul li.phone-num i {
     text-transform: uppercase;
 }
 
+.primary-btn:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    cursor: pointer;
+    text-decoration: none;
+    color: #ffffff;
+}
+
 .submit-btn {
     color: #ffffff;
     background: #82D026;
@@ -127,10 +134,31 @@ header ul li.phone-num i {
 
 
 
+/*-------------
+Titulos, etc
+-------------*/
+h1 {
+    font-size: 40px;
+    color: #82D026;
+    font-family: "PT Sans", sans-serif;
+    font-weight: 700;
+    position: relative;
+}
+h2 {
+    font-size: 32px;
+    color: #82D026;
+    font-family: "PT Sans", sans-serif;
+    font-weight: 700;
+    position: relative;
+}
 
-
-
-
+.labeltabela {
+    font-size: 20px;
+    color: #82D026; /*Cor igual à do cabeçalho*/
+    font-family: "PT Sans", sans-serif;
+    position: relative;
+    font-weight: bold;
+}
 
 
 
@@ -349,7 +377,6 @@ header ul li.phone-num i {
     line-height: 93%;
     font-weight: 700;
 }
-
 
 
 /*---------------------

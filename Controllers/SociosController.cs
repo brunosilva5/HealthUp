@@ -184,6 +184,9 @@ namespace HealthUp.Controllers
             _context.Professores.Update(prof);
 
             _context.SaveChanges();
+
+            HttpContext.Session.SetString("ExistePT", "Nao");
+
             return RedirectToAction(nameof(Index));
         }
         #endregion
@@ -209,7 +212,7 @@ namespace HealthUp.Controllers
             _context.Entry(socio).Collection(p => p.PlanoTreino).Load();
             if (socio.PlanoTreino.Any()==false)
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Home");
             }
             return View(socio.PlanoTreino);
 

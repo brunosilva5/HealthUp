@@ -1,48 +1,50 @@
 ﻿@model HealthUp.Models.Pessoa
 
 @{
-    ViewData["Title"] = "Consultar informação do meu personal trainer";
+    ViewData["Title"] = "Meu PT";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
-    <h1>O meu personal trainer</h1>
+    <div class="container">
+        <h1>O meu personal trainer</h1>
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
+        <div>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Nome)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Nome)
+                </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Professor.Especialidade)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Professor.Especialidade)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Fotografia)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Fotografia)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Telemovel)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Telemovel)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Index">Back to List</a> | 
-    <a asp-action="DeixarSerAluno" asp-route-NumProf="@Model.NumCC">Deixar de ser aluno</a> 
-</div>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Professor.Especialidade)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Professor.Especialidade)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Fotografia)
+                </dt>
+                <dd class="col-sm-10">
+                    <img src="~/Ficheiros/@Html.DisplayFor(model => model.Fotografia)" height="200" />
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Telemovel)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Telemovel)
+                </dd>
+            </dl>
+        </div>
+        <div>
+            <a asp-action="DeixarSerAluno" asp-route-NumProf="@Model.NumCC">Deixar de ser aluno</a>
+        </div>
+    </div>

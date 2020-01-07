@@ -1,74 +1,73 @@
 ﻿@model IEnumerable<HealthUp.Models.Pessoa>
 
 @{
-    ViewData["Title"] = "Os meus alunos";
+    ViewData["Title"] = "Consultar Alunos";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
-<h1>Os meus alunos</h1>
+<div class="container">
+    <h1>Minha lista de alunos</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sexo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Socio.Peso) Kg
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Socio.Altura) cm
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fotografia)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataNascimento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telemovel)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sexo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Socio.Peso)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Socio.Altura)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fotografia)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataNascimento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telemovel)
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sexo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Socio.Peso) Kg
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Socio.Altura) cm
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fotografia)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataNascimento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Telemovel)
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sexo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Socio.Peso)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Socio.Altura)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fotografia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataNascimento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telemovel)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>

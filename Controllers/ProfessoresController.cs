@@ -80,7 +80,7 @@ namespace HealthUp.Controllers
 
                 // --------------------------------------------------------------------------------------------------------------------------------------
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(RegistarPesoSocio));
             }
             List<Socio> Lista = _context.Socios.Include(s => s.NumSocioNavigation).Where(s => s.DataSuspensao == null && s.Motivo == null).ToList();
 

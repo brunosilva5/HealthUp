@@ -3,16 +3,10 @@
     var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.DimensionOne).ToList());
     var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Quantity).ToList());
     ViewData["Title"] = "Histórico de Peso";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Line</title>
-</head>
-<body>
+<div class="container">
     <h1>O meu histórico de peso</h1>
 
     <div class="box-body">
@@ -22,12 +16,9 @@
         </div>
     </div>
 
-    <a class="btn btn-outline-primary" asp-action="HistoricoPesoParaExcel">Exportar para Excel</a>
-</body>
-</html>
+    <a class="primary-btn" asp-action="HistoricoPesoParaExcel">Exportar para Excel</a>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 
 <script type="text/javascript">
@@ -40,7 +31,7 @@
                 datasets: [{
                     label: "Kg",
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(163, 247, 67, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
                         'rgba(255, 206, 86, 0.2)',
                         'rgba(75, 192, 192, 0.2)',
@@ -54,12 +45,12 @@
                         'rgba(255, 0, 255)'
                     ],
                     borderColor: [
-                        'rgba(255,99,132,1)',
+                        'rgba(163,247,67,1)',
                         'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
+                        'rgba(163, 247, 67, 1)',
                         'rgba(75, 192, 192, 1)',
                         'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
+                        'rgba(163, 247, 67, 1)',
                         'rgba(255, 0, 0)',
                         'rgba(0, 255, 0)',
                         'rgba(0, 0, 255)',
@@ -67,7 +58,7 @@
                         'rgba(255, 255, 0)',
                         'rgba(255, 0, 255)'
                     ],
-                    borderWidth: 1,
+                    borderWidth: 3,
                     data: @Html.Raw(YValues)
     }]
             };
@@ -82,7 +73,7 @@ var options = {
                         },
                         gridLines: {
                             display: true,
-                            color: "rgba(255,99,164,0.2)"
+                            color: "rgba(163, 247, 67, 0.4)"
                         }
 }],
                     xAxes: [{
@@ -104,8 +95,4 @@ var options = {
 
             });
         });
-</script> 
-
-<div>
-    <a asp-action="Index">Voltar ao menu</a>
-</div>
+</script>

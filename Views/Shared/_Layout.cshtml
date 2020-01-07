@@ -51,7 +51,6 @@
             <a asp-controller="Home" asp-action="Privacy">Privacy</a>
             <a asp-controller="Utilizadores" asp-action="PlanoSemanal">Plano semanal de aulas</a>
 
-
             @if (Context.Session.GetString("Role") == "Admin")
             {
                 <a asp-controller="Admins" asp-action="Index">Painel de gestão</a>

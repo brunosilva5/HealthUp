@@ -5,62 +5,60 @@
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
+<div class="container">
 
-<h1>Lista de solicitações de professores</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Data)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Professor.FirstOrDefault().NumProfessorNavigation.Nome) do Professor
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Professor.FirstOrDefault().NumCC) do Professor
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Socio.FirstOrDefault().NumSocioNavigation.Nome) do Sócio
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Socio.FirstOrDefault().NumCC) do Sócio
-            </th>
-
-            <th></th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var item in Model)
-        {
-
+    <h1>Lista de solicitações de professores</h1>
+    <table class="table">
+        <thead>
             <tr>
                 <th>
-                    @Html.DisplayFor(modelItem => item.Data)
+                    @Html.DisplayNameFor(model => model.Data)
                 </th>
-                <td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Professor.FirstOrDefault().NumProfessorNavigation.Nome) do Professor
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Professor.FirstOrDefault().NumCC) do Professor
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Socio.FirstOrDefault().NumSocioNavigation.Nome) do Sócio
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Socio.FirstOrDefault().NumCC) do Sócio
+                </th>
 
-                    @Html.DisplayFor(modelItem => item.Professor.ElementAt<Professor>(item.Professor.SkipWhile(p => p.IdSolicitacaoNavigation.IdSolicitacao != item.IdSolicitacao).Count() - 1).NumProfessorNavigation.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Professor.ElementAt<Professor>(item.Professor.SkipWhile(p => p.IdSolicitacaoNavigation.IdSolicitacao != item.IdSolicitacao).Count() - 1).NumCC)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Socio.ElementAt<Socio>(item.Socio.SkipWhile(p => p.IdSolicitacaoNavigation.IdSolicitacao != item.IdSolicitacao).Count() - 1).NumSocioNavigation.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Socio.ElementAt<Socio>(item.Socio.SkipWhile(p => p.IdSolicitacaoNavigation.IdSolicitacao != item.IdSolicitacao).Count() - 1).NumCC)
-                </td>
-                <td>
-                    <a asp-action="PedidoProf_Aprovado" asp-route-id="@item.IdSolicitacao">Aprovar</a> |
-                    <a asp-action="PedidoProf_Rejeitado" asp-route-id="@item.IdSolicitacao">Rejeitar</a>
-                </td>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
 
+        <tbody>
+            @foreach (var item in Model)
+            {
 
-<div>
-    <a asp-action="Index">Voltar ao menu</a>
+                <tr>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.Data)
+                    </th>
+                    <td>
+
+                        @Html.DisplayFor(modelItem => item.Professor.ElementAt<Professor>(item.Professor.SkipWhile(p => p.IdSolicitacaoNavigation.IdSolicitacao != item.IdSolicitacao).Count() - 1).NumProfessorNavigation.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Professor.ElementAt<Professor>(item.Professor.SkipWhile(p => p.IdSolicitacaoNavigation.IdSolicitacao != item.IdSolicitacao).Count() - 1).NumCC)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Socio.ElementAt<Socio>(item.Socio.SkipWhile(p => p.IdSolicitacaoNavigation.IdSolicitacao != item.IdSolicitacao).Count() - 1).NumSocioNavigation.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Socio.ElementAt<Socio>(item.Socio.SkipWhile(p => p.IdSolicitacaoNavigation.IdSolicitacao != item.IdSolicitacao).Count() - 1).NumCC)
+                    </td>
+                    <td>
+                        <a asp-action="PedidoProf_Aprovado" asp-route-id="@item.IdSolicitacao">Aprovar</a> |
+                        <a asp-action="PedidoProf_Rejeitado" asp-route-id="@item.IdSolicitacao">Rejeitar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
 </div>

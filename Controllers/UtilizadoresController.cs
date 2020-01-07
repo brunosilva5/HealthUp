@@ -103,6 +103,15 @@ namespace HealthUp.Controllers
                 if (p.Socio != null)
                 {
                     HttpContext.Session.SetString("Role", "Socio");
+
+                    if (p.Socio.NumProfessor != null)
+                    {
+                        HttpContext.Session.SetString("ExistePT", "Sim");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("ExistePT", "Nao");
+                    }
                 }
                 if (p.Professor != null)
                 {
