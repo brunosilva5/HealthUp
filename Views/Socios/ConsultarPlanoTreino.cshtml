@@ -13,29 +13,33 @@
     {
        <p>Plano de treino atual:</p>
     
-        <div>
-            <p>Descrição do plano:</p>
-            @item.Descricao
-            <br />
-            <p>Exercícios:</p>
-    
-            @foreach (var exercicio in item.Contem)
-            {
-                <span>
-                    -Nome: @exercicio.IdExercicioNavigation.Nome
-                    <br />
-                    -Descrição: @exercicio.IdExercicioNavigation.Descricao
-                    <br />
-                    -Número de repetições: @exercicio.NumRepeticoes
-                    <br />
-                    -Tempo de descanso: @exercicio.PeriodoDescanso segundos
-                    <br />
-                    -Quantidade de séries: @exercicio.QuantidadeSeries
-                    <br />
-                </span>
-            }
-            -Atribuído por: @item.NumProfessorNavigation.NumProfessorNavigation.Nome
+       <div>
+           <p>-Descrição do plano:</p>
+           @item.Descricao
+           <br />
+           @if (item.Contem != null)
+           {
+               <p>Exercícios:</p>
 
-        </div>
+               @foreach (var exercicio in item.Contem)
+               {
+                   <span>
+                       -Nome: @exercicio.IdExercicioNavigation.Nome
+                       <br />
+                       -Descrição: @exercicio.IdExercicioNavigation.Descricao
+                       <br />
+                       -Número de repetições: @exercicio.NumRepeticoes
+                       <br />
+                       -Tempo de descanso: @exercicio.PeriodoDescanso segundos
+                       <br />
+                       -Quantidade de séries: @exercicio.QuantidadeSeries
+                       <br />
+                   </span>
+               }
+           }
+
+            <p>-Atribuído por: @item.NumProfessorNavigation.NumProfessorNavigation.Nome</p>
+
+       </div>
     }
 }

@@ -1,0 +1,46 @@
+﻿@model HealthUp.Models.PlanoTreino
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>PlanoTreino</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdPlano" />
+            <div class="form-group">
+                <label asp-for="NumSocio" class="control-label"></label>
+                <select asp-for="NumSocio" class="form-control" asp-items="ViewBag.NumSocio"></select>
+                <span asp-validation-for="NumSocio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumProfessor" class="control-label"></label>
+                <select asp-for="NumProfessor" class="form-control" asp-items="ViewBag.NumProfessor"></select>
+                <span asp-validation-for="NumProfessor" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Ativo" /> @Html.DisplayNameFor(model => model.Ativo)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

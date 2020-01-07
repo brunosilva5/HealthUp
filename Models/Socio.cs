@@ -77,5 +77,13 @@ namespace HealthUp.Models
             }
             return ListaPesos;
         }
+
+        public void TornarPlanosInativos()
+        {
+            foreach (var item in PlanoTreino)
+            {
+                item.Ativo = false;
+            }
+        }
     }
 }

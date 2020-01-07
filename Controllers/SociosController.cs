@@ -199,18 +199,17 @@ namespace HealthUp.Controllers
         #endregion
 
         #region ConsultarPlanoTreino
-#warning "CODIGO AINDA NAO TESTADO"
+#warning "BRUNO POE ISTO BONITO"
 
         public IActionResult ConsultarPlanoTreino()
         {
-            var socio = _context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
+            var planos=_context.PlanosTreino.Include(p=>p.Contem).ThenInclude(cp=>cp.IdExercicioNavigation).Include(p=>p.NumProfessorNavigation).ThenInclude(p=>p.NumProfessorNavigation).Include(p=>p.NumSocioNavigation).ThenInclude(p=>p.NumSocioNavigation).Where(p => p.NumSocio == HttpContext.Session.GetString("UserId"));
             // load de todas as properties usadas por esta collection
-            _context.Entry(socio).Collection(p => p.PlanoTreino).Load();
-            if (socio.PlanoTreino.Any()==false)
+            if (planos.Any()==false)
             {
                 return RedirectToAction(nameof(Index));
             }
-            return View(socio.PlanoTreino);
+            return View(planos);
 
         }
         #endregion

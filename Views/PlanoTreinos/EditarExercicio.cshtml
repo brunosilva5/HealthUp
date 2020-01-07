@@ -1,0 +1,41 @@
+﻿@model HealthUp.Models.Contem
+
+@{
+    ViewData["Title"] = "Editar exercício";
+}
+
+<h1>Editar exercício</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditarExercicio">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdPlano" />
+            <input type="hidden" asp-for="IdExercicio" />
+            <div class="form-group">
+                <label asp-for="NumRepeticoes" class="control-label"></label>
+                <input asp-for="NumRepeticoes" class="form-control" />
+                <span asp-validation-for="NumRepeticoes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PeriodoDescanso" class="control-label"></label>
+                <input asp-for="PeriodoDescanso" class="form-control" />
+                <span asp-validation-for="PeriodoDescanso" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuantidadeSeries" class="control-label"></label>
+                <input asp-for="QuantidadeSeries" class="form-control" />
+                <span asp-validation-for="QuantidadeSeries" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Guardar alterações" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="VerExerciciosSocio" asp-route-IdPlano="@Model.IdPlano">Voltar</a>
+</div>
+

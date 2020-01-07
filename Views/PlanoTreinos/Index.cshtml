@@ -1,0 +1,24 @@
+﻿@model IEnumerable<HealthUp.Models.PlanoTreino>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h1>Planos de treino</h1>
+<br />
+<a asp-action="Create">Criar novo plano para o sócio</a>
+<br />
+<form asp-action="Index_Filtered" data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-update="#target"
+      data-ajax-mode="replace">
+
+    <select name="SocioEscolhido" class="form-control" style="width:auto" asp-items="@ViewBag.Socios"></select>
+    <input type="submit" value="Ver planos de treino" class="btn btn-primary" />
+</form>
+
+
+<div id="target">
+
+</div>

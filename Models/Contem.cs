@@ -14,8 +14,14 @@ namespace HealthUp.Models
         [Key]
         public int IdPlano { get; set; }
         public int IdExercicio { get; set; }
+        [Display(Name ="Número de repetições")]
+        [Range(0, Int32.MaxValue)]
         public int NumRepeticoes { get; set; }
+        [Display(Name = "Período de descanso")]
+        [Range(0, Int32.MaxValue)]
         public int PeriodoDescanso { get; set; }
+        [Display(Name = "Quantidade de séries")]
+        [Range(0,Int32.MaxValue)]
         public int QuantidadeSeries { get; set; }
 
         [ForeignKey(nameof(IdExercicio))]
