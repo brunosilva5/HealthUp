@@ -105,11 +105,11 @@ namespace HealthUp.Controllers
         #region ConsultarSociosInscritosAulas
         public IActionResult ConsultarSociosInscritosAulas()
         {
-            List<Aula> Lista = _context.Aulas.Include(a=>a.AulaGrupoNavigation).Where(a=>a.NumProfessor==HttpContext.Session.GetString("UserId")).ToList();
+            List<Aula> Lista = _context.Aulas.Where(a=>a.NumProfessor==HttpContext.Session.GetString("UserId")).ToList();
 
             ViewBag.Aulas = Lista.Select(s => new SelectListItem()
             {
-                Text = s.AulaGrupoNavigation.Nome,
+               
                 Value = s.IdAula.ToString()
             });
 

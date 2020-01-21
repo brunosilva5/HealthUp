@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20200107014232_FirstCreate")]
-    partial class FirstCreate
+    [Migration("20200120183008_RemoveAulaGrupo")]
+    partial class RemoveAulaGrupo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,16 +35,33 @@ namespace HealthUp.Migrations
             modelBuilder.Entity("HealthUp.Models.Aula", b =>
                 {
                     b.Property<int>("IdAula")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
 
                     b.Property<int>("DiaSemana")
                         .HasColumnType("int");
+
+                    b.Property<string>("FotografiaDivulgacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<TimeSpan>("HoraInicio")
                         .HasColumnType("time");
 
                     b.Property<int>("Lotacao")
                         .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("NumAdmin")
                         .IsRequired()
@@ -60,37 +77,6 @@ namespace HealthUp.Migrations
                     b.Property<DateTime>("ValidoDe")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("IdAula");
-
-                    b.HasIndex("NumAdmin");
-
-                    b.HasIndex("NumProfessor");
-
-                    b.ToTable("Aulas");
-                });
-
-            modelBuilder.Entity("HealthUp.Models.AulaGrupo", b =>
-                {
-                    b.Property<int>("IdAula")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("FotografiaDivulgacao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
                     b.Property<string>("VideoDivulgacao")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
@@ -98,7 +84,11 @@ namespace HealthUp.Migrations
 
                     b.HasKey("IdAula");
 
-                    b.ToTable("AulasGrupo");
+                    b.HasIndex("NumAdmin");
+
+                    b.HasIndex("NumProfessor");
+
+                    b.ToTable("Aulas");
                 });
 
             modelBuilder.Entity("HealthUp.Models.Contem", b =>
@@ -505,12 +495,6 @@ namespace HealthUp.Migrations
 
             modelBuilder.Entity("HealthUp.Models.Aula", b =>
                 {
-                    b.HasOne("HealthUp.Models.AulaGrupo", "AulaGrupoNavigation")
-                        .WithOne("Aula")
-                        .HasForeignKey("HealthUp.Models.Aula", "IdAula")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HealthUp.Models.Admin", "NumAdminNavigation")
                         .WithMany("Aula")
                         .HasForeignKey("NumAdmin")

@@ -141,7 +141,7 @@ namespace HealthUp.Controllers
             ViewBag.Segunda = segunda.ToShortDateString();
             ViewBag.Domingo = domingo.ToShortDateString();
             var lista = _context.Aulas.Where(x => x.ValidoAte >= domingo && x.ValidoDe <= segunda);//limitar a uma certa semana
-            lista = lista.Include(x => x.AulaGrupoNavigation);// limitar às aulas de grupo
+            
 
             
             return PartialView(nameof(PartialPlanoSemanal),lista.ToList());

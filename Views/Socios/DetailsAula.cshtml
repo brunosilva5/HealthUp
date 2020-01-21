@@ -1,13 +1,7 @@
 ﻿@model HealthUp.Models.Aula
 
-@{
-    ViewData["Title"] = "DeleteAula";
-}
-
-<h1>Aula</h1>
-
-<h3>Tens a certeza que pretendes eliminar esta aula?</h3>
 <div>
+    <h4>Aula</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -109,10 +103,8 @@
             @Html.DisplayFor(model => model.Descricao)
         </dd>
     </dl>
-
-    <form asp-action="DeleteAula">
-        <input type="hidden" asp-for="IdAula" />
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-action="ListAulas">Back to List</a>
-    </form>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.IdAula">Edit</a> |
+    <a asp-action="Index">Back to List</a>
 </div>
