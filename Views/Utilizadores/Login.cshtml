@@ -12,16 +12,17 @@
         <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" type="password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+
+
             <div class="form-group">
                 <label asp-for="Username" class="control-label"></label>
                 <input id="Username" asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <span class="field-validation-error"><span id="ssn-message" style="display:none">Este é o seu primeiro login! Defina a sua password na caixa abaixo!</span></span>
 
@@ -56,4 +57,3 @@ $('#Username').change(function() {
 
 }
 
-Z
