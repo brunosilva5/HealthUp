@@ -189,13 +189,22 @@ namespace HealthUp.Controllers
         #endregion
 
         #region HistoricoAulas
-#warning "CODIGO AINDA NAO TESTADO"
         public IActionResult HistoricoAulas()
         {
-            var socio=_context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
-            // load de todas as properties usadas por esta collection
-            _context.Entry(socio).Collection(p => p.Inscreve).Load();
-            return View(socio.Inscreve);
+            var incricoes = _context.Inscricoes.Where(x => x.NumSocio == HttpContext.Session.GetString("UserId"));
+            List<Aula> Lista = new List<Aula>();
+            foreach (var item in incricoes)
+            {
+                Lista.Add(_context.Aulas.Include(x=>x.NumAdminNavigation).Include(x=>x.NumProfessorNavigation).FirstOrDefault(x => x.IdAula == item.IdAula));
+            }
+            return View(Lista);
+        }
+        public IActionResult DetailsAula(int id)
+        {
+            Aula a = _context.Aulas.Include(x => x.NumProfessorNavigation).Include(x => x.NumAdminNavigation).FirstOrDefault(x => x.IdAula == id);
+            ViewBag.Admin = _context.Pessoas.First(x => x.NumCC == a.NumAdmin).Nome;
+            ViewBag.Professor = _context.Pessoas.First(x => x.NumCC == a.NumProfessor).Nome;
+            return View(a);
         }
         #endregion
 
@@ -222,7 +231,7 @@ namespace HealthUp.Controllers
             List<Aula> listaAulas = new List<Aula>();
             DateTime data = DateTime.Now;
             int dia = (int)data.DayOfWeek;
-            var lista = _context.Aulas.Include(x => x.AulaGrupoNavigation).Include(x => x.Inscreve).Where(x => x.DiaSemana == dia && x.ValidoAte > data && x.ValidoDe < data);
+            var lista = _context.Aulas.Include(x => x.Inscreve).Where(x => x.DiaSemana == dia && x.ValidoAte > data && x.ValidoDe < data);
  
 
             foreach (var item in lista)

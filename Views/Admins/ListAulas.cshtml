@@ -13,6 +13,12 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FotografiaDivulgacao)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ValidoDe)
             </th>
             <th>
@@ -31,10 +37,7 @@
                 Administrador
             </th>
             <th>
-              Professor
-            </th>
-            <th>
-                Aula
+                Professor
             </th>
             <th></th>
         </tr>
@@ -42,6 +45,12 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" height="200" />
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ValidoDe)
             </td>
@@ -52,7 +61,7 @@
                 @Html.DisplayFor(modelItem => item.Lotacao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HoraInicio)
+                @Html.DisplayFor(modelItem => item.HoraInicio.Hours):@Html.DisplayFor(modelItem => item.HoraInicio.Minutes)
             </td>
             <td>
                 @if (item.DiaSemana == 1)
@@ -90,10 +99,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumProfessorNavigation.Nome)
             </td>
+           
             <td>
-                @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
-            </td>
-            <td>
+                <a asp-action="DetailsAula" asp-route-id="@item.IdAula">Detalhes</a>
                 <a asp-action="EditAula" asp-route-id="@item.IdAula">Editar</a> |
                 <a asp-action="DeleteAula" asp-route-id="@item.IdAula">Eliminar</a>
             </td>
