@@ -103,7 +103,9 @@ namespace HealthUp.Controllers
 
         #endregion
 
-        #region CriarSociosProfessores
+
+#warning estamos com excessoes na criaçao de admins e professores
+        #region CriarAdminProfessores
         public IActionResult CriarAdminProf()
         {
             return View(_context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).Where(p => p.Socio != null).ToList());

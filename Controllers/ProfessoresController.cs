@@ -100,6 +100,17 @@ namespace HealthUp.Controllers
             var x = _context.Pessoas.Include(x => x.Socio).Where(x => x.Socio.NumProfessor == HttpContext.Session.GetString("UserId"));
             return View(_context.Pessoas.Include(x => x.Socio).Where(x => x.Socio.NumProfessor == HttpContext.Session.GetString("UserId")));
         }
+
+        public IActionResult HistoricoAulas(int id)
+        {
+            var incricoes = _context.Inscricoes.Where(x => x.NumSocio == id.ToString());
+            List<Aula> Lista = new List<Aula>();
+            foreach (var item in incricoes)
+            {
+                Lista.Add(_context.Aulas.Include(x => x.NumAdminNavigation).Include(x => x.NumProfessorNavigation).FirstOrDefault(x => x.IdAula == item.IdAula));
+            }
+            return View(Lista);
+        }
         #endregion
 
         #region ConsultarSociosInscritosAulas
@@ -139,6 +150,40 @@ namespace HealthUp.Controllers
         {
             return RedirectToAction("Index", "PlanoTreinos");
         }
+        #endregion
+
+        #region Consultar aulas que leciona
+
+        public IActionResult ConsultarAulasQueLeciona()
+        {
+            var lista = _context.Aulas.Where(x => x.NumProfessor == HttpContext.Session.GetString("UserId"))
+                .Where(y => y.ValidoAte > DateTime.Now && y.ValidoDe < DateTime.Now);
+            return View(lista);
+        }
+
+        #endregion
+
+
+
+        #region Consulta lista de alunos inscritos nas suas aulas
+        public IActionResult ListAulas()
+        {
+            var lista = _context.Aulas.Where(x => x.NumProfessor == HttpContext.Session.GetString("UserId"));
+            return View(lista);
+        }
+
+        public IActionResult ListSocios(int id)
+        {
+            var lista = _context.Inscricoes.Where(x => x.IdAula == id);
+            List<Socio> socios = new List<Socio>();
+
+            foreach (var item in lista)
+            {
+                socios.Add(_context.Socios.Include(x=>x.NumSocioNavigation).First(x => x.NumCC == item.NumSocio));
+            }
+            return View(socios);
+        }
+
         #endregion
     }
 }
