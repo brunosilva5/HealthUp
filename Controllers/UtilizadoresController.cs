@@ -149,5 +149,29 @@ namespace HealthUp.Controllers
 
 
         #endregion
+
+        //public JsonResult IsNewUser(string Username)
+        //{
+        //    var pessoa = _context.Pessoas.SingleOrDefault(p => p.Username == Username);
+
+        //    // your logic
+        //    if (pessoa!=null && pessoa.Username==null)
+        //    {
+        //        return Json(true, "Este username ainda não tem uma password definida! Defina-a no campo abaixo!");
+
+        //    }
+        //    if (pessoa == null)
+        //    {
+        //        return Json(true, "");
+
+        //    }
+        //    if (pessoa != null && pessoa.Username != null)
+        //    {
+        //        return Json(true);
+        //    }
+        //}
+
     }
+
+
 }
