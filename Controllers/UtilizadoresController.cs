@@ -38,11 +38,6 @@ namespace HealthUp.Controllers
             var nome = HelperFunctions.NormalizeWhiteSpace(data["Nome"]);
 
 
-            //if (!HelperFunctions.HelperFunctions.IsJustNumbers(telemovel))
-            //{
-            //    ModelState.AddModelError("Telemovel", "O campo telemóvel não está correto");
-            //}
-
             if (ModelState.IsValid)
             {
                 PedidoSocio p = new PedidoSocio()
@@ -51,7 +46,7 @@ namespace HealthUp.Controllers
                     Email = data["Email"],
                     Fotografia = data["Fotografia"],
                     Nacionalidade = data["Nacionalidade"],
-                    Nome = data["Nome"],
+                    Nome = nome,
                     Sexo = data["sexo"],
                     Username = data["Username"],
                     Telemovel = new string("+" + indicativo + telemovel),

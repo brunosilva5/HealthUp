@@ -78,7 +78,7 @@ namespace HealthUp.Models
         // -----------------------------------------------------------------------------------------
 
         [InverseProperty("NumProfessorNavigation")]
-        public virtual ICollection<Aula>? Aula { get; set; }
+        public virtual ICollection<Aula> Aula { get; set; }
 
         [InverseProperty("NumProfessorNavigation")]
         public virtual ICollection<PlanoTreino> PlanoTreino { get; set; }
@@ -91,11 +91,13 @@ namespace HealthUp.Models
         [Display(Name = "Registo dos pesos")]
         public string RegistoPesos { get; set; }
 
-#warning isto não está a funcionar
         public List<SimpleReportViewModel> GetRegistoPesosSocio(string idSocio)
         {
             List<SimpleReportViewModel> ListaPesagens = new List<SimpleReportViewModel>();
-            
+            if (ListaPesagens.Count==0)
+            {
+                return ListaPesagens;
+            }
             var RegistosSocio = HelperFunctions.JSONDeserialize(RegistoPesos);
 
             string data=RegistosSocio.Get(idSocio);

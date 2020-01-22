@@ -313,9 +313,6 @@ namespace HealthUp.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<bool>("IsNotified")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Nacionalidade")
                         .IsRequired()
                         .HasColumnType("nvarchar(20)")

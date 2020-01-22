@@ -250,9 +250,11 @@ namespace HealthUp.Controllers
 
         public IActionResult Inscrever(int aula)
         {
-            Inscreve i = new Inscreve();
-            i.IdAula = aula;
-            i.NumSocio = HttpContext.Session.GetString("UserId");
+            Inscreve i = new Inscreve
+            {
+                IdAula = aula,
+                NumSocio = HttpContext.Session.GetString("UserId")
+            };
             _context.Inscricoes.Add(i);
             _context.SaveChanges();
             return  RedirectToAction(nameof(ListarAulas));
@@ -261,9 +263,11 @@ namespace HealthUp.Controllers
 
         public IActionResult Desinscrever(int aula)
         {
-            Inscreve i = new Inscreve();
-            i.IdAula = aula;
-            i.NumSocio = HttpContext.Session.GetString("UserId");
+            Inscreve i = new Inscreve
+            {
+                IdAula = aula,
+                NumSocio = HttpContext.Session.GetString("UserId")
+            };
             _context.Inscricoes.Remove(i);
             _context.SaveChanges();
             return RedirectToAction(nameof(ListarAulas));

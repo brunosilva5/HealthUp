@@ -48,17 +48,19 @@ namespace HealthUp.Controllers
         public IActionResult AprovarSocio(int id)
         {
             var pedido = _context.PedidosSocios.FirstOrDefault(p => p.NumCC == id.ToString());
-            Pessoa P = new Pessoa();
-            P.DataNascimento = pedido.DataNascimento;
-            P.NumCC = pedido.NumCC;
-            P.Email = pedido.Email;
-            P.Fotografia = pedido.Fotografia;
-            P.Sexo = pedido.Sexo;
-            P.Username = pedido.Username;
-            P.Nome = pedido.Nome;
-            P.Nacionalidade = pedido.Nacionalidade;
-            P.NumAdmin = (HttpContext.Session.GetString("UserId"));
-            P.Telemovel = pedido.Telemovel;
+            Pessoa P = new Pessoa
+            {
+                DataNascimento = pedido.DataNascimento,
+                NumCC = pedido.NumCC,
+                Email = pedido.Email,
+                Fotografia = pedido.Fotografia,
+                Sexo = pedido.Sexo,
+                Username = pedido.Username,
+                Nome = pedido.Nome,
+                Nacionalidade = pedido.Nacionalidade,
+                NumAdmin = (HttpContext.Session.GetString("UserId")),
+                Telemovel = pedido.Telemovel
+            };
             Socio S = new Socio()
             {
                 NumCC = P.NumCC,
@@ -125,8 +127,10 @@ namespace HealthUp.Controllers
         public IActionResult CriarProfessor(string id)
         {
             Pessoa p = _context.Pessoas.FirstOrDefault(p => p.NumCC == id);
-            Professor prof = new Professor(p);
-            prof.Especialidade = "Indefinido";
+            Professor prof = new Professor(p)
+            {
+                Especialidade = "Indefinido"
+            };
             _context.Professores.Add(prof);
             Socio s = _context.Socios.FirstOrDefault(p => p.NumCC == id.ToString());
             _context.Remove(s);
@@ -194,11 +198,13 @@ namespace HealthUp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CriarExercicio(string Nome, string Descricao, IFormFile Fotografia, IFormFile Video)
         {
-            Exercicio exercicio = new Exercicio();
-            exercicio.Nome = Nome;
-            exercicio.Descricao = Descricao;
-            exercicio.Fotografia = Fotografia.FileName;
-            exercicio.Video = Video.FileName;
+            Exercicio exercicio = new Exercicio
+            {
+                Nome = Nome,
+                Descricao = Descricao,
+                Fotografia = Fotografia.FileName,
+                Video = Video.FileName
+            };
 
             if (ModelState.IsValid)
             {
@@ -377,21 +383,23 @@ namespace HealthUp.Controllers
 
             if (ModelState.IsValid)
             {
-            
 
-                Aula aula = new Aula();
-                aula.NumAdminNavigation = _context.Admins.FirstOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
 
-                // Guardar o id do admin que criou
-                aula.NumAdmin = HttpContext.Session.GetString("UserId");
-                // Guardar o professor associado a esta aula
-                aula.NumProfessor= dados["IdProfessor"];
-                // alterar
-                aula.DiaSemana = HelperFunctions.GetDay(dados["DiaSemana"]);
+                Aula aula = new Aula
+                {
+                    NumAdminNavigation = _context.Admins.FirstOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId")),
 
-                aula.HoraInicio = TimeSpan.Parse(dados["HoraInicio"]);
-                aula.Lotacao = int.Parse(dados["Lotacao"]);
-                aula.ValidoDe = DateTime.Parse(dados["ValidoDe"]);
+                    // Guardar o id do admin que criou
+                    NumAdmin = HttpContext.Session.GetString("UserId"),
+                    // Guardar o professor associado a esta aula
+                    NumProfessor = dados["IdProfessor"],
+                    // alterar
+                    DiaSemana = HelperFunctions.GetDay(dados["DiaSemana"]),
+
+                    HoraInicio = TimeSpan.Parse(dados["HoraInicio"]),
+                    Lotacao = int.Parse(dados["Lotacao"]),
+                    ValidoDe = DateTime.Parse(dados["ValidoDe"])
+                };
                 if (string.IsNullOrEmpty(dados["ValidoAte"]))
                 {
                     aula.ValidoAte = new DateTime(2050, 1, 1);

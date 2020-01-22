@@ -67,8 +67,6 @@ namespace HealthUp.Models
         [Remote("IsValidUserName", "Validation_Login", HttpMethod = "POST", ErrorMessage = "Este username não é válido!")]
         public string Username { get; set; }
 
-        [Display(Name = "Está notificado")]
-        public bool IsNotified { get; set; } = false; // variavel auxiliar para a resposta do isvalid
 
         [StringLength(100)]
         [Remote("IsValidPassword", "Validation_Login", HttpMethod = "POST", ErrorMessage = "Esta Password não é válida!", AdditionalFields = "Username")]

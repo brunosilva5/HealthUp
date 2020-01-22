@@ -19,35 +19,14 @@ namespace HealthUp.Controllers.RemoteValidation
         public JsonResult IsValidUsername(string Username)
         {
             var Pessoa = _context.Pessoas.SingleOrDefault(p => p.Username == Username);
-            if (Pessoa==null)
+            if (Pessoa == null)
             {
-                return Json(new string("Este username não existe!"));
-            }
-
-            if (Pessoa.Password==null)
-            {
-                if (Pessoa.IsNotified == false)
-                {
-                    Pessoa.IsNotified = true;
-                    _context.Pessoas.Update(Pessoa);
-                    _context.SaveChanges();
-                    return Json(new string("Este username ainda não tem uma password definida. Defina a password na caixa abaixo!"));
-                }
-               if (Pessoa.IsNotified == true)
-                {
-                    Pessoa.IsNotified = false;
-                    _context.Pessoas.Update(Pessoa);
-                    _context.SaveChanges();
-                    return Json(true);
-                }
-                
-
+                return Json(false,new string("Este username não existe!"));
             }
             else
             {
                 return Json(true);
             }
-            return Json(false);
         }
         public JsonResult IsValidPassword(string Password, string Username)
         {

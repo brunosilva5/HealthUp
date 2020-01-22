@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20200120183008_RemoveAulaGrupo")]
-    partial class RemoveAulaGrupo
+    [Migration("20200122202748_firstCreate")]
+    partial class firstCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -314,9 +314,6 @@ namespace HealthUp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
-
-                    b.Property<bool>("IsNotified")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Nacionalidade")
                         .IsRequired()

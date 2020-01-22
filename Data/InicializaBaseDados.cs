@@ -19,9 +19,7 @@ namespace HealthUp.Data
             {
                 // prepara os dados para a tabela...
 
-                var Pessoas = new Pessoa[]
-                {
-                    new Pessoa()
+                    Pessoa p1= new Pessoa()
                     {
                         NumCC="48715473",
                         Username="spamz",
@@ -33,35 +31,59 @@ namespace HealthUp.Data
                         Nome="Diogo Silva",
                         Telemovel="+351937372277",
                         Password=SecurePasswordHasher.Hash("admin"),
-                        IsNotified=false,
                         Admin=new Admin()
-                    },
-                    new Pessoa()
+                    };
+                context.Pessoas.Add(p1);
+                    Pessoa p2 = new Pessoa()
                     {
-                        NumCC="87654321",
-                        Username="OralBento",
-                        Sexo="M",
-                        DataNascimento=new DateTime(1999,6,23).Date,
-                        Fotografia="admin.jpg",
-                        Email="admin@healthup.pt",
-                        Nacionalidade="PT",
-                        Nome="João Soares",
-                        Telemovel="+351696969696",
-                        Password=SecurePasswordHasher.Hash("admin"),
-                        IsNotified=false,
-                        Admin=new Admin()
-                    }
-                };
+                        NumCC = "87654321",
+                        Username = "OralBento",
+                        Sexo = "M",
+                        DataNascimento = new DateTime(1999, 6, 23).Date,
+                        Fotografia = "admin.jpg",
+                        Email = "admin@healthup.pt",
+                        Nacionalidade = "PT",
+                        Nome = "João Soares",
+                        Telemovel = "+351696969696",
+                        Password = SecurePasswordHasher.Hash("admin"),
+                        Admin = new Admin()
+                    };
+                context.Pessoas.Add(p2);
+                    Pessoa p3 = new Pessoa
+                    {
+                        NumCC = "48715479",
+                        Username = "spamzprof",
+                        Sexo = "M",
+                        DataNascimento = new DateTime(1999, 6, 23).Date,
+                        Fotografia = "admin.jpg",
+                        Email = "admin@healthup.pt",
+                        Nacionalidade = "PT",
+                        Nome = "Diogo Silva",
+                        Telemovel = "+351937372277",
+                        Password = SecurePasswordHasher.Hash("prof"),
+                    };
+                    p3.Professor.Especialidade = "KUNGFU";
 
+                    context.Pessoas.Add(p3);
 
-
-
-                //... insere-os no model...
-                foreach (var p in Pessoas)
-                {
-                    context.Pessoas.Add(p);
-                }
-                //...e atualiza a base de dados
+                    Pessoa p4 = new Pessoa
+                    {
+                        NumCC = "48725479",
+                        Username = "spamzsocio",
+                        Sexo = "M",
+                        DataNascimento = new DateTime(1999, 6, 23).Date,
+                        Fotografia = "admin.jpg",
+                        Email = "admin@healthup.pt",
+                        Nacionalidade = "PT",
+                        Nome = "Diogo Silva",
+                        Telemovel = "+351937372277",
+                        Password = SecurePasswordHasher.Hash("socio"),
+                        Socio = new Socio()
+                    };
+                    p4.Socio.Peso = 50;
+                    p4.Socio.Altura = "150";
+                    context.Pessoas.Add(p4);
+    
             }
             if (context.Ginasios.Any() == false)
             {
@@ -76,51 +98,7 @@ namespace HealthUp.Data
 
                 context.Ginasios.Add(gym);
             }
-            if (context.Professores.Any() == false)
-            {
-                var Pessoa = new Pessoa()
-                {
-                    NumCC = "48715479",
-                    Username = "spamzprof",
-                    Sexo = "M",
-                    DataNascimento = new DateTime(1999, 6, 23).Date,
-                    Fotografia = "admin.jpg",
-                    Email = "admin@healthup.pt",
-                    Nacionalidade = "PT",
-                    Nome = "Diogo Silva",
-                    Telemovel = "+351937372277",
-                    Password = SecurePasswordHasher.Hash("prof"),
-                    IsNotified = false,
-                    Professor = new Professor()
-                };
-                Pessoa.Professor.Especialidade = "KUNGU";
-                context.Pessoas.Add(Pessoa);
-
-            }
-
-            if (context.Socios.Any() == false)
-            {
-                var pessoa = new Pessoa()
-                {
-                    NumCC = "48725479",
-                    Username = "spamzsocio",
-                    Sexo = "M",
-                    DataNascimento = new DateTime(1999, 6, 23).Date,
-                    Fotografia = "admin.jpg",
-                    Email = "admin@healthup.pt",
-                    Nacionalidade = "PT",
-                    Nome = "Diogo Silva",
-                    Telemovel = "+351937372277",
-                    Password = SecurePasswordHasher.Hash("socio"),
-                    IsNotified = false,
-                    Socio = new Socio()
-                };
-                pessoa.Socio.Peso = 50;
-                pessoa.Socio.Altura = "150";
-
-                context.Pessoas.Add(pessoa);
-
-            }
+            
 
             context.SaveChanges();
 

@@ -62,7 +62,7 @@ namespace HealthUp.Controllers
         }
 
         // GET: PlanoTreinos/Create
-        public IActionResult Create(string SocioId)
+        public IActionResult Create()
         {
             // lista de socios nao suspensos
             List<Socio> Lista = _context.Socios.Include(s => s.NumSocioNavigation).Where(s => s.DataSuspensao == null && s.Motivo == null).ToList();
@@ -261,7 +261,7 @@ namespace HealthUp.Controllers
             Contem contem = _context.Contem.SingleOrDefault(c => c.IdPlano == id);
             _context.Contem.Remove(contem);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(VerExerciciosSocio), new { IdPlano = contem.IdPlano });
+            return RedirectToAction(nameof(VerExerciciosSocio), new { contem.IdPlano });
         }
 
         public IActionResult EditarExercicio(int? id)
@@ -310,7 +310,7 @@ namespace HealthUp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(VerExerciciosSocio), new { IdPlano = contem.IdPlano});
+                return RedirectToAction(nameof(VerExerciciosSocio), new { contem.IdPlano });
             }
             
             return View(contem);

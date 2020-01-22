@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HealthUp.Migrations
 {
-    public partial class RemoveAulaGrupo : Migration
+    public partial class firstCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,7 +21,6 @@ namespace HealthUp.Migrations
                     Telemovel = table.Column<string>(maxLength: 13, nullable: false),
                     Nacionalidade = table.Column<string>(maxLength: 20, nullable: false),
                     Username = table.Column<string>(maxLength: 20, nullable: false),
-                    IsNotified = table.Column<bool>(nullable: false),
                     Password = table.Column<string>(maxLength: 100, nullable: true)
                 },
                 constraints: table =>
