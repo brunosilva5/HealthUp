@@ -38,32 +38,35 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sexo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Socio.Peso) Kg
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Socio.Altura) Cm
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fotografia)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataNascimento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telemovel)
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sexo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Socio.Peso) Kg
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Socio.Altura) Cm
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fotografia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataNascimento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telemovel)
+            </td>
+            <td>
+                <a asp-action="HistoricoAulas" asp-route-id="@item.NumCC">Historico de Aulas</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

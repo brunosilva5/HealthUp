@@ -1,0 +1,86 @@
+﻿@model IEnumerable<HealthUp.Models.Aula>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lotacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoraInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiaSemana)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FotografiaDivulgacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VideoDivulgacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lotacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoraInicio.Hours):@Html.DisplayFor(modelItem => item.HoraInicio.Minutes)
+            </td>
+            <td>
+                @if (item.DiaSemana == 1)
+                {
+                    <p>Segunda-feira</p>
+                }
+                else if (item.DiaSemana == 2)
+                {
+                    <p>Terça-feira</p>
+                }
+                else if (item.DiaSemana == 3)
+                {
+                    <p>Quarta-feira</p>
+                }
+                else if (item.DiaSemana == 4)
+                {
+                    <p>Quinta-feira</p>
+                }
+                else if (item.DiaSemana == 5)
+                {
+                    <p>Sexta-feira</p>
+                }
+                else if (item.DiaSemana == 6)
+                {
+                    <p>Sábado</p>
+                }
+                else if (item.DiaSemana == 7)
+                {
+                    <p>Domingo</p>
+                }
+            </td>
+            <td>
+                <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" height="200" />
+            </td>
+            <td>
+                <video width="320" height="240" controls>
+                    <source src="~/Ficheiros/@Html.DisplayFor(modelItem => item.VideoDivulgacao)" type="video/mp4">
+                </video>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -91,6 +91,7 @@ namespace HealthUp.Models
         [Display(Name = "Registo dos pesos")]
         public string RegistoPesos { get; set; }
 
+#warning isto não está a funcionar
         public List<SimpleReportViewModel> GetRegistoPesosSocio(string idSocio)
         {
             List<SimpleReportViewModel> ListaPesagens = new List<SimpleReportViewModel>();
