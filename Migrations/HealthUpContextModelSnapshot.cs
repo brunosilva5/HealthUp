@@ -120,9 +120,6 @@ namespace HealthUp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Data")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("NumSocio")
                         .HasColumnType("nvarchar(max)");
 

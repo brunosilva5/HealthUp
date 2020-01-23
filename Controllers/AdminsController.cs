@@ -591,14 +591,54 @@ namespace HealthUp.Controllers
         #region Cotas
         public IActionResult ListarSocios()
         {
-            return View(_context.Socios.ToList());
+            var lista = _context.Socios.Include(x=>x.NumSocioNavigation).ToList();
+            return View(lista);
         }
 
         public IActionResult ListarCotas(int id)
         {
+            ViewBag.id = id;
             Socio s = _context.Socios.Include(x => x.NumSocioNavigation).First(x => x.NumCC == id.ToString());
-            int Nmeses = (DateTime.Now - DateTime.Parse(s.DataRegisto.ToString());
-            return View(_context.Socios.ToList());
+            string registo = s.DataRegisto.ToString();
+            DateTime dataRegisto = DateTime.Parse(registo);
+            var nMeses = Math.Abs((DateTime.Now.Month -dataRegisto.Month) + 12 * (DateTime.Now.Year -dataRegisto.Year))+1;
+
+            int cotasPagas = _context.Cota.Where(x => x.NumSocio == id.ToString()).Count();
+            int cotasNaoPagas = nMeses - cotasPagas;
+
+            List<DateTime> listaNaoPagas = new List<DateTime>();
+
+            for (int i = 0; i < cotasNaoPagas; i++)
+            {
+                DateTime x = dataRegisto.AddMonths(i+cotasPagas);
+                listaNaoPagas.Add(x);
+            }
+
+            return View(listaNaoPagas);
+            
+        }
+
+        public IActionResult AcertarCotas(int id)
+        {
+            Socio s = _context.Socios.Include(x => x.NumSocioNavigation).First(x => x.NumCC == id.ToString());
+            string registo = s.DataRegisto.ToString();
+            DateTime dataRegisto = DateTime.Parse(registo);
+            var nMeses = Math.Abs((DateTime.Now.Month - dataRegisto.Month) + 12 * (DateTime.Now.Year - dataRegisto.Year)) + 1;
+
+            int cotasPagas = _context.Cota.Where(x => x.NumSocio == id.ToString()).Count();
+            int cotasNaoPagas = nMeses - cotasPagas;
+
+            for (int i = 0; i < cotasNaoPagas; i++)
+            {
+                DateTime x = dataRegisto.AddMonths(i + cotasPagas);
+                Cota nova = new Cota();
+                nova.NumSocio = id.ToString();
+                _context.Cota.Add(nova);
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("ListarSocios");
         }
 
 

@@ -76,9 +76,13 @@ namespace HealthUp.Controllers
             string Username = data["Username"];
 
             Pessoa p = _context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).SingleOrDefault(p => p.Username == Username);
+           
 
             if (ModelState.IsValid)
             {
+               
+
+
                 // Definir a password (primeiro login)
                 if (p.Password==null)
                 {

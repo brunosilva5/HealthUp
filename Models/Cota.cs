@@ -17,7 +17,6 @@ namespace HealthUp.Models
         [Display(Name = "Número de navegação do sócio")]
         public virtual Socio NumSocioNavigation { get; set; }
 
-        [DataType(DataType.DateTime)]
-        public DateTime Data { get; set; }
+
     }
 }
