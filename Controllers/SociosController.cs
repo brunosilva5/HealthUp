@@ -108,7 +108,7 @@ namespace HealthUp.Controllers
         public IActionResult ConsultarHistoricoPeso()
         {
             // construcao da lista de historico de pesos para construcao do grafico
-            List<SimpleReportViewModel> lstModel = GetHistoricoPeso();
+             List<SimpleReportViewModel> lstModel = GetHistoricoPeso();
             
 
             return View(lstModel);
@@ -195,17 +195,11 @@ namespace HealthUp.Controllers
             List<Aula> Lista = new List<Aula>();
             foreach (var item in incricoes)
             {
-                Lista.Add(_context.Aulas.Include(x=>x.NumAdminNavigation).Include(x=>x.NumProfessorNavigation).FirstOrDefault(x => x.IdAula == item.IdAula));
+                Lista.Add(_context.Aulas.Include(x=>x.NumAdminNavigation).Include(x=>x.NumProfessorNavigation).ThenInclude(x=>x.NumProfessorNavigation).FirstOrDefault(x => x.IdAula == item.IdAula));
             }
             return View(Lista);
         }
-        public IActionResult DetailsAula(int id)
-        {
-            Aula a = _context.Aulas.Include(x => x.NumProfessorNavigation).Include(x => x.NumAdminNavigation).FirstOrDefault(x => x.IdAula == id);
-            ViewBag.Admin = _context.Pessoas.First(x => x.NumCC == a.NumAdmin).Nome;
-            ViewBag.Professor = _context.Pessoas.First(x => x.NumCC == a.NumProfessor).Nome;
-            return View(a);
-        }
+        
         #endregion
 
         #region ConsultarPlanoTreino
@@ -231,9 +225,9 @@ namespace HealthUp.Controllers
             List<Aula> listaAulas = new List<Aula>();
             DateTime data = DateTime.Now;
             int dia = (int)data.DayOfWeek;
-            var lista = _context.Aulas.Include(x => x.Inscreve).Where(x => x.DiaSemana == dia && x.ValidoAte > data && x.ValidoDe < data);
- 
 
+
+            var lista = _context.Aulas.Include(x => x.Inscreve).Where(x => x.DiaSemana == dia && x.ValidoAte > data && x.ValidoDe < data);
             foreach (var item in lista)
             {
                 var diffInSeconds = (item.HoraInicio - DateTime.Now.TimeOfDay).TotalSeconds;
@@ -250,6 +244,7 @@ namespace HealthUp.Controllers
 
         public IActionResult Inscrever(int aula)
         {
+            
             Inscreve i = new Inscreve
             {
                 IdAula = aula,
@@ -257,8 +252,7 @@ namespace HealthUp.Controllers
             };
             _context.Inscricoes.Add(i);
             _context.SaveChanges();
-            return  RedirectToAction(nameof(ListarAulas));
-
+            return RedirectToAction(nameof(ListarAulas));
         }
 
         public IActionResult Desinscrever(int aula)

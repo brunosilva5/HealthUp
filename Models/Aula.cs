@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HealthUp.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -97,6 +98,16 @@ namespace HealthUp.Models
                 7 => "Sábado",
                 _ => throw new ArgumentOutOfRangeException(),
             };
+        }
+       
+        public bool VerificarValidade(DateTime segunda, DateTime domingo)
+        {
+            var DataDiaSemana = segunda.AddDays(DiaSemana - 1);
+            if (DataDiaSemana>=ValidoDe && DataDiaSemana <= ValidoAte )
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

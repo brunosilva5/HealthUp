@@ -115,7 +115,7 @@ namespace HealthUp.Helpers
             int start = (int)from.DayOfWeek;
             int target = (int)dayOfWeek;
             if (target <= start)
-                target += 7;
+                target += 6;
             return from.AddDays(target - start).Date;
         }
 

@@ -132,19 +132,26 @@ namespace HealthUp.Controllers
             DateTime data =HelperFunctions.GetData(week);
             DateTime segunda = HelperFunctions.GetMonday(data);
             DateTime domingo = HelperFunctions.Next(data, DayOfWeek.Monday);
-
             ViewBag.Segunda = segunda.ToShortDateString();
             ViewBag.Domingo = domingo.ToShortDateString();
-            var lista = _context.Aulas.Where(x => x.ValidoAte >= domingo && x.ValidoDe <= segunda);//limitar a uma certa semana
-            
+            List<Aula> lista = new List<Aula>();
+            foreach (var aula in _context.Aulas)
+            {
+                if (aula.VerificarValidade(segunda, domingo))
+                {
+                    lista.Add(aula);
+                }
+            }
 
             
-            return PartialView(nameof(PartialPlanoSemanal),lista.ToList());
+            return PartialView(nameof(PartialPlanoSemanal),lista);
         }
 
 
         #endregion
 
+
+        #region VerificarNovoUser
         public JsonResult IsNewUser(string Username)
         {
             var pessoa = _context.Pessoas.SingleOrDefault(p => p.Username == Username);
@@ -166,7 +173,7 @@ namespace HealthUp.Controllers
             }
             return Json(false);
         }
-
+        #endregion
     }
 
 

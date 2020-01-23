@@ -94,13 +94,15 @@ namespace HealthUp.Models
         public List<SimpleReportViewModel> GetRegistoPesosSocio(string idSocio)
         {
             List<SimpleReportViewModel> ListaPesagens = new List<SimpleReportViewModel>();
-            if (ListaPesagens.Count==0)
+            
+            var RegistosSocio = HelperFunctions.JSONDeserialize(RegistoPesos);
+            
+
+            string data=RegistosSocio.Get(idSocio);
+            if (data==null)
             {
                 return ListaPesagens;
             }
-            var RegistosSocio = HelperFunctions.JSONDeserialize(RegistoPesos);
-
-            string data=RegistosSocio.Get(idSocio);
             string[] splittedData = data.Split(',');
             foreach (var item in splittedData)
             {

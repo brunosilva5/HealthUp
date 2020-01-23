@@ -16,7 +16,7 @@
                 <input id="Username" asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
-            <span class="text-danger"><span id="ssn-message" style="display:none">Este é o seu primeiro login! Defina a sua password na caixa abaixo!</span></span>
+            <span class="text-danger"><span id="aviso" style="display:none">Este é o seu primeiro login! Defina a sua password na caixa abaixo!</span></span>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" type="password" class="form-control" />
@@ -39,7 +39,7 @@
 <script>
 
     var url = '@Url.Action("IsNewUser")';
-var ssnMessage = $('#ssn-message');
+var ssnMessage = $('#aviso');
 $('#Username').on('input',function() {
     $.getJSON(url, { Username: $(this).val() }, function (response) {
         if (response) {

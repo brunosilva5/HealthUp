@@ -91,6 +91,7 @@ namespace HealthUp.Models
                     ListaPesos.Add(item);
                 }
             }
+            
             return ListaPesos;
         }
 

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<HealthUp.Models.Aula>
+
+@{
+    ViewData["Title"] = "Histórico de aulas";
+}
+
+<h1>Histórico de aulas</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lotacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoraInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiaSemana)
+            </th>
+            <th>
+                Professor
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FotografiaDivulgacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VideoDivulgacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lotacao)
+            </td>
+            <td>
+                @item.HoraInicio.ToString(@"hh\:mm")
+            </td>
+            <td>
+                @item.GetDiaSemana()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumProfessorNavigation.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FotografiaDivulgacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VideoDivulgacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            
+        </tr>
+}
+    </tbody>
+</table>
