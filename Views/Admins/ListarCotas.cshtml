@@ -1,0 +1,96 @@
+﻿@model List<DateTime>
+
+
+
+<h1></h1>
+
+@if (Model.Count == 0)
+{
+    <h1>Este sócio tem as cotas em dia</h1>
+}
+else
+{
+    <h3>Cotas em atraso</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Ano
+                </th>
+                <th>
+                    Mês
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date.Year)
+                    </td>
+                    <td>
+                        @if (item.Month == 1)
+                        {
+                            <p>Janeiro</p>
+                        }
+                        @if (item.Month == 2)
+                        {
+                            <p>Fevereiro</p>
+                        }
+                        @if (item.Month == 3)
+                        {
+                            <p>Março</p>
+                        }
+                        @if (item.Month == 4)
+                        {
+                            <p>Abril</p>
+                        }
+                        @if (item.Month == 5)
+                        {
+                            <p>Maio</p>
+                        }
+                        @if (item.Month == 6)
+                        {
+                            <p>Junho</p>
+                        }
+                        @if (item.Month == 7)
+                        {
+                            <p>Julho</p>
+                        }
+                        @if (item.Month == 8)
+                        {
+                            <p>Agosto</p>
+                        }
+                        @if (item.Month == 9)
+                        {
+                            <p>Setembro</p>
+                        }
+                        @if (item.Month == 10)
+                        {
+                            <p>Outubro</p>
+                        }
+                        @if (item.Month == 11)
+                        {
+                            <p>Novembro</p>
+                        }
+                        @if (item.Month == 12)
+                        {
+                            <p>Dezembro</p>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <form asp-action="AcertarCotas">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <input type="hidden" value=@ViewBag.id name="id" />
+            <input type="submit" value="Acertar Cotas" class="btn btn-primary" />
+        </div>
+    </form>
+}

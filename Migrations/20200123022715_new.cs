@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HealthUp.Migrations
 {
-    public partial class firstCreate : Migration
+    public partial class @new : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -228,7 +228,7 @@ namespace HealthUp.Migrations
                         column: x => x.NumProfessor,
                         principalTable: "Professores",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -242,6 +242,7 @@ namespace HealthUp.Migrations
                     Peso = table.Column<double>(nullable: false),
                     DataRegisto_Peso = table.Column<DateTime>(nullable: false),
                     Motivo = table.Column<string>(maxLength: 200, nullable: true),
+                    DataRegisto = table.Column<DateTime>(nullable: true),
                     DataSuspensao = table.Column<DateTime>(nullable: true),
                     NumProfessor = table.Column<string>(nullable: true)
                 },
@@ -275,6 +276,26 @@ namespace HealthUp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Cota",
+                columns: table => new
+                {
+                    IdCota = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NumSocio = table.Column<string>(nullable: true),
+                    NumSocioNavigationNumCC = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cota", x => x.IdCota);
+                    table.ForeignKey(
+                        name: "FK_Cota_Socios_NumSocioNavigationNumCC",
+                        column: x => x.NumSocioNavigationNumCC,
+                        principalTable: "Socios",
+                        principalColumn: "NumCC",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Inscricoes",
                 columns: table => new
                 {
@@ -296,7 +317,7 @@ namespace HealthUp.Migrations
                         column: x => x.NumSocio,
                         principalTable: "Socios",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -370,6 +391,11 @@ namespace HealthUp.Migrations
                 column: "IdExercicio");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Cota_NumSocioNavigationNumCC",
+                table: "Cota",
+                column: "NumSocioNavigationNumCC");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Exercicios_NumAdmin",
                 table: "Exercicios",
                 column: "NumAdmin");
@@ -439,6 +465,9 @@ namespace HealthUp.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Contem");
+
+            migrationBuilder.DropTable(
+                name: "Cota");
 
             migrationBuilder.DropTable(
                 name: "Ginasios");

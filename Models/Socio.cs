@@ -43,7 +43,11 @@ namespace HealthUp.Models
         
         [StringLength(200)]
         public string Motivo { get; set; }
-        
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Data de registo")]
+        public DateTime? DataRegisto { get; set; }
+
         [DataType(DataType.Date)]
         [Display(Name = "Data de suspensão")]
         public DateTime? DataSuspensao { get; set; }
