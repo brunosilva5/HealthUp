@@ -3,8 +3,43 @@
     ViewData["Title"] = "Contactos";
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
+<!--Fotografia abaixo do header-->
+<div class="hero-section set-bg" data-setbg="img/contactos-bg.jpg">
+</div>
 
-
+<div class="container">
+    <div class="contactos-section">
+        <h2>Horário</h2>
+        <h4>Segunda a Domingo das 7h às 22h</h4>
+        <h5>Encerramos às 13h nos feriados</h5>
+        <br />
+        <hr />
+        <h4>
+            Rua Alameda da Grasse, Nosso Shopping,
+            PT, Vila-Real
+        </h4>
+        <br />
+        <h4><i class="fa fa-phone"></i><span>253 123 123</span></h4>
+        <h4>healthupgym@gmail.com</h4>
+        <br />
+    </div>
+</div>
+<!-- Call To Section Begin -->
+<section class="callto-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="callto-text">
+                    <h2>Venha treinar connosco</h2>
+                    <p>Não fiques há espera de emgrecer sem fazer nada seu gordo.</p>
+                    <p>Levanta a peida e anda treinar!!</p>
+                    <a asp-controller="Utilizadores" asp-action="PedidoSocio" class="primary-btn callto-btn">Registar</a> <!--Redirecionar para a view de registo-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Call To Section End -->
 <!-- Map Section Begin -->
 <div class="map">
     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2997.555796776067!2d-7.736500284331506!3d41.29677110957019!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd3b4bac48dd2fab%3A0x91c79cf4bd177e0!2sNosso%20Shopping%20-%20Vila%20Real!5e0!3m2!1spt-PT!2spt!4v1577485202582!5m2!1spt-PT!2spt"

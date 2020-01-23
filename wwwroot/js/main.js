@@ -1,12 +1,3 @@
-/*  ---------------------------------------------------
-Theme Name: Cross Fit
-Description: Cross Fit HTML Template
-Author: colorlib
-Author URI: https://www.colorlib.com/
-Version: 1.0
-Created: colorlib
----------------------------------------------------------  */
-
 'use strict';
 
 (function ($) {
