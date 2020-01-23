@@ -61,6 +61,7 @@ namespace HealthUp.Controllers
             P.Telemovel = pedido.Telemovel;
             Socio S = new Socio()
             {
+                DataRegisto = DateTime.Now,
                 NumCC = P.NumCC,
                 NumSocioNavigation = P,
                 NumAdmin = (HttpContext.Session.GetString("UserId")),
@@ -575,6 +576,23 @@ namespace HealthUp.Controllers
         {
             return _context.Aulas.Any(e => e.IdAula == id);
         }
+
+        #endregion
+
+
+        #region Cotas
+        public IActionResult ListarSocios()
+        {
+            return View(_context.Socios.ToList());
+        }
+
+        public IActionResult ListarCotas(int id)
+        {
+            Socio s = _context.Socios.Include(x => x.NumSocioNavigation).First(x => x.NumCC == id.ToString());
+            int Nmeses = (DateTime.Now - DateTime.Parse(s.DataRegisto.ToString());
+            return View(_context.Socios.ToList());
+        }
+
 
         #endregion
     }

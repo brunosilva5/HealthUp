@@ -140,7 +140,30 @@ namespace HealthUp.Controllers
 
             ViewBag.Segunda = segunda.ToShortDateString();
             ViewBag.Domingo = domingo.ToShortDateString();
-            var lista = _context.Aulas.Where(x => x.ValidoAte >= domingo && x.ValidoDe <= segunda);//limitar a uma certa semana
+            var lista = new List<Aula>();
+     
+
+            foreach (var item in _context.Aulas)
+            {
+
+                DateTime dataAula = segunda.AddDays(item.DiaSemana - 1);
+                if (item.ValidoAte >= domingo && item.ValidoDe<=segunda)
+                { 
+                    lista.Add(item);
+                }
+                else if (item.ValidoDe > segunda && item.ValidoAte < domingo)
+                {
+                   if(dataAula>item.ValidoDe && dataAula<item.ValidoAte)lista.Add(item);
+                }
+                else if (item.ValidoDe > segunda && domingo < item.ValidoAte)
+                {
+                    if (dataAula > item.ValidoDe && dataAula < domingo) lista.Add(item);
+                }
+                else if (segunda > item.ValidoDe && item.ValidoAte > domingo)
+                {
+                    if (dataAula > segunda && dataAula < item.ValidoAte) lista.Add(item);
+                }
+            }
             
 
             

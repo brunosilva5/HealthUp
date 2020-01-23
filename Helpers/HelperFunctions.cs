@@ -156,7 +156,7 @@ namespace HealthUp.Helpers
                 weekNum -= 1;
             }
 
-            var result = firstMonday.AddDays(weekNum * 7 + dayOfWeek - 1);
+            var result = firstMonday.AddDays(weekNum * 7 + dayOfWeek);
             return result;
         }
 

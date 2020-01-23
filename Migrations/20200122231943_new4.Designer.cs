@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20200120183008_RemoveAulaGrupo")]
-    partial class RemoveAulaGrupo
+    [Migration("20200122231943_new4")]
+    partial class new4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -113,6 +113,29 @@ namespace HealthUp.Migrations
                     b.HasIndex("IdExercicio");
 
                     b.ToTable("Contem");
+                });
+
+            modelBuilder.Entity("HealthUp.Models.Cota", b =>
+                {
+                    b.Property<int>("IdCota")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NumSocio")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumSocioNavigationNumCC")
+                        .HasColumnType("nvarchar(8)");
+
+                    b.HasKey("IdCota");
+
+                    b.HasIndex("NumSocioNavigationNumCC");
+
+                    b.ToTable("Cota");
                 });
 
             modelBuilder.Entity("HealthUp.Models.Exercicio", b =>
@@ -431,6 +454,9 @@ namespace HealthUp.Migrations
                         .HasColumnType("nvarchar(3)")
                         .HasMaxLength(3);
 
+                    b.Property<DateTime?>("DataRegisto")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DataRegisto_Peso")
                         .HasColumnType("datetime2");
 
@@ -521,6 +547,13 @@ namespace HealthUp.Migrations
                         .HasForeignKey("IdPlano")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HealthUp.Models.Cota", b =>
+                {
+                    b.HasOne("HealthUp.Models.Socio", "NumSocioNavigation")
+                        .WithMany()
+                        .HasForeignKey("NumSocioNavigationNumCC");
                 });
 
             modelBuilder.Entity("HealthUp.Models.Exercicio", b =>
