@@ -38,11 +38,6 @@ namespace HealthUp.Controllers
             var nome = HelperFunctions.NormalizeWhiteSpace(data["Nome"]);
 
 
-            //if (!HelperFunctions.HelperFunctions.IsJustNumbers(telemovel))
-            //{
-            //    ModelState.AddModelError("Telemovel", "O campo telemóvel não está correto");
-            //}
-
             if (ModelState.IsValid)
             {
                 PedidoSocio p = new PedidoSocio()
@@ -51,7 +46,7 @@ namespace HealthUp.Controllers
                     Email = data["Email"],
                     Fotografia = data["Fotografia"],
                     Nacionalidade = data["Nacionalidade"],
-                    Nome = data["Nome"],
+                    Nome = nome,
                     Sexo = data["sexo"],
                     Username = data["Username"],
                     Telemovel = new string("+" + indicativo + telemovel),
@@ -173,26 +168,27 @@ namespace HealthUp.Controllers
 
         #endregion
 
-        //public JsonResult IsNewUser(string Username)
-        //{
-        //    var pessoa = _context.Pessoas.SingleOrDefault(p => p.Username == Username);
+        public JsonResult IsNewUser(string Username)
+        {
+            var pessoa = _context.Pessoas.SingleOrDefault(p => p.Username == Username);
 
-        //    // your logic
-        //    if (pessoa!=null && pessoa.Username==null)
-        //    {
-        //        return Json(true, "Este username ainda não tem uma password definida! Defina-a no campo abaixo!");
+            // your logic
+            if (pessoa != null && pessoa.Password == null)
+            {
+                return Json(true);
 
-        //    }
-        //    if (pessoa == null)
-        //    {
-        //        return Json(true, "");
+            }
+            if (pessoa == null)
+            {
+                return Json(false);
 
-        //    }
-        //    if (pessoa != null && pessoa.Username != null)
-        //    {
-        //        return Json(true);
-        //    }
-        //}
+            }
+            if (pessoa != null && pessoa.Password != null)
+            {
+                return Json(false);
+            }
+            return Json(false);
+        }
 
     }
 

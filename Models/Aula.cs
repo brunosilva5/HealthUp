@@ -86,17 +86,17 @@ namespace HealthUp.Models
 
         public string GetDiaSemana()
         {
-            switch (DiaSemana)
+            return DiaSemana switch
             {
-                case 1: return "Domingo";
-                case 2: return "Segunda-Feira";
-                case 3: return "Terça-Feira";
-                case 4: return "Quarta-Feira";
-                case 5: return "Quinta-Feira";
-                case 6: return "Sexta-Feira";
-                case 7: return "Sábado";
-                default: throw new ArgumentOutOfRangeException();
-            }
+                1 => "Domingo",
+                2 => "Segunda-Feira",
+                3 => "Terça-Feira",
+                4 => "Quarta-Feira",
+                5 => "Quinta-Feira",
+                6 => "Sexta-Feira",
+                7 => "Sábado",
+                _ => throw new ArgumentOutOfRangeException(),
+            };
         }
     }
 }
