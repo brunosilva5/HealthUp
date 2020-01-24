@@ -59,7 +59,6 @@ namespace HealthUp.Models
         [Display(Name = "Número de navegação do administrador")]
         public virtual Admin NumAdminNavigation { get; set; }
 
-        //IDENTIFICAR QUEM PESOU
         [ForeignKey(nameof(NumProfessor))]
         [InverseProperty(nameof(Professor.Socio))]
         [Display(Name = "Número de navegação do professor")]

@@ -1,0 +1,57 @@
+﻿@model HealthUp.Models.Mensagem
+
+@{
+    ViewData["Title"] = "Ler mensagem";
+}
+<div>
+    <h1>Mensagem</h1>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            De
+        </dt>
+        <dd class="col-sm-10">
+
+            @Model.IdPessoaSenderNavigation.Nome
+
+        </dd>
+        <dt class="col-sm-2">
+            Recebida a
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DataEnvio
+        </dd>
+        <dt class="col-sm-2">
+            Mensagem
+        </dt>
+        <dd class="col-sm-10">
+            <textarea rows="4" cols="50" readonly style="resize:none">@Model.Conteudo</textarea>
+        </dd>
+    </dl>
+</div>
+
+@if (ViewBag.Arquivadas != true)
+{
+    <div id="Resposta">
+        <a asp-action="Responder" asp-route-Destino=@Model.IdPessoaSenderNavigation.NumCC
+           data-ajax="true"
+           data-ajax-method="GET"
+           data-ajax-mode="replace"
+           data-ajax-update="#Resposta">Responder</a>
+    </div>
+}
+
+
+@if (ViewBag.Arquivadas == true)
+{
+    <div>
+        <a asp-action="VerMensagensEntradaArquivadas">Voltar atrás</a>
+    </div>
+}
+else
+{
+    <div>
+        <a asp-action="CaixaEntrada">Voltar atrás</a>
+    </div>
+}
+

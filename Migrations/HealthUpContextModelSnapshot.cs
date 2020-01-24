@@ -217,7 +217,10 @@ namespace HealthUp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Arquivada")
+                    b.Property<bool>("Arquivada_Receiver")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Arquivada_Sender")
                         .HasColumnType("bit");
 
                     b.Property<string>("Conteudo")
@@ -228,7 +231,10 @@ namespace HealthUp.Migrations
                     b.Property<DateTime?>("DataEnvio")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("IdPessoa")
+                    b.Property<string>("IdPessoaReceiver")
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("IdPessoaSender")
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<bool>("Lida")
@@ -236,7 +242,9 @@ namespace HealthUp.Migrations
 
                     b.HasKey("IdMensagem");
 
-                    b.HasIndex("IdPessoa");
+                    b.HasIndex("IdPessoaReceiver");
+
+                    b.HasIndex("IdPessoaSender");
 
                     b.ToTable("Mensagens");
                 });
@@ -549,9 +557,13 @@ namespace HealthUp.Migrations
 
             modelBuilder.Entity("HealthUp.Models.Mensagem", b =>
                 {
-                    b.HasOne("HealthUp.Models.Pessoa", "IdNavigation")
-                        .WithMany("Mensagem")
-                        .HasForeignKey("IdPessoa");
+                    b.HasOne("HealthUp.Models.Pessoa", "IdPessoaReceiverNavigation")
+                        .WithMany("MensagensEntrada")
+                        .HasForeignKey("IdPessoaReceiver");
+
+                    b.HasOne("HealthUp.Models.Pessoa", "IdPessoaSenderNavigation")
+                        .WithMany("MensagensSaida")
+                        .HasForeignKey("IdPessoaSender");
                 });
 
             modelBuilder.Entity("HealthUp.Models.PedidoSocio", b =>

@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Mensagem>
+@{
+    ViewData["Title"] = "Caixa de entrada";
+}
+
+@{
+    var text = "";
+}
+@if (ViewBag.Arquivadas==true)
+{
+    text = "Caixa de entrada de mensagens arquivadas";
+}
+else
+{
+    text = "Caixa de entrada";
+}
+<h1>@text</h1>
+
+
+@if (HelperFunctions.IsCurrentUserProfessor(Context))
+{
+    text = "Enviar mensagens aos meus sócios";
+}
+@if (HelperFunctions.IsCurrentUserSocio(Context))
+{
+    text = "Enviar mensagem ao meu personal trainer";
+}
+
+
+<p>
+    <a class="btn btn-outline-primary" asp-action="EnviarMensagem">@text</a>&nbsp;&nbsp;<a class="btn btn-outline-primary" asp-action="CaixaSaida">Caixa de saída</a>&nbsp;&nbsp;
+    @if (ViewBag.Arquivadas != true)
+    {
+        <a class="btn btn-outline-primary" asp-action="VerMensagensEntradaArquivadas">Ver mensagens de entrada arquivadas</a>
+        <a class="btn btn-outline-primary" asp-action="ArquivarMensagensEntrada">Arquivar mensagens entrada</a>
+
+    }
+    else
+    {
+        <span>
+            <a class="btn btn-outline-primary" asp-action="CaixaEntrada">Caixa de entrada</a>&nbsp;&nbsp;
+        </span>
+    }
+
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                De:
+            </th>
+            <th>
+                Recebida a:
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (!item.Lida)
+                {
+                    <td style="font-weight:bold">@item.IdPessoaSenderNavigation.Nome</td>
+                }
+                else
+                {
+                    <td>@item.IdPessoaSenderNavigation.Nome</td>
+                }
+                <td>@item.DataEnvio</td>
+
+                <td>
+                    @if (ViewBag.Arquivadas == true)
+                    {
+                        @Html.ActionLink("Ler", "LerMensagem", new { IdMensagem = item.IdMensagem, arquivadas = true }, null)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Ler", "LerMensagem", new { IdMensagem = item.IdMensagem }, null)
+                    }
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -12,7 +12,8 @@ namespace HealthUp.Models
     {
         public Pessoa()
         {
-            Mensagem = new HashSet<Mensagem>();
+            MensagensEntrada = new HashSet<Mensagem>();
+            MensagensSaida = new HashSet<Mensagem>();
         }
         
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
@@ -86,8 +87,10 @@ namespace HealthUp.Models
         [InverseProperty("NumSocioNavigation")]
         public virtual Socio Socio { get; set; }
         
-        [InverseProperty("IdNavigation")]
-        public virtual ICollection<Mensagem> Mensagem { get; set; }
+        [InverseProperty("IdPessoaReceiverNavigation")]
+        public virtual ICollection<Mensagem> MensagensEntrada { get; set; }
+        [InverseProperty("IdPessoaSenderNavigation")]
+        public virtual ICollection<Mensagem> MensagensSaida { get; set; }
 
     }
 }
