@@ -33,16 +33,33 @@ namespace HealthUp.Migrations
             modelBuilder.Entity("HealthUp.Models.Aula", b =>
                 {
                     b.Property<int>("IdAula")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
 
                     b.Property<int>("DiaSemana")
                         .HasColumnType("int");
+
+                    b.Property<string>("FotografiaDivulgacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<TimeSpan>("HoraInicio")
                         .HasColumnType("time");
 
                     b.Property<int>("Lotacao")
                         .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("NumAdmin")
                         .IsRequired()
@@ -58,37 +75,6 @@ namespace HealthUp.Migrations
                     b.Property<DateTime>("ValidoDe")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("IdAula");
-
-                    b.HasIndex("NumAdmin");
-
-                    b.HasIndex("NumProfessor");
-
-                    b.ToTable("Aulas");
-                });
-
-            modelBuilder.Entity("HealthUp.Models.AulaGrupo", b =>
-                {
-                    b.Property<int>("IdAula")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("FotografiaDivulgacao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
                     b.Property<string>("VideoDivulgacao")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
@@ -96,7 +82,11 @@ namespace HealthUp.Migrations
 
                     b.HasKey("IdAula");
 
-                    b.ToTable("AulasGrupo");
+                    b.HasIndex("NumAdmin");
+
+                    b.HasIndex("NumProfessor");
+
+                    b.ToTable("Aulas");
                 });
 
             modelBuilder.Entity("HealthUp.Models.Contem", b =>
@@ -121,6 +111,26 @@ namespace HealthUp.Migrations
                     b.HasIndex("IdExercicio");
 
                     b.ToTable("Contem");
+                });
+
+            modelBuilder.Entity("HealthUp.Models.Cota", b =>
+                {
+                    b.Property<int>("IdCota")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("NumSocio")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumSocioNavigationNumCC")
+                        .HasColumnType("nvarchar(8)");
+
+                    b.HasKey("IdCota");
+
+                    b.HasIndex("NumSocioNavigationNumCC");
+
+                    b.ToTable("Cota");
                 });
 
             modelBuilder.Entity("HealthUp.Models.Exercicio", b =>
@@ -227,7 +237,10 @@ namespace HealthUp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Arquivada")
+                    b.Property<bool>("Arquivada_Receiver")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Arquivada_Sender")
                         .HasColumnType("bit");
 
                     b.Property<string>("Conteudo")
@@ -238,7 +251,10 @@ namespace HealthUp.Migrations
                     b.Property<DateTime?>("DataEnvio")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("IdPessoa")
+                    b.Property<string>("IdPessoaReceiver")
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("IdPessoaSender")
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<bool>("Lida")
@@ -246,7 +262,9 @@ namespace HealthUp.Migrations
 
                     b.HasKey("IdMensagem");
 
-                    b.HasIndex("IdPessoa");
+                    b.HasIndex("IdPessoaReceiver");
+
+                    b.HasIndex("IdPessoaSender");
 
                     b.ToTable("Mensagens");
                 });
@@ -322,9 +340,6 @@ namespace HealthUp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
-
-                    b.Property<bool>("IsNotified")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Nacionalidade")
                         .IsRequired()
@@ -403,7 +418,6 @@ namespace HealthUp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Especialidade")
-                        .IsRequired()
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
@@ -439,6 +453,9 @@ namespace HealthUp.Migrations
                         .HasColumnType("nvarchar(3)")
                         .HasMaxLength(3);
 
+                    b.Property<DateTime?>("DataRegisto")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DataRegisto_Peso")
                         .HasColumnType("datetime2");
 
@@ -458,7 +475,7 @@ namespace HealthUp.Migrations
                     b.Property<string>("NumProfessor")
                         .HasColumnType("nvarchar(8)");
 
-                    b.Property<double>("Peso")
+                    b.Property<double?>("Peso")
                         .HasColumnType("float");
 
                     b.HasKey("NumCC");
@@ -503,12 +520,6 @@ namespace HealthUp.Migrations
 
             modelBuilder.Entity("HealthUp.Models.Aula", b =>
                 {
-                    b.HasOne("HealthUp.Models.AulaGrupo", "AulaGrupoNavigation")
-                        .WithOne("Aula")
-                        .HasForeignKey("HealthUp.Models.Aula", "IdAula")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HealthUp.Models.Admin", "NumAdminNavigation")
                         .WithMany("Aula")
                         .HasForeignKey("NumAdmin")
@@ -535,6 +546,13 @@ namespace HealthUp.Migrations
                         .HasForeignKey("IdPlano")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HealthUp.Models.Cota", b =>
+                {
+                    b.HasOne("HealthUp.Models.Socio", "NumSocioNavigation")
+                        .WithMany()
+                        .HasForeignKey("NumSocioNavigationNumCC");
                 });
 
             modelBuilder.Entity("HealthUp.Models.Exercicio", b =>
@@ -568,9 +586,13 @@ namespace HealthUp.Migrations
 
             modelBuilder.Entity("HealthUp.Models.Mensagem", b =>
                 {
-                    b.HasOne("HealthUp.Models.Pessoa", "IdNavigation")
-                        .WithMany("Mensagem")
-                        .HasForeignKey("IdPessoa");
+                    b.HasOne("HealthUp.Models.Pessoa", "IdPessoaReceiverNavigation")
+                        .WithMany("MensagensEntrada")
+                        .HasForeignKey("IdPessoaReceiver");
+
+                    b.HasOne("HealthUp.Models.Pessoa", "IdPessoaSenderNavigation")
+                        .WithMany("MensagensSaida")
+                        .HasForeignKey("IdPessoaSender");
                 });
 
             modelBuilder.Entity("HealthUp.Models.PedidoSocio", b =>

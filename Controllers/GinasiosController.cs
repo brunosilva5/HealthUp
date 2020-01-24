@@ -33,7 +33,7 @@ namespace HealthUp.Controllers
         }
 
         // GET: Ginasios/Edit/5
-        public async Task<IActionResult> Edit()
+        public IActionResult Edit()
         {
             var ginasio = _context.Ginasios.FirstOrDefault();
             // apagar o indicativo

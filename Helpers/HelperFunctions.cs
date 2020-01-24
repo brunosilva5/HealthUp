@@ -61,12 +61,29 @@ namespace HealthUp.Helpers
             return false;
         }
 
-        public static bool estaAutenticado(HttpContext contexto)
+        public static bool EstaAutenticado(HttpContext context)
         {
-            if (contexto.Session.GetString("UserId") != null)
+            if (context.Session.GetString("UserId") != null)
                 return true;
             else
                 return false;
+        }
+        public static bool IsCurrentUserSocio(HttpContext context)
+        {
+            if (context.Session.GetString("Role") == "Socio")
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool IsCurrentUserProfessor(HttpContext context)
+        {
+            if (context.Session.GetString("Role") == "Professor")
+            {
+                return true;
+            }
+            return false;
         }
         public static bool IsValidPassword(string str)
         {
@@ -115,23 +132,23 @@ namespace HealthUp.Helpers
             int start = (int)from.DayOfWeek;
             int target = (int)dayOfWeek;
             if (target <= start)
-                target += 7;
+                target += 6;
             return from.AddDays(target - start).Date;
         }
 
         public static int GetDay(string dia)
         {
-            switch(dia)
+            return dia switch
             {
-                case "Segunda-Feira": return 1;
-                case "Terça-Feira": return 2;
-                case "Quarta-Feira": return 3;
-                case "Quinta-Feira": return 4;
-                case "Sexta-Feira": return 5;
-                case "Sábado": return 6;
-                case "Domingo": return 7;
-                default: return 1;
-            }
+                "Segunda-Feira" => 1,
+                "Terça-Feira" => 2,
+                "Quarta-Feira" => 3,
+                "Quinta-Feira" => 4,
+                "Sexta-Feira" => 5,
+                "Sábado" => 6,
+                "Domingo" => 7,
+                _ => 1,
+            };
         }
 
         public static DateTime GetData(string data)
@@ -156,7 +173,7 @@ namespace HealthUp.Helpers
                 weekNum -= 1;
             }
 
-            var result = firstMonday.AddDays(weekNum * 7 + dayOfWeek - 1);
+            var result = firstMonday.AddDays(weekNum * 7 + dayOfWeek);
             return result;
         }
 
@@ -205,16 +222,16 @@ namespace HealthUp.Helpers
                 mail.To.Add(new MailAddress(Email));
                 // Smtp client
 
-                var client = new SmtpClient();
+                var client = new SmtpClient
+                {
+                    Port = 587,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Host = "smtp.gmail.com",
+                    EnableSsl = true,
+                    Credentials = new NetworkCredential("healthupgym@gmail.com", "healthup2019")
+                };
 
-
-                client.Port = 587;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Host = "smtp.gmail.com";
-                client.EnableSsl = true;
-                client.Credentials = new NetworkCredential("healthupgym@gmail.com", "healthup2019");
-                
                 client.Send(mail);
                 return "Email Sent Successfully!";
             }
@@ -224,6 +241,16 @@ namespace HealthUp.Helpers
             }
 
         }
+
+        public static IEnumerable<T> Add<T>(this IEnumerable<T> e, T value)
+        {
+            foreach (var cur in e)
+            {
+                yield return cur;
+            }
+            yield return value;
+        }
+
 
     }
 }

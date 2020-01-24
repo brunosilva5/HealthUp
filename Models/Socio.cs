@@ -25,37 +25,56 @@ namespace HealthUp.Models
         [Display(Name = "Número de cartão de cidadão")]
         public string NumCC { get; set; }
 
+        [Display(Name = "Número do administrador")]
         public string NumAdmin { get; set; }
+
+        [Display(Name = "Id de solicitação")]
         public int? ID_Solicitacao { get; set; }
+        
         [StringLength(3)]
         public string Altura { get; set; }
+        
         [Range(0, 300,ErrorMessage ="Insira um valor entre 0 e 300")]
-        public double Peso { get; set; }
+        public double? Peso { get; set; }
+        
         [DataType(DataType.Date)]
+        [Display(Name = "Data de registo do peso")]
         public DateTime DataRegisto_Peso { get; set; }
+        
         [StringLength(200)]
         public string Motivo { get; set; }
+
         [DataType(DataType.Date)]
+        [Display(Name = "Data de registo")]
+        public DateTime? DataRegisto { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Data de suspensão")]
         public DateTime? DataSuspensao { get; set; }
 
 
         [ForeignKey(nameof(ID_Solicitacao))]
         [InverseProperty(nameof(SolicitacaoProfessor.Socio))]
+        [Display(Name = "Id de navegação da solicitação")]
         public virtual SolicitacaoProfessor IdSolicitacaoNavigation { get; set; }
 
         [ForeignKey(nameof(NumAdmin))]
         [InverseProperty(nameof(Admin.SociosSuspensos))]
+        [Display(Name = "Número de navegação do administrador")]
         public virtual Admin NumAdminNavigation { get; set; }
 
-        //IDENTIFICAR QUEM PESOU
         [ForeignKey(nameof(NumProfessor))]
         [InverseProperty(nameof(Professor.Socio))]
+        [Display(Name = "Número de navegação do professor")]
         public virtual Professor NumProfessorNavigation { get; set; }
+
+        [Display(Name = "Número do professor")]
         public string NumProfessor { get; set; }
 
 
         [ForeignKey(nameof(NumCC))]
         [InverseProperty(nameof(Pessoa.Socio))]
+        [Display(Name = "Número de navegação do sócio")]
         public virtual Pessoa NumSocioNavigation { get; set; }
 
         [InverseProperty("NumSocioNavigation")]
@@ -75,7 +94,22 @@ namespace HealthUp.Models
                     ListaPesos.Add(item);
                 }
             }
+            // Ainda nao foi pesado por nenhum professor, adicionar o peso inserido por ele inicialmente
+            // este peso inicial vai ser perdido após o registo de algum professor...
+            if (ListaPesos.Count==0)
+            {
+                ListaPesos.Add(new SimpleReportViewModel() { DimensionOne = DataRegisto_Peso.ToShortDateString(), Quantity = Peso.GetValueOrDefault() });
+            }
+            
             return ListaPesos;
+        }
+
+        public void TornarPlanosInativos()
+        {
+            foreach (var item in PlanoTreino)
+            {
+                item.Ativo = false;
+            }
         }
     }
 }

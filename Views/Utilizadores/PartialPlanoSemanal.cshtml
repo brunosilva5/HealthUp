@@ -45,11 +45,13 @@
                 <tr>
                     @if (item.DiaSemana == 1)
                     {
+                    <td>
+                        @item.HoraInicio.ToString(@"hh\:mm")
+                    </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.HoraInicio)
+                            @Html.DisplayFor(modelItem => item.Nome)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
                         </td>
                     }
                 </tr>
@@ -74,11 +76,11 @@
                 <tr>
                     @if (item.DiaSemana == 2)
                     {
+                    <td>
+                        @item.HoraInicio.ToString(@"hh\:mm")
+                    </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.HoraInicio)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                            @Html.DisplayFor(modelItem => item.Nome)
                         </td>
                     }
                 </tr>
@@ -103,11 +105,11 @@
                 <tr>
                     @if (item.DiaSemana == 3)
                     {
+                    <td>
+                        @item.HoraInicio.ToString(@"hh\:mm")
+                    </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.HoraInicio)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                            @Html.DisplayFor(modelItem => item.Nome)
                         </td>
                     }
                 </tr>
@@ -132,11 +134,11 @@
                 <tr>
                     @if (item.DiaSemana == 4)
                     {
+                    <td>
+                        @item.HoraInicio.ToString(@"hh\:mm")
+                    </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.HoraInicio)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                            @Html.DisplayFor(modelItem => item.Nome)
                         </td>
                     }
                 </tr>
@@ -161,11 +163,11 @@
                 <tr>
                     @if (item.DiaSemana == 5)
                     {
+                    <td>
+                        @item.HoraInicio.ToString(@"hh\:mm")
+                    </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.HoraInicio)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                            @Html.DisplayFor(modelItem => item.Nome)
                         </td>
                     }
                 </tr>
@@ -190,11 +192,11 @@
                 <tr>
                     @if (item.DiaSemana == 6)
                     {
+                    <td>
+                        @item.HoraInicio.ToString(@"hh\:mm")
+                    </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.HoraInicio)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                            @Html.DisplayFor(modelItem => item.Nome)
                         </td>
                     }
                 </tr>
@@ -219,12 +221,12 @@
                 <tr>
                     @if (item.DiaSemana == 7)
                     {
-                        <td>
-                            @Html.DisplayFor(modelItem => item.HoraInicio)
+                    <td>
+                        @item.HoraInicio.ToString(@"hh\:mm")
 
-                        </td>
+                    </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
+                            @Html.DisplayFor(modelItem => item.Nome)
                         </td>
                     }
                 </tr>

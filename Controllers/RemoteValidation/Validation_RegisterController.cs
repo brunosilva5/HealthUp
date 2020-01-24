@@ -197,7 +197,7 @@ namespace HealthUp.Controllers
                 }
                 return Json(new string("As coordenadas não tem o formato correto! (latitude,longitude)"));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return Json(new string("As coordenadas não tem o formato correto! (latitude,longitude)"));
             }

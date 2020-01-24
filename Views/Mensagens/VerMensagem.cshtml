@@ -1,0 +1,53 @@
+﻿@model HealthUp.Models.Mensagem
+
+@{
+    ViewData["Title"] = "Ver mensagem";
+}
+
+<div>
+    <h1>Mensagem</h1>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Para
+        </dt>
+        <dd class="col-sm-10">
+            @Model.IdPessoaReceiverNavigation.Nome
+        </dd>
+        <dt class="col-sm-2">
+            Enviada a
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DataEnvio
+        </dd>
+
+        <dt class="col-sm-2">
+            Mensagem
+        </dt>
+        <dd class="col-sm-10">
+            <textarea rows="4" cols="50" readonly style="resize:none">@Model.Conteudo</textarea>
+        </dd>
+        @if (Model.Lida)
+        {
+            <dt class="col-sm-2">
+                Esta mensagem já foi lida!
+            </dt>
+            <dd class="col-sm-10">
+
+            </dd>
+        }
+    </dl>
+</div>
+
+@if (ViewBag.Arquivadas == true)
+{
+    <div>
+        <a asp-action="VerMensagensSaidaArquivadas">Voltar atrás</a>
+    </div>
+}
+else
+{
+    <div>
+        <a asp-action="CaixaSaida">Voltar atrás</a>
+    </div>
+}

@@ -8,48 +8,64 @@
 <div class="container">
     <h1>Criar Aula</h1>
 
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="CreateAula">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label name="IdAula" class="control-label">Aula</label>
-                    <select name="IdAula" class="form-control" asp-items="ViewBag.NomeAula"></select>
-                </div>
-                <div class="form-group">
-                    <label name="IdProfessor" class="control-label">Professor</label>
-                    <select name="IdProfessor" class="form-control" asp-items="ViewBag.NomeProfessor"></select>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ValidoDe" class="control-label"></label>
-                    <input asp-for="ValidoDe" class="form-control" />
-                    <span asp-validation-for="ValidoDe" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ValidoAte" class="control-label"></label>
-                    <input asp-for="ValidoAte" class="form-control" />
-                    <span asp-validation-for="ValidoAte" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Lotacao" class="control-label"></label>
-                    <input asp-for="Lotacao" class="form-control" />
-                    <span asp-validation-for="Lotacao" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="HoraInicio" class="control-label"></label>
-                    <input type="time" id="appt" name="HoraInicio" min="07:00" max="21:00" required>
-                    <span asp-validation-for="HoraInicio" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label name="DiaSemana" class="control-label">Dia da Semana</label>
-                    <select name="DiaSemana" class="form-control" asp-items="ViewBag.DiaSemana"></select>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Criar" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateAula" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label">Nome</label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FotografiaDivulgacao" class="control-label"></label>
+                <input name="FotografiaDivulgacao" type="file" class="form-control" />
+                <span asp-validation-for="FotografiaDivulgacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VideoDivulgacao" class="control-label"></label>
+                <input name="VideoDivulgacao" type="file" class="form-control" />
+                <span asp-validation-for="VideoDivulgacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label name="IdProfessor" class="control-label">Professor</label>
+                <select name="IdProfessor" class="form-control" asp-items="ViewBag.NomeProfessor"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValidoDe" class="control-label"></label>
+                <input asp-for="ValidoDe" class="form-control" />
+                <span asp-validation-for="ValidoDe" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValidoAte" class="control-label"></label>
+                <input asp-for="ValidoAte" class="form-control" />
+                <span asp-validation-for="ValidoAte" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lotacao" class="control-label"></label>
+                <input asp-for="Lotacao" class="form-control" />
+                <span asp-validation-for="Lotacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraInicio" class="control-label"></label>
+                <input type="time" id="appt" name="HoraInicio" min="07:00" max="21:00" required>
+                <span asp-validation-for="HoraInicio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label name="DiaSemana" class="control-label">Dia da Semana</label>
+                <select name="DiaSemana" class="form-control" asp-items="ViewBag.DiaSemana"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Criar" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
 

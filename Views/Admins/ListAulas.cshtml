@@ -5,99 +5,108 @@
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
-<div class="container">
-    <h1>Aulas</h1>
-    <table class="content-table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.ValidoDe)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ValidoAte)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Lotacao)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.HoraInicio)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DiaSemana)
-                </th>
-                <th>
-                    Administrador
-                </th>
-                <th>
-                    Professor
-                </th>
-                <th>
-                    Aula
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ValidoDe)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ValidoAte)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Lotacao)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.HoraInicio)
-                    </td>
-                    <td>
-                        @if (item.DiaSemana == 1)
-                        {
-                            <p>Segunda-feira</p>
-                        }
-                        else if (item.DiaSemana == 2)
-                        {
-                            <p>Terça-feira</p>
-                        }
-                        else if (item.DiaSemana == 3)
-                        {
-                            <p>Quarta-feira</p>
-                        }
-                        else if (item.DiaSemana == 4)
-                        {
-                            <p>Quinta-feira</p>
-                        }
-                        else if (item.DiaSemana == 5)
-                        {
-                            <p>Sexta-feira</p>
-                        }
-                        else if (item.DiaSemana == 6)
-                        {
-                            <p>Sábado</p>
-                        }
-                        else if (item.DiaSemana == 7)
-                        {
-                            <p>Domingo</p>
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NumAdminNavigation.NumAdminNavigation.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumProfessorNavigation.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AulaGrupoNavigation.Nome)
-                    </td>
-                    <td>
-                        <a asp-action="EditAula" asp-route-id="@item.IdAula">Editar</a> |
-                        <a asp-action="DeleteAula" asp-route-id="@item.IdAula">Eliminar</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+<h1>Aulas</h1>
+
+<p>
+    <a asp-action="CreateAula">Criar Aula</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FotografiaDivulgacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValidoDe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValidoAte)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lotacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoraInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiaSemana)
+            </th>
+            <th>
+                Administrador
+            </th>
+            <th>
+                Professor
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" height="200" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValidoDe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValidoAte)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lotacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoraInicio.Hours):@Html.DisplayFor(modelItem => item.HoraInicio.Minutes)
+            </td>
+            <td>
+                @if (item.DiaSemana == 1)
+                {
+                    <p>Segunda-feira</p>
+                }
+                else if (item.DiaSemana == 2)
+                {
+                    <p>Terça-feira</p>
+                }
+                else if (item.DiaSemana == 3)
+                {
+                    <p>Quarta-feira</p>
+                }
+                else if (item.DiaSemana == 4)
+                {
+                    <p>Quinta-feira</p>
+                }
+                else if (item.DiaSemana == 5)
+                {
+                    <p>Sexta-feira</p>
+                }
+                else if (item.DiaSemana == 6)
+                {
+                    <p>Sábado</p>
+                }
+                else if (item.DiaSemana == 7)
+                {
+                    <p>Domingo</p>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumAdminNavigation.NumAdminNavigation.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumProfessorNavigation.Nome)
+            </td>
+           
+            <td>
+                <a asp-action="DetailsAula" asp-route-id="@item.IdAula">Detalhes</a>
+                <a asp-action="EditAula" asp-route-id="@item.IdAula">Editar</a> |
+                <a asp-action="DeleteAula" asp-route-id="@item.IdAula">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
