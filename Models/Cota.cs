@@ -13,7 +13,6 @@ namespace HealthUp.Models
         public int IdCota { get; set; }
 
         public string NumSocio { get; set; }
-
         [Display(Name = "Número de navegação do sócio")]
         public virtual Socio NumSocioNavigation { get; set; }
 
