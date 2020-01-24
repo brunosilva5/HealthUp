@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20200124170339_EspecialidadeProfNullable")]
-    partial class EspecialidadeProfNullable
+    [Migration("20200124221459_FirstCreate")]
+    partial class FirstCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

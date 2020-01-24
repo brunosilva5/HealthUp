@@ -68,20 +68,37 @@ namespace HealthUp.Helpers
             else
                 return false;
         }
+        public static bool IsCurrentUserAdmin(HttpContext context)
+        {
+            if (EstaAutenticado(context))
+            {
+                if (context.Session.GetString("Role") == "Admin")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public static bool IsCurrentUserSocio(HttpContext context)
         {
-            if (context.Session.GetString("Role") == "Socio")
+            if (EstaAutenticado(context))
             {
-                return true;
+                if (context.Session.GetString("Role") == "Socio")
+                {
+                    return true;
+                }
             }
             return false;
         }
 
         public static bool IsCurrentUserProfessor(HttpContext context)
         {
-            if (context.Session.GetString("Role") == "Professor")
+            if (EstaAutenticado(context))
             {
-                return true;
+                if (context.Session.GetString("Role") == "Professor")
+                {
+                    return true;
+                }
             }
             return false;
         }

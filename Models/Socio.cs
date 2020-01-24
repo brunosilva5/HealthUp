@@ -17,6 +17,11 @@ namespace HealthUp.Models
             Inscreve = new HashSet<Inscreve>();
             PlanoTreino = new HashSet<PlanoTreino>();
         }
+        public Socio(Pessoa p) : base()
+        {
+            NumCC = p.NumCC;
+            DataRegisto = DateTime.Now.Date;
+        }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -36,10 +41,10 @@ namespace HealthUp.Models
         
         [Range(0, 300,ErrorMessage ="Insira um valor entre 0 e 300")]
         public double? Peso { get; set; }
-        
+
         [DataType(DataType.Date)]
         [Display(Name = "Data de registo do peso")]
-        public DateTime DataRegisto_Peso { get; set; }
+        public DateTime? DataRegisto_Peso { get; set; } = null;
         
         [StringLength(200)]
         public string Motivo { get; set; }
@@ -98,7 +103,7 @@ namespace HealthUp.Models
             // este peso inicial vai ser perdido após o registo de algum professor...
             if (ListaPesos.Count==0)
             {
-                ListaPesos.Add(new SimpleReportViewModel() { DimensionOne = DataRegisto_Peso.ToShortDateString(), Quantity = Peso.GetValueOrDefault() });
+                ListaPesos.Add(new SimpleReportViewModel() { DimensionOne = DataRegisto_Peso.GetValueOrDefault().ToShortDateString(), Quantity = Peso.GetValueOrDefault() });
             }
             
             return ListaPesos;

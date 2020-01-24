@@ -178,7 +178,7 @@ namespace HealthUp.Migrations
                     IdSolicitacao = table.Column<int>(nullable: true),
                     Motivo = table.Column<string>(maxLength: 200, nullable: true),
                     DataSuspensao = table.Column<DateTime>(nullable: true),
-                    Especialidade = table.Column<string>(maxLength: 30, nullable: false),
+                    Especialidade = table.Column<string>(maxLength: 30, nullable: true),
                     RegistoPesos = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -247,7 +247,7 @@ namespace HealthUp.Migrations
                     NumAdmin = table.Column<string>(nullable: true),
                     ID_Solicitacao = table.Column<int>(nullable: true),
                     Altura = table.Column<string>(maxLength: 3, nullable: true),
-                    Peso = table.Column<double>(nullable: false),
+                    Peso = table.Column<double>(nullable: true),
                     DataRegisto_Peso = table.Column<DateTime>(nullable: false),
                     Motivo = table.Column<string>(maxLength: 200, nullable: true),
                     DataRegisto = table.Column<DateTime>(nullable: true),

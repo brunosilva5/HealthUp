@@ -456,7 +456,7 @@ namespace HealthUp.Migrations
                     b.Property<DateTime?>("DataRegisto")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DataRegisto_Peso")
+                    b.Property<DateTime?>("DataRegisto_Peso")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DataSuspensao")

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<HealthUp.Models.Aula>
 
 
-<table class="table">
+<table class="content-table">
     <thead>
         <tr>
             <th>
@@ -65,7 +65,7 @@
                 }
             </td>
             <td>
-                <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" height="200" />
+                <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" width="100" height="100"/>
             </td>
             <td>
                 <a asp-action="ListSocios" asp-route-id="@item.IdAula">Sócios Inscritos</a> 

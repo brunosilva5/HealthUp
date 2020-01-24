@@ -107,35 +107,46 @@ namespace HealthUp.Controllers
         #endregion
 
 
-        #region CriarAdminProfessores
-        public IActionResult CriarAdminProf()
+        #region Gerir Pessoas
+        public IActionResult GerirPessoas()
         {
-            return View(_context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).Where(p => p.Socio != null).ToList());
+            return View(_context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).Where(p=>p.NumCC != HttpContext.Session.GetString("UserId")).ToList());
         }
 
         public IActionResult CriarAdmin(string id)
         {
-            Pessoa p = _context.Pessoas.FirstOrDefault(p => p.NumCC == id);
-            Admin a = new Admin(p);
-            _context.Admins.Add(a);
-            Socio s = _context.Socios.FirstOrDefault(p => p.NumCC == id.ToString());
-            _context.Remove(s);
+            Pessoa p = _context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).FirstOrDefault(p => p.NumCC == id);
+            p.Admin = new Admin();
+            p.Professor = null;
+            p.Socio = null;
+            _context.Admins.Add(p.Admin);
+            _context.Update(p);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(GerirPessoas));
         }
 
         public IActionResult CriarProfessor(string id)
         {
-            Pessoa p = _context.Pessoas.FirstOrDefault(p => p.NumCC == id);
-            Professor prof = new Professor(p)
-            {
-                Especialidade = "Indefinido"
-            };
-            _context.Professores.Add(prof);
-            Socio s = _context.Socios.FirstOrDefault(p => p.NumCC == id.ToString());
-            _context.Remove(s);
+            Pessoa p = _context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).FirstOrDefault(p => p.NumCC == id);
+            p.Admin = null;
+            p.Professor = new Professor(p);
+            p.Socio = null;
+            _context.Professores.Add(p.Professor);
+            _context.Update(p);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(GerirPessoas));
+        }
+
+        public IActionResult CriarSocio(string id)
+        {
+            Pessoa p = _context.Pessoas.Include(p=>p.Admin).Include(p=>p.Professor).Include(p=>p.Socio).FirstOrDefault(p => p.NumCC == id);
+            p.Admin = null;
+            p.Professor = null;
+            p.Socio = new Socio(p);
+            _context.Socios.Add(p.Socio);
+            _context.Update(p);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(GerirPessoas));
         }
         #endregion
 

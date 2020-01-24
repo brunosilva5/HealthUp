@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<HealthUp.Models.Aula>
 
-<table class="table">
+<table class="content-table">
     <thead>
         <tr>
             <th>
@@ -37,40 +37,13 @@
                 @Html.DisplayFor(modelItem => item.Lotacao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HoraInicio.Hours):@Html.DisplayFor(modelItem => item.HoraInicio.Minutes)
+                @item.HoraInicio.ToString(@"hh\:mm")
             </td>
             <td>
-                @if (item.DiaSemana == 1)
-                {
-                    <p>Segunda-feira</p>
-                }
-                else if (item.DiaSemana == 2)
-                {
-                    <p>Terça-feira</p>
-                }
-                else if (item.DiaSemana == 3)
-                {
-                    <p>Quarta-feira</p>
-                }
-                else if (item.DiaSemana == 4)
-                {
-                    <p>Quinta-feira</p>
-                }
-                else if (item.DiaSemana == 5)
-                {
-                    <p>Sexta-feira</p>
-                }
-                else if (item.DiaSemana == 6)
-                {
-                    <p>Sábado</p>
-                }
-                else if (item.DiaSemana == 7)
-                {
-                    <p>Domingo</p>
-                }
+               @item.GetDiaSemana()
             </td>
             <td>
-                <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" height="200" />
+                <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" width="100" height="100"/>
             </td>
             <td>
                 <video width="320" height="240" controls>

@@ -9,7 +9,7 @@
     <h1>Histórico de aulas</h1>
 
 
-<table class="table">
+<table class="content-table">
     <thead>
         <tr>
             <th>
@@ -58,10 +58,12 @@
                 @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumProfessorNavigation.Nome)
             </td>
             <td>
-                <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" height="200" />
+                <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" width="100" height="100"/>
             </td>
             <td>
-                <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.VideoDivulgacao)" height="200" />
+                <video width="320" height="240" controls>
+                    <source src="~/Ficheiros/@Html.DisplayFor(modelItem => item.VideoDivulgacao)" type="video/mp4">
+                </video>            
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Descricao)
@@ -71,3 +73,4 @@
 }
     </tbody>
 </table>
+</div>

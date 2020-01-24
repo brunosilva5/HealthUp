@@ -22,17 +22,9 @@ namespace HealthUp.Models
             PlanoTreino = new HashSet<PlanoTreino>();
             Socio = new HashSet<Socio>();
         }
-        public Professor(Pessoa p)
+        public Professor(Pessoa p) : base()
         {
-            Aula = new HashSet<Aula>();
-            PlanoTreino = new HashSet<PlanoTreino>();
-            Socio = new HashSet<Socio>();
-            
-
-
             NumCC = p.NumCC;
-            NumProfessorNavigation = p;
-
         }
         
         [Key]

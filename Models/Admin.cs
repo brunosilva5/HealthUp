@@ -19,18 +19,9 @@ namespace HealthUp.Models
             SociosSuspensos = new HashSet<Socio>();
             SolicitacaoProfessor = new HashSet<SolicitacaoProfessor>();
         }
-        public Admin(Pessoa p)
+        public Admin(Pessoa p) : base ()
         {
-            Aula = new HashSet<Aula>();
-            Exercicio = new HashSet<Exercicio>();
-            Ginasio = new HashSet<Ginasio>();
-            PedidosSocio = new HashSet<PedidoSocio>();
-            ProfessoresSuspensos = new HashSet<Professor>();
-            SociosSuspensos = new HashSet<Socio>();
-            SolicitacaoProfessor = new HashSet<SolicitacaoProfessor>();
-
             NumCC = p.NumCC;
-            NumAdminNavigation = p;
         }
 
         [Key]
