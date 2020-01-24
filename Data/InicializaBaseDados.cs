@@ -49,18 +49,19 @@ namespace HealthUp.Data
                         Admin = new Admin()
                     };
                 context.Pessoas.Add(p2);
-                    Pessoa p3 = new Pessoa
-                    {
-                        NumCC = "48715479",
-                        Username = "spamzprof",
-                        Sexo = "M",
-                        DataNascimento = new DateTime(1999, 6, 23).Date,
-                        Fotografia = "admin.jpg",
-                        Email = "admin@healthup.pt",
-                        Nacionalidade = "PT",
-                        Nome = "Diogo Silva",
-                        Telemovel = "+351937372277",
-                        Password = SecurePasswordHasher.Hash("prof"),
+                Pessoa p3 = new Pessoa
+                {
+                    NumCC = "48715479",
+                    Username = "spamzprof",
+                    Sexo = "M",
+                    DataNascimento = new DateTime(1999, 6, 23).Date,
+                    Fotografia = "admin.jpg",
+                    Email = "admin@healthup.pt",
+                    Nacionalidade = "PT",
+                    Nome = "Diogo Silva",
+                    Telemovel = "+351937372277",
+                    Password = SecurePasswordHasher.Hash("prof"),
+                    Professor = new Professor()
                     };
                     p3.Professor.Especialidade = "KUNGFU";
 
@@ -78,10 +79,12 @@ namespace HealthUp.Data
                         Nome = "Diogo Silva",
                         Telemovel = "+351937372277",
                         Password = SecurePasswordHasher.Hash("socio"),
-                        Socio = new Socio()
+                        Socio = new Socio(),
+                        
                     };
                     p4.Socio.Peso = 50;
                     p4.Socio.Altura = "150";
+                    p4.Socio.DataRegisto = DateTime.Now;
                     context.Pessoas.Add(p4);
     
             }
