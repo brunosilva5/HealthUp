@@ -73,6 +73,12 @@ namespace HealthUp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "Mensagens",
+                    pattern: "Mensagens",
+                    defaults: new { Controller = "Mensagens", Action = "CaixaEntrada" }
+                );
             });
 
             InicializaBasedeDados.Iniciar(context);

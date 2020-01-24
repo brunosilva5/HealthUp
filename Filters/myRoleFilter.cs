@@ -15,7 +15,7 @@ namespace HealthUp.Filters
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (HelperFunctions.estaAutenticado(context.HttpContext))
+            if (HelperFunctions.EstaAutenticado(context.HttpContext))
             {
                 if (context.HttpContext.Session.GetString("Role") == Perfil)
                     base.OnActionExecuting(context);
