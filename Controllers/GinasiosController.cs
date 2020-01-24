@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using HealthUp.Data;
 using HealthUp.Models;
 using Microsoft.AspNetCore.Http;
+using HealthUp.Filters;
 
 namespace HealthUp.Controllers
 {
+    [MyRoleFilter(Perfil = "Admin")]
     public class GinasiosController : Controller
     {
         private readonly HealthUpContext _context;
