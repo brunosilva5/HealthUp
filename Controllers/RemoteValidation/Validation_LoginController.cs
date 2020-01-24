@@ -21,7 +21,7 @@ namespace HealthUp.Controllers.RemoteValidation
             var Pessoa = _context.Pessoas.SingleOrDefault(p => p.Username == Username);
             if (Pessoa == null)
             {
-                return Json(false,new string("Este username não existe!"));
+                return Json(new string("Este username não existe!"));
             }
             else
             {

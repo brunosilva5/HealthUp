@@ -84,7 +84,6 @@ namespace HealthUp.Data
                     };
                     p4.Socio.Peso = 50;
                     p4.Socio.Altura = "150";
-                    p4.Socio.DataRegisto = DateTime.Now;
                     context.Pessoas.Add(p4);
     
             }
