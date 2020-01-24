@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20200123214000_MsgFix")]
-    partial class MsgFix
+    [Migration("20200124014249_FirstCreate")]
+    partial class FirstCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -113,6 +113,26 @@ namespace HealthUp.Migrations
                     b.HasIndex("IdExercicio");
 
                     b.ToTable("Contem");
+                });
+
+            modelBuilder.Entity("HealthUp.Models.Cota", b =>
+                {
+                    b.Property<int>("IdCota")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("NumSocio")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumSocioNavigationNumCC")
+                        .HasColumnType("nvarchar(8)");
+
+                    b.HasKey("IdCota");
+
+                    b.HasIndex("NumSocioNavigationNumCC");
+
+                    b.ToTable("Cota");
                 });
 
             modelBuilder.Entity("HealthUp.Models.Exercicio", b =>
@@ -219,7 +239,10 @@ namespace HealthUp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Arquivada")
+                    b.Property<bool>("Arquivada_Receiver")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Arquivada_Sender")
                         .HasColumnType("bit");
 
                     b.Property<string>("Conteudo")
@@ -230,7 +253,7 @@ namespace HealthUp.Migrations
                     b.Property<DateTime?>("DataEnvio")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("IdPessoa")
+                    b.Property<string>("IdPessoaReceiver")
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("IdPessoaSender")
@@ -241,7 +264,7 @@ namespace HealthUp.Migrations
 
                     b.HasKey("IdMensagem");
 
-                    b.HasIndex("IdPessoa");
+                    b.HasIndex("IdPessoaReceiver");
 
                     b.HasIndex("IdPessoaSender");
 
@@ -433,6 +456,9 @@ namespace HealthUp.Migrations
                         .HasColumnType("nvarchar(3)")
                         .HasMaxLength(3);
 
+                    b.Property<DateTime?>("DataRegisto")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DataRegisto_Peso")
                         .HasColumnType("datetime2");
 
@@ -525,6 +551,13 @@ namespace HealthUp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HealthUp.Models.Cota", b =>
+                {
+                    b.HasOne("HealthUp.Models.Socio", "NumSocioNavigation")
+                        .WithMany()
+                        .HasForeignKey("NumSocioNavigationNumCC");
+                });
+
             modelBuilder.Entity("HealthUp.Models.Exercicio", b =>
                 {
                     b.HasOne("HealthUp.Models.Admin", "NumAdminNavigation")
@@ -557,8 +590,8 @@ namespace HealthUp.Migrations
             modelBuilder.Entity("HealthUp.Models.Mensagem", b =>
                 {
                     b.HasOne("HealthUp.Models.Pessoa", "IdPessoaReceiverNavigation")
-                        .WithMany("MensagemEntrada")
-                        .HasForeignKey("IdPessoa");
+                        .WithMany("MensagensEntrada")
+                        .HasForeignKey("IdPessoaReceiver");
 
                     b.HasOne("HealthUp.Models.Pessoa", "IdPessoaSenderNavigation")
                         .WithMany("MensagensSaida")

@@ -39,17 +39,16 @@
 <script>
 
     var url = '@Url.Action("IsNewUser")';
-var ssnMessage = $('#aviso');
-$('#Username').on('input',function() {
-    $.getJSON(url, { Username: $(this).val() }, function (response) {
-        if (response) {
-      ssnMessage.show();
-    } if(response==false) {
-      ssnMessage.hide();
-    }
-  });
-    
-});
+    var aviso = $('#aviso');
+    $('#Username').on('input',function() {
+        $.getJSON(url, { Username: $(this).val() }, function (response) {
+            if (response) {
+                aviso.show();
+            } if (response == false) {
+                aviso.hide();
+            }
+        });
+    });
 
 </script>
 

@@ -40,7 +40,7 @@ namespace HealthUp.Controllers.RemoteValidation
             
             if (Pessoa == null)
             {
-                return Json(false,new string("Este username não existe!"));
+                return Json(new string("Este username não existe!"));
             }
             else
             {
