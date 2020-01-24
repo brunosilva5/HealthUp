@@ -15,7 +15,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace HealthUp.Controllers
 {
-    [MyRoleFilter(Perfil ="Admin")]
+    [MyRoleFilter(Perfil = "Admin")]
     public class AdminsController : Controller
     {
         #region PrivateVariables
@@ -381,37 +381,30 @@ namespace HealthUp.Controllers
             if (Path.GetExtension(VideoDivulgacao.FileName) != ".mp4") ModelState.AddModelError("VideoDivulgacao", "O formato do ficheiro tem de ser .mp4");
             if (DateTime.Parse(dados["ValidoDe"]) > DateTime.Parse(dados["ValidoAte"])) ModelState.AddModelError("ValidoAte", "A validade está incorreta");
 
+            Aula aula = new Aula
+            {
+                NumAdminNavigation = _context.Admins.FirstOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId")),
+
+                // Guardar o id do admin que criou
+                NumAdmin = HttpContext.Session.GetString("UserId"),
+                // Guardar o professor associado a esta aula
+                NumProfessor = dados["IdProfessor"],
+                // alterar
+                DiaSemana = HelperFunctions.GetDay(dados["DiaSemana"]),
+
+                HoraInicio = TimeSpan.Parse(dados["HoraInicio"]),
+                Lotacao = int.Parse(dados["Lotacao"]),
+                ValidoDe = DateTime.Parse(dados["ValidoDe"]),
+                ValidoAte = DateTime.Parse(dados["ValidoAte"]),
+                Nome = dados["Nome"],
+                Descricao = dados["Descricao"],
+                FotografiaDivulgacao = Path.GetFileName(FotografiaDivulgacao.FileName),
+                VideoDivulgacao = Path.GetFileName(VideoDivulgacao.FileName)
+            };
             if (ModelState.IsValid)
             {
-
-
-                Aula aula = new Aula
-                {
-                    NumAdminNavigation = _context.Admins.FirstOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId")),
-
-                    // Guardar o id do admin que criou
-                    NumAdmin = HttpContext.Session.GetString("UserId"),
-                    // Guardar o professor associado a esta aula
-                    NumProfessor = dados["IdProfessor"],
-                    // alterar
-                    DiaSemana = HelperFunctions.GetDay(dados["DiaSemana"]),
-
-                    HoraInicio = TimeSpan.Parse(dados["HoraInicio"]),
-                    Lotacao = int.Parse(dados["Lotacao"]),
-                    ValidoDe = DateTime.Parse(dados["ValidoDe"])
-                };
-                if (string.IsNullOrEmpty(dados["ValidoAte"]))
-                {
-                    aula.ValidoAte = new DateTime(2050, 1, 1);
-                }
-                else
-                {
-                    aula.ValidoAte = DateTime.Parse(dados["ValidoAte"]);
-                }
-                aula.Nome = dados["Nome"];
-                aula.Descricao = dados["Descricao"];
-                aula.FotografiaDivulgacao = Path.GetFileName(FotografiaDivulgacao.FileName);
-                aula.VideoDivulgacao = Path.GetFileName(VideoDivulgacao.FileName);
+                
+               
                 _context.Add(aula);
                 _context.SaveChanges();
 
@@ -441,7 +434,7 @@ namespace HealthUp.Controllers
             ViewData["NomeProfessor"] = new SelectList(_context.Professores.Include(x => x.NumProfessorNavigation), "NumProfessorNavigation.NumCC", "NumProfessorNavigation.Nome");
             List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
             ViewData["DiaSemana"] = new SelectList(dias);
-            return View();
+            return View(aula);
         }
 
         public async Task<IActionResult> EditAula(int? id)
@@ -630,8 +623,10 @@ namespace HealthUp.Controllers
             for (int i = 0; i < cotasNaoPagas; i++)
             {
                 DateTime x = dataRegisto.AddMonths(i + cotasPagas);
-                Cota nova = new Cota();
-                nova.NumSocio = id.ToString();
+                Cota nova = new Cota
+                {
+                    NumSocio = id.ToString()
+                };
                 _context.Cota.Add(nova);
             }
 

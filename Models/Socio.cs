@@ -35,7 +35,7 @@ namespace HealthUp.Models
         public string Altura { get; set; }
         
         [Range(0, 300,ErrorMessage ="Insira um valor entre 0 e 300")]
-        public double Peso { get; set; }
+        public double? Peso { get; set; }
         
         [DataType(DataType.Date)]
         [Display(Name = "Data de registo do peso")]
@@ -93,6 +93,12 @@ namespace HealthUp.Models
                 {
                     ListaPesos.Add(item);
                 }
+            }
+            // Ainda nao foi pesado por nenhum professor, adicionar o peso inserido por ele inicialmente
+            // este peso inicial vai ser perdido após o registo de algum professor...
+            if (ListaPesos.Count==0)
+            {
+                ListaPesos.Add(new SimpleReportViewModel() { DimensionOne = DataRegisto_Peso.ToShortDateString(), Quantity = Peso.GetValueOrDefault() });
             }
             
             return ListaPesos;

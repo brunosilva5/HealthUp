@@ -12,10 +12,12 @@ using HealthUp.Filters;
 using Newtonsoft.Json;
 using System.Collections.Specialized;
 using HealthUp.Helpers;
+using Microsoft.AspNetCore.Routing;
 
 namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Professor")]
+    [PerfilCompleto]
     public class ProfessoresController : Controller
     {
         #region PrivateVariables
@@ -103,13 +105,15 @@ namespace HealthUp.Controllers
 
         public IActionResult HistoricoAulas(int id)
         {
-            var incricoes = _context.Inscricoes.Where(x => x.NumSocio == id.ToString());
-            List<Aula> Lista = new List<Aula>();
-            foreach (var item in incricoes)
+
+            var values = new RouteValueDictionary(new
             {
-                Lista.Add(_context.Aulas.Include(x => x.NumAdminNavigation).Include(x => x.NumProfessorNavigation).FirstOrDefault(x => x.IdAula == item.IdAula));
-            }
-            return View(Lista);
+                action = "HistoricoAulas",
+                controller = "Socios",
+                IdSocio = id.ToString()
+            });
+           
+            return RedirectToAction("HistoricoAulas", "Socios", values);
         }
         #endregion
 

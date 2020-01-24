@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using HealthUp.Data;
+using HealthUp.Filters;
 using HealthUp.Helpers;
 using HealthUp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,33 +14,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthUp.Controllers
 {
-    [AllowAnonymous]
     public class UtilizadoresController : Controller
     {
-        // This presumes that weeks start with Monday.
-        // Week 1 is the 1st week of the year with a Thursday in it.
-        public static int GetIso8601WeekOfYear(DateTime time)
-        {
-            // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll 
-            // be the same week# as whatever Thursday, Friday or Saturday are,
-            // and we always get those right
-            DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
-            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
-            {
-                time = time.AddDays(3);
-            }
-
-            // Return the week of our adjusted day
-            return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-        }
-
         private readonly HealthUpContext _context;
         public UtilizadoresController(HealthUpContext contexto)
         {
             _context = contexto;
             
-
-
         }
         #region PedidoSocio
         public IActionResult PedidoSocio()
@@ -81,11 +62,13 @@ namespace HealthUp.Controllers
         #endregion
 
         #region Login
+        [NaoAutenticado]
         public IActionResult Login()
         {
             return View();
         }
 
+        [NaoAutenticado]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(IFormCollection data)
@@ -139,12 +122,10 @@ namespace HealthUp.Controllers
         #endregion
 
         #region PlanoSemanal
-
         public IActionResult PlanoSemanal()
         {
             return View();
         }
-
         public IActionResult PartialPlanoSemanal(string week)
         {
             
@@ -169,8 +150,47 @@ namespace HealthUp.Controllers
 
         #endregion
 
+        #region Completar Perfil
+        [Autenticado]
+        public IActionResult CompletarPerfil()
+        {
+            return View();
+        }
+
+        [Autenticado]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CompletarPerfil(IFormCollection dados)
+        {
+            if (ModelState.IsValid)
+            {
+                if (HelperFunctions.IsCurrentUserProfessor(HttpContext))
+                {
+                    var prof = _context.Professores.SingleOrDefault(p => p.NumCC == HttpContext.Session.GetString("UserId"));
+                    prof.Especialidade = dados["Professor.Especialidade"].ToString();
+                    _context.Professores.Update(prof);
+                    _context.SaveChanges();
+                }
+
+                if (HelperFunctions.IsCurrentUserSocio(HttpContext))
+                {
+                    var socio = _context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
+                    socio.Peso = double.Parse(dados["Socio.Peso"].ToString(), CultureInfo.InvariantCulture);
+                    socio.Altura = dados["Socio.Altura"].ToString();
+                    _context.Socios.Update(socio);
+                    _context.SaveChanges();
+                }
+                return RedirectToAction("Index", "Home");
+            }
+
+
+            return View();
+        }
+
+        #endregion
 
         #region VerificarNovoUser
+        [AjaxOnly]
         public JsonResult IsNewUser(string Username)
         {
             var pessoa = _context.Pessoas.SingleOrDefault(p => p.Username == Username);
@@ -180,15 +200,6 @@ namespace HealthUp.Controllers
             {
                 return Json(true);
 
-            }
-            if (pessoa == null)
-            {
-                return Json(false);
-
-            }
-            if (pessoa != null && pessoa.Password != null)
-            {
-                return Json(false);
             }
             return Json(false);
         }

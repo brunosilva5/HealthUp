@@ -54,8 +54,7 @@ namespace HealthUp.Models
         [DataType(DataType.Date)]
         [Display(Name = "Data de suspensão")]
         public DateTime? DataSuspensao { get; set; }
-        
-        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
+
         [StringLength(30)]
         public string Especialidade { get; set; }
 

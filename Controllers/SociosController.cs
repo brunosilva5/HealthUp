@@ -17,7 +17,8 @@ using OfficeOpenXml.Style;
 
 namespace HealthUp.Controllers
 {
-    [MyRoleFilter(Perfil ="Socio")]
+    [MyRoleFilter(Perfil = "Socio, Professor")]
+    [PerfilCompleto]
     public class SociosController : Controller
     {
         #region PrivateVariables
@@ -109,7 +110,7 @@ namespace HealthUp.Controllers
         {
             // construcao da lista de historico de pesos para construcao do grafico
              List<SimpleReportViewModel> lstModel = GetHistoricoPeso();
-            
+             
 
             return View(lstModel);
         }
@@ -187,13 +188,20 @@ namespace HealthUp.Controllers
             return RedirectToAction(nameof(Index));
         }
         #endregion
-
         #region HistoricoAulas
-        public IActionResult HistoricoAulas()
+        public IActionResult HistoricoAulas(string IdSocio = null)
         {
-            var incricoes = _context.Inscricoes.Where(x => x.NumSocio == HttpContext.Session.GetString("UserId"));
+            List<Inscreve> Inscricoes = new List<Inscreve>();
+            if (IdSocio!=null)
+            {
+                Inscricoes = _context.Inscricoes.Where(x => x.NumSocio == IdSocio).ToList();
+            }
+            else
+            {
+                Inscricoes = _context.Inscricoes.Where(x => x.NumSocio == HttpContext.Session.GetString("UserId")).ToList();
+            }
             List<Aula> Lista = new List<Aula>();
-            foreach (var item in incricoes)
+            foreach (var item in Inscricoes)
             {
                 Lista.Add(_context.Aulas.Include(x=>x.NumAdminNavigation).Include(x=>x.NumProfessorNavigation).ThenInclude(x=>x.NumProfessorNavigation).FirstOrDefault(x => x.IdAula == item.IdAula));
             }
