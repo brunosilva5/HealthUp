@@ -6,6 +6,7 @@ using HealthUp.Data;
 using HealthUp.Helpers;
 using HealthUp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthUp.Controllers.RemoteValidation
 {
@@ -19,33 +20,43 @@ namespace HealthUp.Controllers.RemoteValidation
         
         public JsonResult IsValidUsername(string Username)
         {
-#warning nao consigo por a mensagem a dizer "paga as cotas"
-            var Pessoa = _context.Pessoas.SingleOrDefault(p => p.Username == Username);
-            //verificar se tem as cotas pagas
-            Socio s = _context.Socios.FirstOrDefault(x => x.NumCC == Pessoa.NumCC);
-            if(s!=null)
-            {
-                string registo = s.DataRegisto.ToString();
-                DateTime dataRegisto = DateTime.Parse(registo);
-                var nMeses = Math.Abs((DateTime.Now.Month - dataRegisto.Month) + 12 * (DateTime.Now.Year - dataRegisto.Year)) + 1;
-
-                int cotasPagas = _context.Cota.Where(x => x.NumSocio == s.NumCC.ToString()).Count();
-                int cotasNaoPagas = nMeses - cotasPagas;
-
-                if (cotasNaoPagas > 0)
-                {
-                    return Json(false, new string("Tens de pagar as cotas em atraso para poderes efetuar login"));
-                }
-            }
-            
+            var Pessoa = _context.Pessoas.Include(p=>p.Socio).Include(p=>p.Professor).SingleOrDefault(p => p.Username == Username);
             if (Pessoa == null)
             {
                 return Json(new string("Este username não existe!"));
             }
-            else
+
+            // verificar se não é um professor suspenso!
+            if (Pessoa.Professor!=null)
             {
-                return Json(true);
+                if (Pessoa.Professor.DataSuspensao!=null && Pessoa.Professor.Motivo!=null)
+                {
+                    return Json("Esta conta encontra-se suspensa pelo seguinte motivo:" + Environment.NewLine + Pessoa.Professor.Motivo);
+                }
             }
+            if (Pessoa.Socio!=null)
+            {
+                // verificar se o socio encontra-se suspenso!
+                if (Pessoa.Socio.DataSuspensao != null && Pessoa.Socio.Motivo != null)
+                {
+                    return Json("Esta conta encontra-se suspensa pelo seguinte motivo:" + Environment.NewLine + Pessoa.Socio.Motivo);
+                }
+
+                // agora verificamos se tem as cotas pagas
+                DateTime dataRegisto = DateTime.Parse(Pessoa.Socio.DataRegisto.ToString());
+                var nMeses = Math.Abs((DateTime.Now.Month - dataRegisto.Month) + 12 * (DateTime.Now.Year - dataRegisto.Year)) + 1;
+                int cotasPagas = _context.Cota.Where(x => x.NumSocio == Pessoa.Socio.NumCC.ToString()).Count();
+                int cotasNaoPagas = nMeses - cotasPagas;
+
+                if (cotasNaoPagas > 0)
+                {
+                    return Json(new string("Tem de pagar as cotas em atraso para poder efetuar login!"));
+                }
+            }
+            
+            // se chegar aqui esta tudo bem!
+            return Json(true);
+            
         }
         public JsonResult IsValidPassword(string Password, string Username)
         {

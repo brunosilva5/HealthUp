@@ -107,7 +107,6 @@ namespace HealthUp.Controllers
         #endregion
 
 
-#warning estamos com excessoes na criaçao de admins e professores
         #region CriarAdminProfessores
         public IActionResult CriarAdminProf()
         {

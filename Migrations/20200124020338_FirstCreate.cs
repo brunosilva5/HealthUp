@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HealthUp.Migrations
 {
-    public partial class @new : Migration
+    public partial class FirstCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,18 +51,26 @@ namespace HealthUp.Migrations
                 {
                     IdMensagem = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdPessoa = table.Column<string>(nullable: true),
+                    IdPessoaReceiver = table.Column<string>(nullable: true),
+                    IdPessoaSender = table.Column<string>(nullable: true),
                     DataEnvio = table.Column<DateTime>(nullable: true),
                     Lida = table.Column<bool>(nullable: false),
-                    Arquivada = table.Column<bool>(nullable: false),
+                    Arquivada_Receiver = table.Column<bool>(nullable: false),
+                    Arquivada_Sender = table.Column<bool>(nullable: false),
                     Conteudo = table.Column<string>(maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Mensagens", x => x.IdMensagem);
                     table.ForeignKey(
-                        name: "FK_Mensagens_Pessoas_IdPessoa",
-                        column: x => x.IdPessoa,
+                        name: "FK_Mensagens_Pessoas_IdPessoaReceiver",
+                        column: x => x.IdPessoaReceiver,
+                        principalTable: "Pessoas",
+                        principalColumn: "NumCC",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Mensagens_Pessoas_IdPessoaSender",
+                        column: x => x.IdPessoaSender,
                         principalTable: "Pessoas",
                         principalColumn: "NumCC",
                         onDelete: ReferentialAction.Restrict);
@@ -228,7 +236,7 @@ namespace HealthUp.Migrations
                         column: x => x.NumProfessor,
                         principalTable: "Professores",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -317,7 +325,7 @@ namespace HealthUp.Migrations
                         column: x => x.NumSocio,
                         principalTable: "Socios",
                         principalColumn: "NumCC",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -411,9 +419,14 @@ namespace HealthUp.Migrations
                 column: "IdAula");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Mensagens_IdPessoa",
+                name: "IX_Mensagens_IdPessoaReceiver",
                 table: "Mensagens",
-                column: "IdPessoa");
+                column: "IdPessoaReceiver");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Mensagens_IdPessoaSender",
+                table: "Mensagens",
+                column: "IdPessoaSender");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PedidosSocios_NumAdmin",
