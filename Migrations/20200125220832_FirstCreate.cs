@@ -248,9 +248,8 @@ namespace HealthUp.Migrations
                     ID_Solicitacao = table.Column<int>(nullable: true),
                     Altura = table.Column<string>(maxLength: 3, nullable: true),
                     Peso = table.Column<double>(nullable: true),
-                    DataRegisto_Peso = table.Column<DateTime>(nullable: false),
+                    DataRegisto_Peso = table.Column<DateTime>(nullable: true),
                     Motivo = table.Column<string>(maxLength: 200, nullable: true),
-                    DataRegisto = table.Column<DateTime>(nullable: true),
                     DataSuspensao = table.Column<DateTime>(nullable: true),
                     NumProfessor = table.Column<string>(nullable: true)
                 },
@@ -290,14 +289,15 @@ namespace HealthUp.Migrations
                     IdCota = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NumSocio = table.Column<string>(nullable: true),
-                    NumSocioNavigationNumCC = table.Column<string>(nullable: true)
+                    DataRegisto = table.Column<DateTime>(nullable: true),
+                    NumeroCotasPagas = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cota", x => x.IdCota);
                     table.ForeignKey(
-                        name: "FK_Cota_Socios_NumSocioNavigationNumCC",
-                        column: x => x.NumSocioNavigationNumCC,
+                        name: "FK_Cota_Socios_NumSocio",
+                        column: x => x.NumSocio,
                         principalTable: "Socios",
                         principalColumn: "NumCC",
                         onDelete: ReferentialAction.Restrict);
@@ -399,9 +399,11 @@ namespace HealthUp.Migrations
                 column: "IdExercicio");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cota_NumSocioNavigationNumCC",
+                name: "IX_Cota_NumSocio",
                 table: "Cota",
-                column: "NumSocioNavigationNumCC");
+                column: "NumSocio",
+                unique: true,
+                filter: "[NumSocio] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Exercicios_NumAdmin",

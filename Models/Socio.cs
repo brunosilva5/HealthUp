@@ -16,11 +16,12 @@ namespace HealthUp.Models
         {
             Inscreve = new HashSet<Inscreve>();
             PlanoTreino = new HashSet<PlanoTreino>();
+            
         }
         public Socio(Pessoa p) : base()
         {
             NumCC = p.NumCC;
-            DataRegisto = DateTime.Now.Date;
+            Cotas = new Cota(NumCC);
         }
 
         [Key]
@@ -49,9 +50,7 @@ namespace HealthUp.Models
         [StringLength(200)]
         public string Motivo { get; set; }
 
-        [DataType(DataType.Date)]
-        [Display(Name = "Data de registo")]
-        public DateTime? DataRegisto { get; set; }
+        
 
         [DataType(DataType.Date)]
         [Display(Name = "Data de suspensão")]
@@ -87,6 +86,9 @@ namespace HealthUp.Models
 
         [InverseProperty("NumSocioNavigation")]
         public virtual ICollection<PlanoTreino> PlanoTreino { get; set; }
+
+        [InverseProperty("NumSocioNavigation")]
+        public virtual Cota Cotas { get; set; }
 
         public List<SimpleReportViewModel> GetHistoricoPeso(HealthUpContext context)
         {
