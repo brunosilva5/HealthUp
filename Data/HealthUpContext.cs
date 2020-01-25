@@ -18,8 +18,8 @@ namespace HealthUp.Data
         }
         // change  
         public DbSet<HealthUp.Models.Admin> Admins { get; set; }
+        public DbSet<HealthUp.Models.Cota> Cota { get; set; }
         public DbSet<HealthUp.Models.Aula> Aulas { get; set; }
-        public DbSet<HealthUp.Models.AulaGrupo> AulasGrupo { get; set; }
         public DbSet<HealthUp.Models.Contem> Contem { get; set; }
         public DbSet<HealthUp.Models.Exercicio> Exercicios { get; set; }
         public DbSet<HealthUp.Models.Ginasio> Ginasios { get; set; }

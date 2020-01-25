@@ -15,7 +15,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace HealthUp.Controllers
 {
-    [MyRoleFilter(Perfil ="Admin")]
+    [MyRoleFilter(Perfil = "Admin")]
     public class AdminsController : Controller
     {
         #region PrivateVariables
@@ -48,19 +48,22 @@ namespace HealthUp.Controllers
         public IActionResult AprovarSocio(int id)
         {
             var pedido = _context.PedidosSocios.FirstOrDefault(p => p.NumCC == id.ToString());
-            Pessoa P = new Pessoa();
-            P.DataNascimento = pedido.DataNascimento;
-            P.NumCC = pedido.NumCC;
-            P.Email = pedido.Email;
-            P.Fotografia = pedido.Fotografia;
-            P.Sexo = pedido.Sexo;
-            P.Username = pedido.Username;
-            P.Nome = pedido.Nome;
-            P.Nacionalidade = pedido.Nacionalidade;
-            P.NumAdmin = (HttpContext.Session.GetString("UserId"));
-            P.Telemovel = pedido.Telemovel;
+            Pessoa P = new Pessoa
+            {
+                DataNascimento = pedido.DataNascimento,
+                NumCC = pedido.NumCC,
+                Email = pedido.Email,
+                Fotografia = pedido.Fotografia,
+                Sexo = pedido.Sexo,
+                Username = pedido.Username,
+                Nome = pedido.Nome,
+                Nacionalidade = pedido.Nacionalidade,
+                NumAdmin = (HttpContext.Session.GetString("UserId")),
+                Telemovel = pedido.Telemovel
+            };
             Socio S = new Socio()
             {
+                DataRegisto = DateTime.Now,
                 NumCC = P.NumCC,
                 NumSocioNavigation = P,
                 NumAdmin = (HttpContext.Session.GetString("UserId")),
@@ -103,33 +106,47 @@ namespace HealthUp.Controllers
 
         #endregion
 
-        #region CriarSociosProfessores
-        public IActionResult CriarAdminProf()
+
+        #region Gerir Pessoas
+        public IActionResult GerirPessoas()
         {
-            return View(_context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).Where(p => p.Socio != null).ToList());
+            return View(_context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).Where(p=>p.NumCC != HttpContext.Session.GetString("UserId")).ToList());
         }
 
         public IActionResult CriarAdmin(string id)
         {
-            Pessoa p = _context.Pessoas.FirstOrDefault(p => p.NumCC == id);
-            Admin a = new Admin(p);
-            _context.Admins.Add(a);
-            Socio s = _context.Socios.FirstOrDefault(p => p.NumCC == id.ToString());
-            _context.Remove(s);
+            Pessoa p = _context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).FirstOrDefault(p => p.NumCC == id);
+            p.Admin = new Admin();
+            p.Professor = null;
+            p.Socio = null;
+            _context.Admins.Add(p.Admin);
+            _context.Update(p);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(GerirPessoas));
         }
 
         public IActionResult CriarProfessor(string id)
         {
-            Pessoa p = _context.Pessoas.FirstOrDefault(p => p.NumCC == id);
-            Professor prof = new Professor(p);
-            prof.Especialidade = "Indefinido";
-            _context.Professores.Add(prof);
-            Socio s = _context.Socios.FirstOrDefault(p => p.NumCC == id.ToString());
-            _context.Remove(s);
+            Pessoa p = _context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).FirstOrDefault(p => p.NumCC == id);
+            p.Admin = null;
+            p.Professor = new Professor(p);
+            p.Socio = null;
+            _context.Professores.Add(p.Professor);
+            _context.Update(p);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(GerirPessoas));
+        }
+
+        public IActionResult CriarSocio(string id)
+        {
+            Pessoa p = _context.Pessoas.Include(p=>p.Admin).Include(p=>p.Professor).Include(p=>p.Socio).FirstOrDefault(p => p.NumCC == id);
+            p.Admin = null;
+            p.Professor = null;
+            p.Socio = new Socio(p);
+            _context.Socios.Add(p.Socio);
+            _context.Update(p);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(GerirPessoas));
         }
         #endregion
 
@@ -192,11 +209,13 @@ namespace HealthUp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CriarExercicio(string Nome, string Descricao, IFormFile Fotografia, IFormFile Video)
         {
-            Exercicio exercicio = new Exercicio();
-            exercicio.Nome = Nome;
-            exercicio.Descricao = Descricao;
-            exercicio.Fotografia = Fotografia.FileName;
-            exercicio.Video = Video.FileName;
+            Exercicio exercicio = new Exercicio
+            {
+                Nome = Nome,
+                Descricao = Descricao,
+                Fotografia = Fotografia.FileName,
+                Video = Video.FileName
+            };
 
             if (ModelState.IsValid)
             {
@@ -345,27 +364,62 @@ namespace HealthUp.Controllers
         }
         #endregion
 
-        #region Aulas de Grupo
 
-        public IActionResult ListAulasGrupo()
+        #region Aulas
+        public async Task<IActionResult> ListAulas()
         {
-            return View(_context.AulasGrupo);
+
+            var healthUpContext = _context.Aulas.Include(a => a.NumAdminNavigation).ThenInclude(a=>a.NumAdminNavigation).Include(a => a.NumProfessorNavigation).ThenInclude(p=>p.NumProfessorNavigation);
+            return View(await healthUpContext.ToListAsync());
         }
 
-        public IActionResult CreateAulaGrupo()
+        public IActionResult CreateAula()
         {
+            ViewData["NomeProfessor"] = new SelectList(_context.Professores.Include(x => x.NumProfessorNavigation), "NumProfessorNavigation.NumCC", "NumProfessorNavigation.Nome");
+            List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
+            ViewData["DiaSemana"] = new SelectList(dias);
             return View();
         }
+
+
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [RequestSizeLimit(100_000_000)]
-        public IActionResult CreateAulaGrupo(IFormCollection dados, IFormFile FotografiaDivulgacao, IFormFile VideoDivulgacao)
+        public IActionResult CreateAula(IFormCollection dados, IFormFile FotografiaDivulgacao, IFormFile VideoDivulgacao)
         {
             if (Path.GetExtension(FotografiaDivulgacao.FileName) != ".jpg") ModelState.AddModelError("FotografiaDivulgacao", "O formato do ficheiro tem de ser.jpg");
             if (Path.GetExtension(VideoDivulgacao.FileName) != ".mp4") ModelState.AddModelError("VideoDivulgacao", "O formato do ficheiro tem de ser .mp4");
+            if (DateTime.Parse(dados["ValidoDe"]) > DateTime.Parse(dados["ValidoAte"])) ModelState.AddModelError("ValidoAte", "A validade está incorreta");
 
+            Aula aula = new Aula
+            {
+                NumAdminNavigation = _context.Admins.FirstOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId")),
+
+                // Guardar o id do admin que criou
+                NumAdmin = HttpContext.Session.GetString("UserId"),
+                // Guardar o professor associado a esta aula
+                NumProfessor = dados["IdProfessor"],
+                // alterar
+                DiaSemana = HelperFunctions.GetDay(dados["DiaSemana"]),
+
+                HoraInicio = TimeSpan.Parse(dados["HoraInicio"]),
+                Lotacao = int.Parse(dados["Lotacao"]),
+                ValidoDe = DateTime.Parse(dados["ValidoDe"]),
+                ValidoAte = DateTime.Parse(dados["ValidoAte"]),
+                Nome = dados["Nome"],
+                Descricao = dados["Descricao"],
+                FotografiaDivulgacao = Path.GetFileName(FotografiaDivulgacao.FileName),
+                VideoDivulgacao = Path.GetFileName(VideoDivulgacao.FileName)
+            };
             if (ModelState.IsValid)
             {
+                
+               
+                _context.Add(aula);
+                _context.SaveChanges();
 
+                //guardar ficheiros no wwwroot
                 string caminho = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
                 string nome_ficheiro = Path.GetFileName(FotografiaDivulgacao.FileName);
                 string caminho_completo = Path.Combine(caminho, nome_ficheiro);
@@ -385,206 +439,13 @@ namespace HealthUp.Controllers
 
                 ff.Close();
 
-
-
-
-                AulaGrupo novo = new AulaGrupo();
-                novo.Nome = dados["Nome"];
-                novo.Descricao = dados["Descricao"];
-                novo.FotografiaDivulgacao = Path.GetFileName(FotografiaDivulgacao.FileName);
-                novo.VideoDivulgacao = Path.GetFileName(VideoDivulgacao.FileName);
-
-                _context.AulasGrupo.Add(novo);
-
-                _context.SaveChanges();
-
-                return RedirectToAction("ListAulasGrupo");
-            }
-
-
-            return View();
-        }
-        public IActionResult EditAulaGrupo(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var aulaGrupo = _context.AulasGrupo.FirstOrDefault(m => m.IdAula == id);
-            if (aulaGrupo == null)
-            {
-                return NotFound();
-            }
-
-            return View(aulaGrupo);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [RequestSizeLimit(100_000_000)]
-        public async Task<IActionResult> EditAulaGrupo(int id, IFormCollection dados, IFormFile FotografiaDivulgacao, IFormFile VideoDivulgacao)
-        {
-            if (FotografiaDivulgacao != null)
-            {
-                if (Path.GetExtension(FotografiaDivulgacao.FileName) != ".jpg") ModelState.AddModelError("FotografiaDivulgacao", "O formato do ficheiro tem de ser.jpg");
-            }
-
-            if (VideoDivulgacao != null)
-            {
-                if (Path.GetExtension(VideoDivulgacao.FileName) != ".mp4" && VideoDivulgacao != null) ModelState.AddModelError("VideoDivulgacao", "O formato do ficheiro tem de ser .mp4");
-            }
-
-            if (ModelState.IsValid)
-            {
-                AulaGrupo x = _context.AulasGrupo.FirstOrDefault(x => x.IdAula == id);
-                try
-                {
-                    if (x.Nome != dados["Nome"]) x.Nome = dados["Nome"];
-                    if (x.Descricao != dados["Descricao"]) x.Descricao = dados["Descricao"];
-                    if (VideoDivulgacao != null)
-                    {
-                        if (x.VideoDivulgacao != Path.GetFileName(VideoDivulgacao.FileName))
-                        {
-                            string caminho = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
-                            string nome_ficheiro = Path.GetFileName(VideoDivulgacao.FileName);
-                            string caminho_completo = Path.Combine(caminho, nome_ficheiro);
-
-                            FileStream f = new FileStream(caminho_completo, FileMode.Create);
-                            VideoDivulgacao.CopyTo(f);
-
-                            f.Close();
-
-                            x.VideoDivulgacao = Path.GetFileName(VideoDivulgacao.FileName);
-                        }
-                    }
-                    if (FotografiaDivulgacao != null)
-                    {
-                        if (x.FotografiaDivulgacao != Path.GetFileName(FotografiaDivulgacao.FileName))
-                        {
-                            string caminho = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
-                            string nome_ficheiro = Path.GetFileName(FotografiaDivulgacao.FileName);
-                            string caminho_completo = Path.Combine(caminho, nome_ficheiro);
-
-                            FileStream f = new FileStream(caminho_completo, FileMode.Create);
-                            FotografiaDivulgacao.CopyTo(f);
-
-                            x.FotografiaDivulgacao = Path.GetFileName(FotografiaDivulgacao.FileName);
-
-                        }
-                    }
-
-                    _context.Update(x);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AulaGrupoExists(x.IdAula))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("ListAulasGrupo");
-            }
-            return View(_context.AulasGrupo.FirstOrDefault(x => x.IdAula == id));
-        }
-
-        public async Task<IActionResult> DeleteAulaGrupo(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var aulaGrupo = await _context.AulasGrupo
-                .FirstOrDefaultAsync(m => m.IdAula == id);
-            if (aulaGrupo == null)
-            {
-                return NotFound();
-            }
-
-            return View(aulaGrupo);
-        }
-
-        // POST: asd/Delete/5
-        [HttpPost, ActionName("DeleteAulaGrupo")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmedAulaGrupo(int id)
-        {
-            var aulaGrupo = await _context.AulasGrupo.FindAsync(id);
-            _context.AulasGrupo.Remove(aulaGrupo);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("ListAulasGrupo");
-        }
-        private bool AulaGrupoExists(int id)
-        {
-            return _context.AulasGrupo.Any(e => e.IdAula == id);
-        }
-
-        #endregion
-
-
-        #region Aulas
-        public async Task<IActionResult> ListAulas()
-        {
-
-            var healthUpContext = _context.Aulas.Include(a => a.AulaGrupoNavigation).Include(a => a.NumAdminNavigation).ThenInclude(a=>a.NumAdminNavigation).Include(a => a.NumProfessorNavigation).ThenInclude(p=>p.NumProfessorNavigation);
-            return View(await healthUpContext.ToListAsync());
-        }
-
-        public IActionResult CreateAula()
-        {
-            ViewData["NomeAula"] = new SelectList(_context.AulasGrupo, "IdAula", "Nome");
-            ViewData["NomeProfessor"] = new SelectList(_context.Professores.Include(x => x.NumProfessorNavigation), "NumProfessorNavigation.NumCC", "NumProfessorNavigation.Nome");
-            List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
-            ViewData["DiaSemana"] = new SelectList(dias);
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CreateAula(IFormCollection dados)
-        {
-            if (ModelState.IsValid)
-            {
-                Aula aula = new Aula();
-                string x = dados["IdAula"];
-                aula.AulaGrupoNavigation = _context.AulasGrupo.FirstOrDefault(x => x.IdAula == int.Parse(dados["IdAula"]));
-                aula.NumAdminNavigation = _context.Admins.FirstOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
-                string idP = 
-
-                // Guardar o id do admin que criou
-                aula.NumAdmin = HttpContext.Session.GetString("UserId");
-                // Guardar o professor associado a esta aula
-                aula.NumProfessor= dados["IdProfessor"];
-                // alterar
-                aula.DiaSemana = HelperFunctions.GetDay(dados["DiaSemana"]);
-
-                aula.HoraInicio = TimeSpan.Parse(dados["HoraInicio"]);
-                aula.Lotacao = int.Parse(dados["Lotacao"]);
-                aula.ValidoDe = DateTime.Parse(dados["ValidoDe"]);
-                if (string.IsNullOrEmpty(dados["ValidoAte"]))
-                {
-                    aula.ValidoAte = new DateTime(2050, 1, 1);
-                }
-                else
-                {
-                    aula.ValidoAte = DateTime.Parse(dados["ValidoAte"]);
-                }
-                _context.Add(aula);
-                _context.SaveChanges();
                 return RedirectToAction(nameof(ListAulas));
 
             }
-            ViewData["NomeAula"] = new SelectList(_context.AulasGrupo, "IdAula", "Nome");
             ViewData["NomeProfessor"] = new SelectList(_context.Professores.Include(x => x.NumProfessorNavigation), "NumProfessorNavigation.NumCC", "NumProfessorNavigation.Nome");
             List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
             ViewData["DiaSemana"] = new SelectList(dias);
-            return View();
+            return View(aula);
         }
 
         public async Task<IActionResult> EditAula(int? id)
@@ -599,7 +460,6 @@ namespace HealthUp.Controllers
             {
                 return NotFound();
             }
-            ViewData["NomeAula"] = new SelectList(_context.AulasGrupo, "IdAula", "Nome");
             ViewData["NomeProfessor"] = new SelectList(_context.Professores.Include(x => x.NumProfessorNavigation), "NumProfessorNavigation.NumCC", "NumProfessorNavigation.Nome");
             List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
             ViewData["DiaSemana"] = new SelectList(dias);
@@ -608,8 +468,14 @@ namespace HealthUp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditAula(int id, IFormCollection dados)
+        [RequestSizeLimit(100_000_000)]
+        public async Task<IActionResult> EditAula(int id, IFormCollection dados, IFormFile FotografiaDivulgacao, IFormFile VideoDivulgacao)
         {
+            if (Path.GetExtension(FotografiaDivulgacao.FileName) != ".jpg") ModelState.AddModelError("FotografiaDivulgacao", "O formato do ficheiro tem de ser.jpg");
+            if (Path.GetExtension(VideoDivulgacao.FileName) != ".mp4") ModelState.AddModelError("VideoDivulgacao", "O formato do ficheiro tem de ser .mp4");
+            if (DateTime.Parse(dados["ValidoDe"]) > DateTime.Parse(dados["ValidoAte"])) ModelState.AddModelError("ValidoAte", "A validade está incorreta");
+
+
 
             Aula aula = _context.Aulas.First(x => x.IdAula == id);
             if (ModelState.IsValid)
@@ -633,6 +499,10 @@ namespace HealthUp.Controllers
                         }
                     }
                     if (aula.ValidoDe != DateTime.Parse(dados["ValidoDe"])) aula.ValidoDe = DateTime.Parse(dados["ValidoDe"]);
+                    aula.Nome = dados["Nome"];
+                    aula.Descricao = dados["Descricao"];
+                    aula.FotografiaDivulgacao = Path.GetFileName(FotografiaDivulgacao.FileName);
+                    aula.VideoDivulgacao = Path.GetFileName(VideoDivulgacao.FileName);
 
                     _context.Update(aula);
                     await _context.SaveChangesAsync();
@@ -650,13 +520,39 @@ namespace HealthUp.Controllers
                 }
                 return RedirectToAction(nameof(ListAulas));
             }
-            ViewData["NomeAula"] = new SelectList(_context.AulasGrupo, "IdAula", "Nome");
+            //guardar ficheiros no wwwroot
+            string caminho = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
+            string nome_ficheiro = Path.GetFileName(FotografiaDivulgacao.FileName);
+            string caminho_completo = Path.Combine(caminho, nome_ficheiro);
+
+            FileStream f = new FileStream(caminho_completo, FileMode.Create);
+            FotografiaDivulgacao.CopyTo(f);
+
+            f.Close();
+
+
+            string caminho1 = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
+            string nome_ficheiro1 = Path.GetFileName(VideoDivulgacao.FileName);
+            string caminho_completo1 = Path.Combine(caminho1, nome_ficheiro1);
+
+            FileStream ff = new FileStream(caminho_completo1, FileMode.Create);
+            VideoDivulgacao.CopyTo(ff);
+
+            ff.Close();
+
             ViewData["NomeProfessor"] = new SelectList(_context.Professores.Include(x => x.NumProfessorNavigation), "NumProfessorNavigation.NumCC", "NumProfessorNavigation.Nome");
             List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
             ViewData["DiaSemana"] = new SelectList(dias);
             return View(aula);
         }
 
+        public IActionResult DetailsAula(int id)
+        {
+            Aula a = _context.Aulas.Include(x => x.NumProfessorNavigation).Include(x => x.NumAdminNavigation).FirstOrDefault(x => x.IdAula == id);
+            ViewBag.Admin = _context.Pessoas.First(x => x.NumCC == a.NumAdmin).Nome;
+            ViewBag.Professor = _context.Pessoas.First(x=>x.NumCC == a.NumProfessor).Nome;
+            return View(a);
+        }
         public async Task<IActionResult> DeleteAula(int? id)
         {
             if (id == null)
@@ -665,7 +561,6 @@ namespace HealthUp.Controllers
             }
 
             var aula = await _context.Aulas
-                .Include(a => a.AulaGrupoNavigation)
                 .Include(a => a.NumAdminNavigation)
                 .Include(a => a.NumProfessorNavigation)
                 .FirstOrDefaultAsync(m => m.IdAula == id);
@@ -673,7 +568,8 @@ namespace HealthUp.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.Admin = _context.Pessoas.First(x => x.NumCC == aula.NumAdmin).Nome;
+            ViewBag.Professor = _context.Pessoas.First(x => x.NumCC == aula.NumProfessor).Nome;
             return View(aula);
         }
 
@@ -691,6 +587,65 @@ namespace HealthUp.Controllers
         {
             return _context.Aulas.Any(e => e.IdAula == id);
         }
+
+        #endregion
+
+
+        #region Cotas
+        public IActionResult ListarSocios()
+        {
+            var lista = _context.Socios.Include(x=>x.NumSocioNavigation).ToList();
+            return View(lista);
+        }
+
+        public IActionResult ListarCotas(int id)
+        {
+            ViewBag.id = id;
+            Socio s = _context.Socios.Include(x => x.NumSocioNavigation).First(x => x.NumCC == id.ToString());
+            string registo = s.DataRegisto.ToString();
+            DateTime dataRegisto = DateTime.Parse(registo);
+            var nMeses = Math.Abs((DateTime.Now.Month -dataRegisto.Month) + 12 * (DateTime.Now.Year -dataRegisto.Year))+1;
+
+            int cotasPagas = _context.Cota.Where(x => x.NumSocio == id.ToString()).Count();
+            int cotasNaoPagas = nMeses - cotasPagas;
+
+            List<DateTime> listaNaoPagas = new List<DateTime>();
+
+            for (int i = 0; i < cotasNaoPagas; i++)
+            {
+                DateTime x = dataRegisto.AddMonths(i+cotasPagas);
+                listaNaoPagas.Add(x);
+            }
+
+            return View(listaNaoPagas);
+            
+        }
+
+        public IActionResult AcertarCotas(int id)
+        {
+            Socio s = _context.Socios.Include(x => x.NumSocioNavigation).First(x => x.NumCC == id.ToString());
+            string registo = s.DataRegisto.ToString();
+            DateTime dataRegisto = DateTime.Parse(registo);
+            var nMeses = Math.Abs((DateTime.Now.Month - dataRegisto.Month) + 12 * (DateTime.Now.Year - dataRegisto.Year)) + 1;
+
+            int cotasPagas = _context.Cota.Where(x => x.NumSocio == id.ToString()).Count();
+            int cotasNaoPagas = nMeses - cotasPagas;
+
+            for (int i = 0; i < cotasNaoPagas; i++)
+            {
+                DateTime x = dataRegisto.AddMonths(i + cotasPagas);
+                Cota nova = new Cota
+                {
+                    NumSocio = id.ToString()
+                };
+                _context.Cota.Add(nova);
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("ListarSocios");
+        }
+
 
         #endregion
     }

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<HealthUp.Models.Socio>
+
+<table class="content-table">
+    <thead>
+        <tr>
+            <th>
+                Nome
+            </th>
+            <th>
+                Telemóvel
+            </th>
+            <th>
+                Fotografia
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumSocioNavigation.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumSocioNavigation.Telemovel)
+                </td>
+                <td>
+                    <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.NumSocioNavigation.Fotografia)" height="200" />
+                </td>
+                <td>
+                    <a asp-action="ListarCotas" asp-route-id="@item.NumCC">Registo de Cotas</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

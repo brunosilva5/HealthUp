@@ -1,0 +1,69 @@
+﻿@model IEnumerable<HealthUp.Models.Contem>
+
+@{
+    ViewData["Title"] = "Lista de exercícios";
+}
+
+<h1>Lista de exercícios</h1>
+
+
+<table class="content-table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.IdExercicioNavigation.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdExercicioNavigation.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdExercicioNavigation.Fotografia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdExercicioNavigation.Video)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumRepeticoes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PeriodoDescanso)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuantidadeSeries)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdExercicioNavigation.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdExercicioNavigation.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdExercicioNavigation.Fotografia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdExercicioNavigation.Video)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumRepeticoes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PeriodoDescanso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantidadeSeries)
+            </td>
+            <td>
+                <a asp-action="ApagarExercicio" asp-route-id="@item.IdPlano" asp-route-PlanoId="@ViewBag.PlanoId">Apagar</a> |
+                <a asp-action="EditarExercicio" asp-route-id="@item.IdPlano">Editar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

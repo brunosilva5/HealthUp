@@ -19,18 +19,9 @@ namespace HealthUp.Models
             SociosSuspensos = new HashSet<Socio>();
             SolicitacaoProfessor = new HashSet<SolicitacaoProfessor>();
         }
-        public Admin(Pessoa p)
+        public Admin(Pessoa p) : base ()
         {
-            Aula = new HashSet<Aula>();
-            Exercicio = new HashSet<Exercicio>();
-            Ginasio = new HashSet<Ginasio>();
-            PedidosSocio = new HashSet<PedidoSocio>();
-            ProfessoresSuspensos = new HashSet<Professor>();
-            SociosSuspensos = new HashSet<Socio>();
-            SolicitacaoProfessor = new HashSet<SolicitacaoProfessor>();
-
             NumCC = p.NumCC;
-            NumAdminNavigation = p;
         }
 
         [Key]
@@ -44,22 +35,35 @@ namespace HealthUp.Models
         // REFERENCIA A PESSOA
         [ForeignKey(nameof(NumCC))]
         [InverseProperty(nameof(Pessoa.Admin))]
+        [Display(Name = "Número de navegação do administrador")]
         public virtual Pessoa NumAdminNavigation { get; set; }
 
         //----------------------------------------------------------------------------------------
         [InverseProperty("NumAdminNavigation")]
         public virtual ICollection<Aula> Aula { get; set; }
+        
         [InverseProperty("NumAdminNavigation")]
+        [Display(Name = "Exercício")]
         public virtual ICollection<Exercicio> Exercicio { get; set; }
+        
         [InverseProperty("NumAdminNavigation")]
+        [Display(Name = "Ginásio")]
         public virtual ICollection<Ginasio> Ginasio { get; set; }
+        
         [InverseProperty("NumAdminNavigation")]
+        [Display(Name = "Pedidos de sócio")]
         public virtual ICollection<PedidoSocio> PedidosSocio { get; set; }
+        
         [InverseProperty("NumAdminNavigation")]
+        [Display(Name = "Professores suspensos")]
         public virtual ICollection<Professor> ProfessoresSuspensos { get; set; }
+        
         [InverseProperty("NumAdminNavigation")]
+        [Display(Name = "Sócios suspensos")]
         public virtual ICollection<Socio> SociosSuspensos { get; set; }
+        
         [InverseProperty("NumAdminNavigation")]
+        [Display(Name = "Solicitação de professor")]
         public virtual ICollection<SolicitacaoProfessor> SolicitacaoProfessor { get; set; }
     }
 }

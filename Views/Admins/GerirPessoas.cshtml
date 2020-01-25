@@ -1,0 +1,106 @@
+﻿@model IEnumerable<HealthUp.Models.Pessoa>
+@{
+    ViewData["Title"] = "Gerir pessoas";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+}
+
+<div class="container">
+    <h1>@ViewData["Tittle"]</h1>
+    <table class="content-table">
+        <thead>
+            <tr>
+                <th>
+                    Função
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sexo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fotografia)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataNascimento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Telemovel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nacionalidade)
+                </th>
+
+            <th>
+                Tornar
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (HelperFunctions.IsAdmin(Context.RequestServices.GetRequiredService<HealthUpContext>(), @item.NumCC))
+                    {
+                        <span>Administrador</span>
+                    }
+                    @if (HelperFunctions.IsProfessor(Context.RequestServices.GetRequiredService<HealthUpContext>(), @item.NumCC))
+                    {
+                        <span>Professor</span>
+                    }
+                    @if (HelperFunctions.IsSocio(Context.RequestServices.GetRequiredService<HealthUpContext>(), @item.NumCC))
+                    {
+                        <span>Sócio</span>
+
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sexo)
+                </td>
+                <td>
+                    <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.Fotografia)" width="100" height="100" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataNascimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telemovel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nacionalidade)
+                </td>
+                <td>
+                    @if (HelperFunctions.IsAdmin(Context.RequestServices.GetRequiredService<HealthUpContext>(), @item.NumCC))
+                    {
+                        <a asp-action="CriarSocio" asp-route-id="@item.NumCC">Socio</a>
+                        <br />
+                        <a asp-action="CriarProfessor" asp-route-id="@item.NumCC">Professor</a>
+                    }
+                    @if (HelperFunctions.IsProfessor(Context.RequestServices.GetRequiredService<HealthUpContext>(), @item.NumCC))
+                    {
+                        <a asp-action="CriarSocio" asp-route-id="@item.NumCC">Socio</a>
+                        <br />
+                        <a asp-action="CriarAdmin" asp-route-id="@item.NumCC">Administrador</a>
+                    }
+                    @if (HelperFunctions.IsSocio(Context.RequestServices.GetRequiredService<HealthUpContext>(), @item.NumCC))
+                    {
+                        <a asp-action="CriarProfessor" asp-route-id="@item.NumCC">Professor</a>
+                        <br />
+                        <a asp-action="CriarAdmin" asp-route-id="@item.NumCC">Administrador</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>

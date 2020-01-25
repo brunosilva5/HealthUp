@@ -1,0 +1,50 @@
+﻿@model HealthUp.Models.Contem
+
+@{
+    ViewData["Title"] = "Apagar exercicio";
+}
+
+
+<h3>Tem a certeza que pretende apagar?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumRepeticoes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumRepeticoes)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PeriodoDescanso)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PeriodoDescanso)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.QuantidadeSeries)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.QuantidadeSeries)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdExercicioNavigation.Nome)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdExercicioNavigation.Nome)
+        </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdExercicioNavigation.Descricao)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdExercicioNavigation.Descricao)
+        </dd class>
+    </dl>
+    
+    <form asp-action="ApagarExercicio" method="post">
+        <input type="hidden" asp-for="IdPlano" />
+        <input type="hidden" asp-for="IdExercicio" />
+        <input type="submit" value="Apagar" class="btn btn-danger" /> |
+        <a asp-action="VerExerciciosSocio" asp-route-IdPlano="@Model.IdPlano">Voltar</a>
+    </form>
+</div>

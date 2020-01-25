@@ -17,7 +17,8 @@ using OfficeOpenXml.Style;
 
 namespace HealthUp.Controllers
 {
-    [MyRoleFilter(Perfil ="Socio")]
+    [MyRoleFilter(Perfil = "Socio, Professor")]
+    [PerfilCompleto]
     public class SociosController : Controller
     {
         #region PrivateVariables
@@ -108,8 +109,8 @@ namespace HealthUp.Controllers
         public IActionResult ConsultarHistoricoPeso()
         {
             // construcao da lista de historico de pesos para construcao do grafico
-            List<SimpleReportViewModel> lstModel = GetHistoricoPeso();
-            
+             List<SimpleReportViewModel> lstModel = GetHistoricoPeso();
+             
 
             return View(lstModel);
         }
@@ -190,31 +191,40 @@ namespace HealthUp.Controllers
             return RedirectToAction(nameof(Index));
         }
         #endregion
-
         #region HistoricoAulas
-#warning "CODIGO AINDA NAO TESTADO"
-        public IActionResult HistoricoAulas()
+        public IActionResult HistoricoAulas(string IdSocio = null)
         {
-            var socio=_context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
-            // load de todas as properties usadas por esta collection
-            _context.Entry(socio).Collection(p => p.Inscreve).Load();
-            return View(socio.Inscreve);
+            List<Inscreve> Inscricoes = new List<Inscreve>();
+            if (IdSocio!=null)
+            {
+                Inscricoes = _context.Inscricoes.Where(x => x.NumSocio == IdSocio).ToList();
+            }
+            else
+            {
+                Inscricoes = _context.Inscricoes.Where(x => x.NumSocio == HttpContext.Session.GetString("UserId")).ToList();
+            }
+            List<Aula> Lista = new List<Aula>();
+            foreach (var item in Inscricoes)
+            {
+                Lista.Add(_context.Aulas.Include(x=>x.NumAdminNavigation).Include(x=>x.NumProfessorNavigation).ThenInclude(x=>x.NumProfessorNavigation).FirstOrDefault(x => x.IdAula == item.IdAula));
+            }
+            return View(Lista);
         }
+        
         #endregion
 
         #region ConsultarPlanoTreino
-#warning "CODIGO AINDA NAO TESTADO"
+#warning "BRUNO POE ISTO BONITO"
 
         public IActionResult ConsultarPlanoTreino()
         {
-            var socio = _context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
+            var planos=_context.PlanosTreino.Include(p=>p.Contem).ThenInclude(cp=>cp.IdExercicioNavigation).Include(p=>p.NumProfessorNavigation).ThenInclude(p=>p.NumProfessorNavigation).Include(p=>p.NumSocioNavigation).ThenInclude(p=>p.NumSocioNavigation).Where(p => p.NumSocio == HttpContext.Session.GetString("UserId"));
             // load de todas as properties usadas por esta collection
-            _context.Entry(socio).Collection(p => p.PlanoTreino).Load();
-            if (socio.PlanoTreino.Any()==false)
+            if (planos.Any()==false)
             {
                 return RedirectToAction(nameof(Index), "Home");
             }
-            return View(socio.PlanoTreino);
+            return View(planos);
 
         }
         #endregion
@@ -223,38 +233,49 @@ namespace HealthUp.Controllers
 
         public IActionResult ListarAulas()
         {
-            return View();
-        }
-
-        public IActionResult ListarAulasByData(DateTime data)
-        {
+            List<Aula> listaAulas = new List<Aula>();
+            DateTime data = DateTime.Now;
             int dia = (int)data.DayOfWeek;
-            var lista = _context.Aulas.Include(x => x.AulaGrupoNavigation).Include(x=>x.Inscreve);
-            lista.Where(x => x.AulaGrupoNavigation.Aula.DiaSemana == dia && x.ValidoAte>data && x.ValidoDe<data );
-            ViewBag.Socio = _context.Socios.FirstOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId")).NumCC;
-            return PartialView(nameof(ListarAulasByData),lista.ToList());
 
+
+            var lista = _context.Aulas.Include(x => x.Inscreve).Where(x => x.DiaSemana == dia && x.ValidoAte > data && x.ValidoDe < data);
+            foreach (var item in lista)
+            {
+                var diffInSeconds = (item.HoraInicio - DateTime.Now.TimeOfDay).TotalSeconds;
+                if (diffInSeconds<=3600)
+                {
+                    listaAulas.Add(item);
+                }
+            }
+
+            ViewBag.Socio = _context.Socios.FirstOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId")).NumCC;
+            return View(nameof(ListarAulas), listaAulas.ToList());
         }
+
 
         public IActionResult Inscrever(int aula)
         {
-            Inscreve i = new Inscreve();
-            i.IdAula = aula;
-            i.NumSocio = HttpContext.Session.GetString("UserId");
+            
+            Inscreve i = new Inscreve
+            {
+                IdAula = aula,
+                NumSocio = HttpContext.Session.GetString("UserId")
+            };
             _context.Inscricoes.Add(i);
             _context.SaveChanges();
-            return View(nameof(ListarAulas));
-
+            return RedirectToAction(nameof(ListarAulas));
         }
 
         public IActionResult Desinscrever(int aula)
         {
-            Inscreve i = new Inscreve();
-            i.IdAula = aula;
-            i.NumSocio = HttpContext.Session.GetString("UserId");
+            Inscreve i = new Inscreve
+            {
+                IdAula = aula,
+                NumSocio = HttpContext.Session.GetString("UserId")
+            };
             _context.Inscricoes.Remove(i);
             _context.SaveChanges();
-            return View(nameof(ListarAulas));
+            return RedirectToAction(nameof(ListarAulas));
 
         }
         #endregion

@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using HealthUp.Data;
 using HealthUp.Models;
 using Microsoft.AspNetCore.Http;
+using HealthUp.Filters;
 
 namespace HealthUp.Controllers
 {
+    [MyRoleFilter(Perfil = "Admin")]
     public class GinasiosController : Controller
     {
         private readonly HealthUpContext _context;
@@ -33,7 +35,7 @@ namespace HealthUp.Controllers
         }
 
         // GET: Ginasios/Edit/5
-        public async Task<IActionResult> Edit()
+        public IActionResult Edit()
         {
             var ginasio = _context.Ginasios.FirstOrDefault();
             // apagar o indicativo

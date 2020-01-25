@@ -12,10 +12,12 @@ using HealthUp.Filters;
 using Newtonsoft.Json;
 using System.Collections.Specialized;
 using HealthUp.Helpers;
+using Microsoft.AspNetCore.Routing;
 
 namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Professor")]
+    [PerfilCompleto]
     public class ProfessoresController : Controller
     {
         #region PrivateVariables
@@ -100,16 +102,29 @@ namespace HealthUp.Controllers
             var x = _context.Pessoas.Include(x => x.Socio).Where(x => x.Socio.NumProfessor == HttpContext.Session.GetString("UserId"));
             return View(_context.Pessoas.Include(x => x.Socio).Where(x => x.Socio.NumProfessor == HttpContext.Session.GetString("UserId")));
         }
+
+        public IActionResult HistoricoAulas(int id)
+        {
+
+            var values = new RouteValueDictionary(new
+            {
+                action = "HistoricoAulas",
+                controller = "Socios",
+                IdSocio = id.ToString()
+            });
+           
+            return RedirectToAction("HistoricoAulas", "Socios", values);
+        }
         #endregion
 
         #region ConsultarSociosInscritosAulas
         public IActionResult ConsultarSociosInscritosAulas()
         {
-            List<Aula> Lista = _context.Aulas.Include(a=>a.AulaGrupoNavigation).Where(a=>a.NumProfessor==HttpContext.Session.GetString("UserId")).ToList();
+            List<Aula> Lista = _context.Aulas.Where(a=>a.NumProfessor==HttpContext.Session.GetString("UserId")).ToList();
 
             ViewBag.Aulas = Lista.Select(s => new SelectListItem()
             {
-                Text = s.AulaGrupoNavigation.Nome,
+               
                 Value = s.IdAula.ToString()
             });
 
@@ -132,6 +147,47 @@ namespace HealthUp.Controllers
             return PartialView("Partial_ConsultarSociosInscritosAulas", ListaSocios);
 
         }
+        #endregion
+
+        #region CriarPlanoExercicioSocio
+        public IActionResult PlanosExercicioSocios()
+        {
+            return RedirectToAction("Index", "PlanoTreinos");
+        }
+        #endregion
+
+        #region Consultar aulas que leciona
+
+        public IActionResult ConsultarAulasQueLeciona()
+        {
+            var lista = _context.Aulas.Where(x => x.NumProfessor == HttpContext.Session.GetString("UserId"))
+                .Where(y => y.ValidoAte > DateTime.Now && y.ValidoDe < DateTime.Now);
+            return View(lista);
+        }
+
+        #endregion
+
+
+
+        #region Consulta lista de alunos inscritos nas suas aulas
+        public IActionResult ListAulas()
+        {
+            var lista = _context.Aulas.Where(x => x.NumProfessor == HttpContext.Session.GetString("UserId"));
+            return View(lista);
+        }
+
+        public IActionResult ListSocios(int id)
+        {
+            var lista = _context.Inscricoes.Where(x => x.IdAula == id);
+            List<Socio> socios = new List<Socio>();
+
+            foreach (var item in lista)
+            {
+                socios.Add(_context.Socios.Include(x=>x.NumSocioNavigation).First(x => x.NumCC == item.NumSocio));
+            }
+            return View(socios);
+        }
+
         #endregion
     }
 }
