@@ -77,19 +77,19 @@ namespace HealthUp.Models
        
         //----------------------------------------------------------------------------------------
         // REFERENCIA A ADMIN
-        [InverseProperty("NumAdminNavigation")]
-        public Admin Admin { get; set; }
+        //[InverseProperty("NumAdminNavigation")]
+        public virtual Admin Admin { get; set; }
         //----------------------------------------------------------------------------------------
 
-        [InverseProperty("NumProfessorNavigation")]
+        //[InverseProperty("NumProfessorNavigation")]
         public virtual Professor Professor { get; set; }
         
-        [InverseProperty("NumSocioNavigation")]
+        //[InverseProperty("NumSocioNavigation")]
         public virtual Socio Socio { get; set; }
         
-        [InverseProperty("IdPessoaReceiverNavigation")]
+        //[InverseProperty("IdPessoaReceiverNavigation")]
         public virtual ICollection<Mensagem> MensagensEntrada { get; set; }
-        [InverseProperty("IdPessoaSenderNavigation")]
+        //[InverseProperty("IdPessoaSenderNavigation")]
         public virtual ICollection<Mensagem> MensagensSaida { get; set; }
 
     }

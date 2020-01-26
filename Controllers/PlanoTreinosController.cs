@@ -14,7 +14,7 @@ using HealthUp.Filters;
 namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Professor")]
-    public class PlanoTreinosController : Controller
+    public class PlanoTreinosController : BaseController
     {
         private readonly HealthUpContext _context;
 

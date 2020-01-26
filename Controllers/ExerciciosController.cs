@@ -15,7 +15,7 @@ using Microsoft.Extensions.Hosting;
 namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Admin")]
-    public class ExerciciosController : Controller
+    public class ExerciciosController : BaseController
     {
         private readonly HealthUpContext _context;
         private readonly IHostEnvironment _hostEnvironment;
@@ -28,7 +28,7 @@ namespace HealthUp.Controllers
         // GET: Exercicios
         public async Task<IActionResult> Index()
         {           
-            return View(await _context.Exercicios.Include(e => e.NumAdminNavigation).ThenInclude(e => e.NumAdminNavigation).ToListAsync());
+            return View(await _context.Exercicios.Include(e => e.NumAdminNavigation).ThenInclude(e => e.Pessoa).ToListAsync());
         }
 
      
@@ -56,12 +56,12 @@ namespace HealthUp.Controllers
             {
                 //--------------------------------------------------------------------------------------------------------------------------------------
                 // Adicionar na tabela de solicitacoes do admin
-                var admin = _context.Admins.Include(x => x.Exercicio).Include(x => x.NumAdminNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
+                var admin = _context.Admins.Include(x => x.Exercicio).Include(x => x.Pessoa).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
                 admin.Exercicio.Add(exercicio);
                 _context.Admins.Update(admin);
                 // --------------------------------------------------------------------------------------------------------------------------------------
 
-                exercicio.NumAdmin = _context.Admins.Include(x => x.NumAdminNavigation).SingleOrDefault(a => a.NumCC == HttpContext.Session.GetString("UserId")).NumCC;
+                exercicio.NumAdmin = _context.Admins.Include(x => x.Pessoa).SingleOrDefault(a => a.NumCC == HttpContext.Session.GetString("UserId")).NumCC;
 
                 _context.Add(exercicio);
                 await _context.SaveChangesAsync();
@@ -86,7 +86,7 @@ namespace HealthUp.Controllers
 
                 ff.Close();
 
-                return RedirectToAction(nameof(Index), "Home");
+                return RedirectToAction(nameof(Index));
             }
             return View(exercicio);
         }
@@ -150,7 +150,7 @@ namespace HealthUp.Controllers
             }
 
             var exercicio = await _context.Exercicios
-                .Include(e => e.NumAdminNavigation)
+                .Include(e => e.NumAdminNavigation).ThenInclude(e=>e.Pessoa)
                 .FirstOrDefaultAsync(m => m.IdExercicio == id);
             if (exercicio == null)
             {

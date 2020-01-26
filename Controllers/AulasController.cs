@@ -11,10 +11,12 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using HealthUp.Helpers;
 using Microsoft.Extensions.Hosting;
+using HealthUp.Filters;
 
 namespace HealthUp.Controllers
 {
-    public class AulasController : Controller
+    [MyRoleFilter(Perfil = "Admin")]
+    public class AulasController : BaseController
     {
         private readonly HealthUpContext _context;
         private readonly IHostEnvironment _hostEnvironment;
@@ -32,26 +34,7 @@ namespace HealthUp.Controllers
             return View(await healthUpContext.ToListAsync());
         }
 
-        // GET: Aulas/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var aula = await _context.Aulas
-                .Include(a => a.NumAdminNavigation)
-                .Include(a => a.NumProfessorNavigation)
-                .FirstOrDefaultAsync(m => m.IdAula == id);
-            if (aula == null)
-            {
-                return NotFound();
-            }
-
-            return View(aula);
-        }
-
+       
         // GET: Aulas/Create
         public IActionResult Create()
         {
@@ -59,9 +42,10 @@ namespace HealthUp.Controllers
             ViewData["NomeProfessor"] = new SelectList(_context.Professores.Include(x => x.NumProfessorNavigation), "NumProfessorNavigation.NumCC", "NumProfessorNavigation.Nome");
             List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
             ViewData["DiaSemana"] = new SelectList(dias);
-            for (int i = 6; i < 24; i=i+2)
+            for (int i = _context.Ginasios.SingleOrDefault().Hora_Abertura*60; i < _context.Ginasios.SingleOrDefault().Hora_Fecho*60; i+=50)
             {
-                Horas.Add(i.ToString());
+                // timespan do total de minutos
+                Horas.Add(new TimeSpan(0, i, 0).ToString(@"hh\:mm"));
             }
             ViewData["HorasInicio"] = new SelectList(Horas);
             return View();
@@ -73,9 +57,7 @@ namespace HealthUp.Controllers
         [RequestSizeLimit(100_000_000)]
         public IActionResult Create(IFormCollection dados, IFormFile FotografiaDivulgacao, IFormFile VideoDivulgacao)
         {
-            //if (Path.GetExtension(dados[]FotografiaDivulgacao.FileName) != ".jpg") ModelState.AddModelError("FotografiaDivulgacao", "O formato do ficheiro tem de ser.jpg");
-            //if (Path.GetExtension(VideoDivulgacao.FileName) != ".mp4") ModelState.AddModelError("VideoDivulgacao", "O formato do ficheiro tem de ser .mp4");
-            //if (DateTime.Parse(dados["ValidoDe"]) > DateTime.Parse(dados["ValidoAte"])) ModelState.AddModelError("ValidoAte", "A validade está incorreta");
+            
 
             Aula aula = new Aula
             {
@@ -126,9 +108,17 @@ namespace HealthUp.Controllers
                 return RedirectToAction(nameof(Index));
 
             }
+            List<string> Horas = new List<string>();
             ViewData["NomeProfessor"] = new SelectList(_context.Professores.Include(x => x.NumProfessorNavigation), "NumProfessorNavigation.NumCC", "NumProfessorNavigation.Nome");
             List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
             ViewData["DiaSemana"] = new SelectList(dias);
+            for (int i = _context.Ginasios.SingleOrDefault().Hora_Abertura * 60; i < _context.Ginasios.SingleOrDefault().Hora_Fecho * 60; i += 50)
+            {
+                // timespan do total de minutos
+                Horas.Add(new TimeSpan(0, i, 0).ToString(@"hh\:mm"));
+            }
+            ViewData["HorasInicio"] = new SelectList(Horas);
+
             return View(aula);
         }
 
@@ -145,8 +135,17 @@ namespace HealthUp.Controllers
             {
                 return NotFound();
             }
-            ViewData["NumAdmin"] = new SelectList(_context.Admins, "NumCC", "NumCC", aula.NumAdmin);
+            List<string> Horas = new List<string>();
             ViewData["NumProfessor"] = new SelectList(_context.Professores, "NumCC", "NumCC", aula.NumProfessor);
+            List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
+            ViewData["DiaSemana"] = new SelectList(dias);
+            for (int i = _context.Ginasios.SingleOrDefault().Hora_Abertura * 60; i < _context.Ginasios.SingleOrDefault().Hora_Fecho * 60; i += 50)
+            {
+                // timespan do total de minutos
+                Horas.Add(new TimeSpan(0, i, 0).ToString(@"hh\:mm"));
+            }
+            ViewData["HorasInicio"] = new SelectList(Horas);
+
             return View(aula);
         }
 
@@ -182,8 +181,18 @@ namespace HealthUp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["NumAdmin"] = new SelectList(_context.Admins, "NumCC", "NumCC", aula.NumAdmin);
+            List<string> Horas = new List<string>();
             ViewData["NumProfessor"] = new SelectList(_context.Professores, "NumCC", "NumCC", aula.NumProfessor);
+            List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
+            ViewData["DiaSemana"] = new SelectList(dias);
+            for (int i = _context.Ginasios.SingleOrDefault().Hora_Abertura * 60; i < _context.Ginasios.SingleOrDefault().Hora_Fecho * 60; i += 50)
+            {
+                // timespan do total de minutos
+                Horas.Add(new TimeSpan(0, i, 0).ToString(@"hh\:mm"));
+            }
+            ViewData["HorasInicio"] = new SelectList(Horas);
+
+
             return View(aula);
         }
 
@@ -196,8 +205,8 @@ namespace HealthUp.Controllers
             }
 
             var aula = await _context.Aulas
-                .Include(a => a.NumAdminNavigation)
-                .Include(a => a.NumProfessorNavigation)
+                .Include(a => a.NumAdminNavigation).ThenInclude(a=>a.Pessoa)
+                .Include(a => a.NumProfessorNavigation).ThenInclude(a=>a.NumProfessorNavigation)
                 .FirstOrDefaultAsync(m => m.IdAula == id);
             if (aula == null)
             {

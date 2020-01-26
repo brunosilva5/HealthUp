@@ -101,6 +101,8 @@ namespace HealthUp.Data
                     Telemovel = "+351938778987",
                     LocalizacaoGps = "Some Coordinates",
                     Nome = "HealthUp",
+                    Hora_Abertura=6,
+                    Hora_Fecho=22
                 };
 
                 context.Ginasios.Add(gym);

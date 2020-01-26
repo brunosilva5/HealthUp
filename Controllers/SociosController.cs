@@ -19,7 +19,7 @@ namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Socio, Professor")]
     [PerfilCompleto]
-    public class SociosController : Controller
+    public class SociosController : BaseController
     {
         #region PrivateVariables
         private readonly HealthUpContext _context;

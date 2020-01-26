@@ -50,32 +50,32 @@ namespace HealthUp.Models
         [StringLength(30)]
         public string Especialidade { get; set; }
 
-        [ForeignKey(nameof(IdSolicitacao))]
-        [InverseProperty(nameof(SolicitacaoProfessor.Professor))]
+        //[ForeignKey(nameof(IdSolicitacao))]
+        //[InverseProperty(nameof(SolicitacaoProfessor.Professor))]
         [Display(Name = "Id de navegação da solicitação")]
         public virtual SolicitacaoProfessor IdSolicitacaoNavigation { get; set; }
         
-        [ForeignKey(nameof(NumAdmin))]
-        [InverseProperty(nameof(Admin.ProfessoresSuspensos))]
+        //[ForeignKey(nameof(NumAdmin))]
+        //[InverseProperty(nameof(Admin.ProfessoresSuspensos))]
         [Display(Name = "Número de navegação do administrador")]
         public virtual Admin NumAdminNavigation { get; set; }
 
         // -----------------------------------------------------------------------------------------
         // REFERENCIA A PESSOA
-        [ForeignKey(nameof(NumCC))]
-        [InverseProperty(nameof(Pessoa.Professor))]
+        //[ForeignKey(nameof(NumCC))]
+        //[InverseProperty(nameof(Pessoa.Professor))]
         [Display(Name = "Número de navegação do professor")]
         public virtual Pessoa NumProfessorNavigation { get; set; }
         // -----------------------------------------------------------------------------------------
 
-        [InverseProperty("NumProfessorNavigation")]
+        //[InverseProperty("NumProfessorNavigation")]
         public virtual ICollection<Aula> Aula { get; set; }
          
-        [InverseProperty("NumProfessorNavigation")]
+        //[InverseProperty("NumProfessorNavigation")]
         public virtual ICollection<PlanoTreino> PlanoTreino { get; set; }
 
         // Lista de alunos
-        [InverseProperty("NumProfessorNavigation")]
+        //[InverseProperty("NumProfessorNavigation")]
         public virtual ICollection<Socio> Socio { get; set; }
 
         // string json

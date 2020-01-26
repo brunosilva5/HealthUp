@@ -35,6 +35,7 @@
             <li><a asp-controller="Home" asp-action="Index">Página Inicial</a></li>
             <li><a asp-controller="Home" asp-action="Sobrenos">Sobre Nós</a></li>
             <li><a asp-controller="Home" asp-action="Contactos">Contactos</a></li>
+            <li><a asp-controller="Home" asp-action="MapaAulas">Mapa semanal de aulas</a></li>
             <li>
                 @if (Context.Session.GetString("UserId") == null)
                 {
@@ -69,7 +70,7 @@
                         {
                             <li><a asp-controller="Socios" asp-action="SolicitarPT">Solicitar Personal Trainer</a></li>
                         }
-                        
+
                     </ul>
                 }
 
@@ -119,16 +120,18 @@
                 var db = Context.RequestServices.GetRequiredService<HealthUpContext>();
                 var gym = db.Ginasios.SingleOrDefault();
             }
-            <li class="phone-num"><i class="fa fa-phone"></i><span>
-        @{if (gym.Telemovel.Length != 9)
-            {
-            @gym.Telemovel.Substring(4, 9)
-            }
-            else
-            {
-            @gym.Telemovel
-                } }
-        </span></li>
+            <li class="phone-num">
+                <i class="fa fa-phone"></i><span>
+                    @{if (gym.Telemovel.Length != 9)
+                        {
+                            @gym.Telemovel.Substring(4, 9)
+                        }
+                        else
+                        {
+                            @gym.Telemovel
+                        } }
+                </span>
+            </li>
         </ul>
     </header>
 

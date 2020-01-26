@@ -4,11 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using HealthUp.Data;
+using HealthUp.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthUp.Controllers.RemoteValidation
 {
-    public class Validation_FilesController : Controller
+    [AjaxOnly]
+    public class Validation_FilesController : BaseController
     {
         private readonly HealthUpContext _context;
         public Validation_FilesController(HealthUpContext context)

@@ -13,7 +13,7 @@ using HealthUp.Filters;
 namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Admin")]
-    public class GinasiosController : Controller
+    public class GinasiosController : BaseController
     {
         private readonly HealthUpContext _context;
 

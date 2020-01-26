@@ -37,15 +37,18 @@ namespace HealthUp.Models
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [DataType(DataType.Date)]
         [Display(Name = "Válido de")]
+        [Remote("IsValidDataDe", "Validation_Register", HttpMethod = "GET", ErrorMessage = "Esta data não é válida!")]
         public DateTime ValidoDe { get; set; }
         
         [DataType(DataType.Date)]
         [Display(Name = "Válido até")]
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
+        [Remote("IsValidDataAte", "Validation_Register", HttpMethod = "GET", ErrorMessage = "Esta data não é válida!", AdditionalFields = "ValidoDe")]
         public DateTime ValidoAte { get; set; }
         
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Display(Name = "Lotação")]
+        [Range(0 , Int32.MaxValue)]
         public int? Lotacao { get; set; }
         
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
@@ -54,6 +57,7 @@ namespace HealthUp.Models
         
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Display(Name = "Dia da semana")]
+        [Range(1,7)]
         public int DiaSemana { get; set; }
 
         [ForeignKey(nameof(NumAdmin))]
@@ -129,7 +133,7 @@ namespace HealthUp.Models
                     NewListaDatas.Add(item);
                 }
             }
-            return ListaDatas.Count != 0 ? true : false;
+            return NewListaDatas.Count != 0 ? true : false;
         }
         public string GetDiaSemana()
         {
