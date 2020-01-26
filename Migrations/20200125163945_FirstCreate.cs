@@ -248,7 +248,7 @@ namespace HealthUp.Migrations
                     ID_Solicitacao = table.Column<int>(nullable: true),
                     Altura = table.Column<string>(maxLength: 3, nullable: true),
                     Peso = table.Column<double>(nullable: true),
-                    DataRegisto_Peso = table.Column<DateTime>(nullable: false),
+                    DataRegisto_Peso = table.Column<DateTime>(nullable: true),
                     Motivo = table.Column<string>(maxLength: 200, nullable: true),
                     DataRegisto = table.Column<DateTime>(nullable: true),
                     DataSuspensao = table.Column<DateTime>(nullable: true),

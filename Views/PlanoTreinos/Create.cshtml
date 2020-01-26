@@ -2,11 +2,13 @@
 
 @{
     ViewData["Title"] = "Criar novo plano";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
+<div class="container">
 <h1>Criar novo plano</h1>
-
 <hr />
+<br />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -20,13 +22,9 @@
                 <textarea name="Descricao" rows="5" cols="100" required style="resize:none"></textarea>
             </div>
             <div class="form-group">
-                <input type="submit" value="Criar plano" class="btn btn-primary" />
+                <input type="submit" value="Criar plano" class="primary-btn" />
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
-

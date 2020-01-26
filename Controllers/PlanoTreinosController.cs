@@ -144,21 +144,12 @@ namespace HealthUp.Controllers
 
         public IActionResult VerExerciciosSocio(string IdPlano)
         {
-            List<Contem> ListaExercicios = new List<Contem>();
-
-            // Load de todas as propriedades
-
-            foreach (var contem in _context.Contem.Include(x=>x.IdExercicioNavigation))
-            {
-                var Contem = _context.Contem.Include(x => x.IdExercicioNavigation).SingleOrDefault(x => x.IdPlano == Convert.ToInt32(IdPlano));
-                if (contem.IdPlano==Convert.ToInt32(IdPlano))
-                {
-                    ListaExercicios.Add(contem);
-                }
-            }
+           
+            var ListaContem = _context.PlanosTreino.Include(p => p.Contem).ThenInclude(c => c.IdExercicioNavigation).SingleOrDefault(p => p.IdPlano == Convert.ToInt32(IdPlano)).Contem;
+            
             ViewBag.PlanoId = IdPlano;
 
-            return View(nameof(VerExerciciosSocio), ListaExercicios);
+            return View(nameof(VerExerciciosSocio), ListaContem.ToList());
         }
 
         public IActionResult AdicionarExercicioSocio(string IdPlano)
@@ -264,14 +255,14 @@ namespace HealthUp.Controllers
             return RedirectToAction(nameof(VerExerciciosSocio), new { contem.IdPlano });
         }
 
-        public IActionResult EditarExercicio(int? id)
+        public IActionResult EditarExercicio(int IdExercicio, int IdPlano)
         {
-            if (id == null)
+            if (IdExercicio == null || IdPlano==null)
             {
                 return NotFound();
             }
-            ViewBag.PlanoId = id;
-            var contem = _context.Contem.SingleOrDefault(x => x.IdPlano == id);
+            ViewBag.PlanoId = IdPlano;
+            var contem = _context.Contem.SingleOrDefault(x => x.IdPlano==IdPlano && x.IdExercicio==IdExercicio);
             if (contem == null)
             {
                 return NotFound();
@@ -285,13 +276,9 @@ namespace HealthUp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditarExercicio(int id, [Bind("IdPlano,IdExercicio,NumRepeticoes,PeriodoDescanso,QuantidadeSeries")] Contem contem)
+        public async Task<IActionResult> EditarExercicio([Bind("IdPlano,IdExercicio,NumRepeticoes,PeriodoDescanso,QuantidadeSeries")] Contem contem)
         {
-            if (id != contem.IdPlano)
-            {
-                return NotFound();
-            }
-
+            
             if (ModelState.IsValid)
             {
                 try

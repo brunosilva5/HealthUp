@@ -32,32 +32,33 @@
             </tr>
         </thead>
 
+        
         <tbody>
             @foreach (var item in Model)
             {
-
+                int i = 0;
                 <tr>
                     <th>
                         @Html.DisplayFor(modelItem => item.Data)
                     </th>
                     <td>
-
-                        @Html.DisplayFor(modelItem => item.Professor.ElementAt<Professor>(item.Professor.SkipWhile(p => p.IdSolicitacaoNavigation.IdSolicitacao != item.IdSolicitacao).Count() - 1).NumProfessorNavigation.Nome)
+                        @Html.DisplayFor(modelItem => item.Professor.ToList()[i].NumProfessorNavigation.Nome)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Professor.ElementAt<Professor>(item.Professor.SkipWhile(p => p.IdSolicitacaoNavigation.IdSolicitacao != item.IdSolicitacao).Count() - 1).NumCC)
+                        @Html.DisplayFor(modelItem => item.Professor.ToList()[i].NumCC)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Socio.ElementAt<Socio>(item.Socio.SkipWhile(p => p.IdSolicitacaoNavigation.IdSolicitacao != item.IdSolicitacao).Count() - 1).NumSocioNavigation.Nome)
+                        @Html.DisplayFor(modelItem => item.Socio.ToList()[i].NumSocioNavigation.Nome)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Socio.ElementAt<Socio>(item.Socio.SkipWhile(p => p.IdSolicitacaoNavigation.IdSolicitacao != item.IdSolicitacao).Count() - 1).NumCC)
+                        @Html.DisplayFor(modelItem => item.Socio.ToList()[i].NumCC)
                     </td>
                     <td>
                         <a asp-action="PedidoProf_Aprovado" asp-route-id="@item.IdSolicitacao">Aprovar</a> |
                         <a asp-action="PedidoProf_Rejeitado" asp-route-id="@item.IdSolicitacao">Rejeitar</a>
                     </td>
                 </tr>
+                i++;
             }
         </tbody>
     </table>

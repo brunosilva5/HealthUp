@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -268,6 +269,27 @@ namespace HealthUp.Helpers
             yield return value;
         }
 
+        public static bool DoesProfHaveStudents(HttpContext context)
+        {
+            var db = context.RequestServices.GetRequiredService<HealthUpContext>();
+            var prof = db.Professores.Include(x=>x.Socio).SingleOrDefault(p => p.NumCC == context.Session.GetString("UserId"));
+            if (prof!=null && prof.Socio.Count>0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool DoesSocioHavePT(HttpContext context)
+        {
+            var db = context.RequestServices.GetRequiredService<HealthUpContext>();
+            var socio = db.Socios.Include(x => x.NumProfessorNavigation).SingleOrDefault(p => p.NumCC == context.Session.GetString("UserId"));
+            if (socio != null && socio.NumProfessorNavigation != null)
+            {
+                return true;
+            }
+            return false;
+        }
 
     }
 }

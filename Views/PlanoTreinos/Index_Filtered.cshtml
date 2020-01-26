@@ -44,7 +44,7 @@
                     <a asp-action="VerExerciciosSocio" asp-route-IdPlano="@item.IdPlano">Ver exercícios</a> |
                     <a asp-action="AdicionarExercicioSocio" asp-route-IdPlano="@item.IdPlano"
                        >Adicionar exercício</a> |
-                    <a asp-action="Delete" asp-route-IdPlano="@item.IdPlano">Apagar</a> |
+                    <a asp-action="Delete" asp-route-IdPlano="@item.IdPlano">Apagar</a> 
 
                     @if (item.Ativo == false)
                     {
@@ -53,7 +53,7 @@
                                data-ajax="true"
                                data-ajax-method="GET"
                                data-ajax-update="#target"
-                               data-ajax-mode="replace">Tornar este plano ativo</a> 
+                               data-ajax-mode="replace"> | Tornar este plano ativo</a> 
                         </span>
 
                     }

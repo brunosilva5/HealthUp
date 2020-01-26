@@ -131,8 +131,22 @@ header ul li.phone-num i {
     cursor: pointer;
 }
 
-
-
+.primary-btn-msg {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 18px 45px;
+    color: #ffffff;
+    background: #82D026;
+    letter-spacing: 0.3px;
+    font-family: "Oswald", sans-serif;
+    text-transform: uppercase;
+}
+.primary-btn-msg:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    cursor: pointer;
+    text-decoration: none;
+    color: #ffffff;
+}
 /*-------------
 Titulos, etc
 -------------*/
@@ -145,6 +159,13 @@ h1 {
 }
 h2 {
     font-size: 32px;
+    color: #82D026;
+    font-family: "PT Sans", sans-serif;
+    font-weight: 700;
+    position: relative;
+}
+h3 {
+    font-size: 26px;
     color: #82D026;
     font-family: "PT Sans", sans-serif;
     font-weight: 700;
@@ -545,3 +566,27 @@ h2 {
     width: 100%;
 }
 /*----------------------*/
+
+.notification {
+    background-color: #555;
+    color: white;
+    text-decoration: none;
+    padding: 15px 26px;
+    position: relative;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+.notification:hover {
+    background: red;
+}
+
+.notification .badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+}

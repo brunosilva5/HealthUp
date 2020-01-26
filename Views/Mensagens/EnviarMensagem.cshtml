@@ -2,48 +2,44 @@
 
 @{
     ViewData["Title"] = "Enviar mensagem";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
+<div class="container">
+    <h1>Mensagem</h1>
+    <hr />
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="EnviarMensagem">
+                @if (HelperFunctions.IsCurrentUserSocio(Context))
+                {
+                    <div class="form-group">
+                        <label asp-for="IdPessoaSenderNavigation.Nome" class="control-label"></label>
+                        <select name="Destino" asp-for="IdPessoaReceiver" class="form-control" asp-items="ViewBag.Professor"></select>
+                    </div>
+                }
+                @if (HelperFunctions.IsCurrentUserProfessor(Context))
+                {
+                    <div class="form-group">
+                        <label asp-for="IdPessoaSenderNavigation.Nome" class="control-label"></label>
+                        <select name="Destino" asp-for="IdPessoaReceiver" class="form-control" asp-items="ViewBag.Socios"></select>
+                    </div>
+                }
 
-
-
-<h1>Mensagem</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="EnviarMensagem">
-            @if (HelperFunctions.IsCurrentUserSocio(Context))
-            {
                 <div class="form-group">
-                    <label asp-for="IdPessoaSenderNavigation.Nome" class="control-label"></label>
-                    <select name="Destino" asp-for="IdPessoaReceiver" class="form-control" asp-items="ViewBag.Professor"></select>
+                    <label class="control-label">Mensagem</label>
+                    <br>
+                    <textarea rows="4" cols="50" asp-for="Conteudo" style="resize:none" required></textarea>
+                    <span asp-validation-for="Conteudo" class="text-danger"></span>
                 </div>
-
-
-            }
-            @if (HelperFunctions.IsCurrentUserProfessor(Context))
-            {
                 <div class="form-group">
-                    <label asp-for="IdPessoaSenderNavigation.Nome" class="control-label"></label>
-                    <select name="Destino" asp-for="IdPessoaReceiver" class="form-control" asp-items="ViewBag.Socios"></select>
+                    <input type="submit" value="Enviar" class="primary-btn" />
                 </div>
-            }
-
-            <div class="form-group">
-                <label class="control-label">Mensagem</label>
-                <br>
-                <textarea rows="4" cols="50" asp-for="Conteudo" style="resize:none" required></textarea>
-                <span asp-validation-for="Conteudo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Enviar" class="btn btn-primary" />
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="CaixaEntrada">Voltar</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

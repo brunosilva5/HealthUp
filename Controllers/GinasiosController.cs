@@ -38,8 +38,11 @@ namespace HealthUp.Controllers
         public IActionResult Edit()
         {
             var ginasio = _context.Ginasios.FirstOrDefault();
+            if (ginasio.Telemovel.Length>9)
+            {
+                ginasio.Telemovel = ginasio.Telemovel.Substring(4, 9);
+            }
             // apagar o indicativo
-            ginasio.Telemovel = ginasio.Telemovel.Substring(4);
             return View(ginasio);
         }
 
@@ -61,7 +64,6 @@ namespace HealthUp.Controllers
             g.Id = int.Parse(dados["Id"]);
             g.LocalizacaoGps = dados["LocalizacaoGps"];
             g.Email = dados["Email"];
-            g.Telemovel = dados["Telemovel"];
             g.Endereco = dados["Endereco"];
             g.Nome = dados["Nome"];
 
@@ -83,9 +85,9 @@ namespace HealthUp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index), "Admins");
+                return RedirectToAction(nameof(Index), "Home");
             }
-            return RedirectToAction(nameof(Index), "Admins");
+            return RedirectToAction(nameof(Index), "Home");
 
         }
 
