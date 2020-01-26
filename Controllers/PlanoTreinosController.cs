@@ -9,9 +9,11 @@ using HealthUp.Data;
 using HealthUp.Models;
 using Microsoft.AspNetCore.Http;
 using HealthUp.Helpers;
+using HealthUp.Filters;
 
 namespace HealthUp.Controllers
 {
+    [MyRoleFilter(Perfil = "Professor")]
     public class PlanoTreinosController : Controller
     {
         private readonly HealthUpContext _context;

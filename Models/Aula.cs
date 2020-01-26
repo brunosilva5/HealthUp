@@ -86,17 +86,60 @@ namespace HealthUp.Models
         [InverseProperty("IdAulaNavigation")]
         public virtual ICollection<Inscreve> Inscreve { get; set; }
 
+        public List<DateTime> GetAulasInCurrentWeek()
+        {
+            List<DateTime> ListaDatas = new List<DateTime>();
+            if (GetDiaSemana()=="Domingo")
+            {
+                ListaDatas = HelperFunctions.GetDatesBetween(ValidoDe, ValidoAte, DayOfWeek.Sunday);
+            }
+            if (GetDiaSemana() == "Segunda-Feira")
+            {
+                ListaDatas = HelperFunctions.GetDatesBetween(ValidoDe, ValidoAte, DayOfWeek.Monday);
+            }
+            if (GetDiaSemana() == "Terça-Feira")
+            {
+                ListaDatas = HelperFunctions.GetDatesBetween(ValidoDe, ValidoAte, DayOfWeek.Tuesday);
+            }
+            if (GetDiaSemana() == "Quarta-Feira")
+            {
+                ListaDatas = HelperFunctions.GetDatesBetween(ValidoDe, ValidoAte, DayOfWeek.Wednesday);
+            }
+            if (GetDiaSemana() == "Quinta-Feira")
+            {
+                ListaDatas = HelperFunctions.GetDatesBetween(ValidoDe, ValidoAte, DayOfWeek.Thursday);
+            }
+            if (GetDiaSemana() == "Sexta-Feira")
+            {
+                ListaDatas = HelperFunctions.GetDatesBetween(ValidoDe, ValidoAte, DayOfWeek.Friday);
+            }
+            if (GetDiaSemana() == "Sábado")
+            {
+                ListaDatas = HelperFunctions.GetDatesBetween(ValidoDe, ValidoAte, DayOfWeek.Saturday);
+            }
+
+            // vai ser criada uma lista de datas de todos os dias da semana ( ex: quarta-feira) entre as datas valido de e valido ate
+            // depois abaixo vamos excluir todas as datas que nao se encontrem na semana atual
+            foreach (var item in ListaDatas)
+            {
+                if (HelperFunctions.GetWeekOfTheYear(DateTime.Now) != HelperFunctions.GetWeekOfTheYear(item))
+                {
+                    ListaDatas.Remove(item);
+                }
+            }
+            return ListaDatas;
+        }
         public string GetDiaSemana()
         {
             return DiaSemana switch
             {
-                1 => "Domingo",
-                2 => "Segunda-Feira",
-                3 => "Terça-Feira",
-                4 => "Quarta-Feira",
-                5 => "Quinta-Feira",
-                6 => "Sexta-Feira",
-                7 => "Sábado",
+                1=> "Segunda-Feira",
+                2 => "Terça-Feira",
+                3 => "Quarta-Feira",
+                4 => "Quinta-Feira",
+                5 => "Sexta-Feira",
+                6 => "Sábado",
+                7 => "Domingo",
                 _ => throw new ArgumentOutOfRangeException(),
             };
         }

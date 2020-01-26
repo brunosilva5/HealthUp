@@ -13,7 +13,7 @@ using HealthUp.Helpers;
 
 namespace HealthUp.Controllers
 {
-
+    [MyRoleFilter(Perfil = "Professor, Socio")]
     public class MensagensController : Controller
     {
         private readonly HealthUpContext _context;
@@ -115,7 +115,7 @@ namespace HealthUp.Controllers
 
         #region Enviar Mensagem
 
-        [Socios_PTs_Filter(Pessoa = "Socio", DeixarAcederSeTiver = true)]
+        [Socios_PTs_Filter(Pessoa = "Socio, Professor", DeixarAcederSeTiver = true)]
         public IActionResult EnviarMensagem()
         {
             // verificar se é sócio 
@@ -144,7 +144,7 @@ namespace HealthUp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Socios_PTs_Filter(Pessoa = "Socio", DeixarAcederSeTiver = true)]
+        [Socios_PTs_Filter(Pessoa = "Socio, Professor", DeixarAcederSeTiver = true)]
         public IActionResult EnviarMensagem(IFormCollection Dados)
         {
 

@@ -627,7 +627,6 @@ namespace HealthUp.Controllers
 
         #endregion
 
-
         #region Cotas
         public IActionResult GerirCotas()
         {

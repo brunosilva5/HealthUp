@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using HealthUp.Models;
 using HealthUp.Filters;
 using HealthUp.Data;
+using System.Globalization;
+using HealthUp.Helpers;
 
 namespace HealthUp.Controllers
 {
@@ -44,7 +46,18 @@ namespace HealthUp.Controllers
 
         public IActionResult MapaAulas()
         {
-            return View();
+            List<Aula> Listafinal = new List<Aula>();
+            var Aulas = _context.Aulas.ToList();
+            foreach (var item in Aulas)
+            {
+                var datas_aulas_semanaAtual=item.GetAulasInCurrentWeek();
+                foreach (var subitem in datas_aulas_semanaAtual)
+                {
+                   
+                }
+
+            }
+            return View(_context.Aulas.ToList());
         }
 
         public IActionResult Privacy()
