@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using HealthUp.Models;
 using HealthUp.Filters;
+using HealthUp.Data;
+using System.Globalization;
+using HealthUp.Helpers;
 
 namespace HealthUp.Controllers
 {
@@ -14,10 +17,11 @@ namespace HealthUp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly HealthUpContext _context;
+        public HomeController(ILogger<HomeController> logger, HealthUpContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -34,15 +38,26 @@ namespace HealthUp.Controllers
         {
             return View();
         }
-
+        
         public IActionResult Contactos()
         {
-            return View();
+            return View(_context.Ginasios.SingleOrDefault());
         }
 
         public IActionResult MapaAulas()
         {
-            return View();
+            List<Aula> Listafinal = new List<Aula>();
+            var Aulas = _context.Aulas.ToList();
+            foreach (var item in Aulas)
+            {
+                var datas_aulas_semanaAtual=item.GetAulasInCurrentWeek();
+                foreach (var subitem in datas_aulas_semanaAtual)
+                {
+                   
+                }
+
+            }
+            return View(_context.Aulas.ToList());
         }
 
         public IActionResult Privacy()

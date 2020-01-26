@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<HealthUp.Models.Socio>
-
+<div class="container">
 <table class="content-table">
     <thead>
         <tr>
@@ -29,9 +29,10 @@
                 <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.NumSocioNavigation.Fotografia)" height="200" />
             </td>
             <td>
-                <a asp-action="HistoricoAulas" asp-route-id="@item.NumCC">Historico de Aulas</a>
+                <a asp-action="HistoricoAulas" asp-route-id="@item.NumCC">Histórico de Aulas</a>
             </td>
         </tr>
         }
     </tbody>
 </table>
+</div>

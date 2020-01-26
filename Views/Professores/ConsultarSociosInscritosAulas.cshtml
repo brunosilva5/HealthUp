@@ -7,34 +7,45 @@
 <div class="container">
     <h1>Sócios inscritos nas minhas aulas</h1>
     <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="ConsultarSociosInscritosAulas"
-                  data-ajax="true"
-                  data-ajax-method="POST"
-                  data-ajax-update="#target"
-                  data-ajax-mode="replace">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label class="control-label">Selecione uma das suas aulas</label>
-                    <select name="AulaEscolhida" class="form-control" onload="this.form.submit"
-                            onchange="this.form.submit"
-                            data-ajax="true"
-                            data-ajax-method="POST"
-                            data-ajax-update="#target"
-                            data-ajax-mode="replace"
-                            style="width:auto" asp-items="@ViewBag.Aulas"></select>
-                </div>
+    <br />
+    @if (ViewBag.Vazio=="Sim")
+    {
+        <h3>Não leciona nenhuma aula de momento!</h3>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="ConsultarSociosInscritosAulas"
+                        data-ajax="true"
+                        data-ajax-method="POST"
+                        data-ajax-update="#target"
+                        data-ajax-mode="replace">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label class="control-label">Selecione uma das suas aulas</label>
+                        <select name="AulaEscolhida" class="form-control" onload="this.form.submit"
+                                onchange="this.form.submit"
+                                data-ajax="true"
+                                data-ajax-method="POST"
+                                data-ajax-update="#target"
+                                data-ajax-mode="replace"
+                                style="width:auto" asp-items="@ViewBag.Aulas"></select>
+                    </div>
 
-                <div class="form-group">
-                    <input type="submit" value="Ver sócios inscritos" class="primary-btn" />
-                </div>
-            </form>
+                    <div class="form-group">
+                        <input type="submit" value="Ver sócios inscritos" class="primary-btn" />
+                    </div>
+
+                </form>
+            </div>
         </div>
-    </div>
+        <div id="target"></div>
+    }
+
 </div>
 
-<div id="target"></div>
+
 
 <script>
     window.onload = function () {

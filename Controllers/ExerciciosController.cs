@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HealthUp.Data;
 using HealthUp.Models;
+using HealthUp.Filters;
+using Microsoft.AspNetCore.Http;
 
 namespace HealthUp.Controllers
 {
+    [MyRoleFilter(Perfil = "Admin")]
     public class ExerciciosController : Controller
     {
         private readonly HealthUpContext _context;
@@ -21,34 +24,15 @@ namespace HealthUp.Controllers
 
         // GET: Exercicios
         public async Task<IActionResult> Index()
-        {
-            var healthUpContext = _context.Exercicios.Include(e => e.NumAdminNavigation);
-            return View(await healthUpContext.ToListAsync());
+        {           
+            return View(await _context.Exercicios.Include(e => e.NumAdminNavigation).ThenInclude(e => e.NumAdminNavigation).ToListAsync());
         }
 
-        // GET: Exercicios/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var exercicio = await _context.Exercicios
-                .Include(e => e.NumAdminNavigation)
-                .FirstOrDefaultAsync(m => m.IdExercicio == id);
-            if (exercicio == null)
-            {
-                return NotFound();
-            }
-
-            return View(exercicio);
-        }
+     
 
         // GET: Exercicios/Create
         public IActionResult Create()
         {
-            ViewData["NumAdmin"] = new SelectList(_context.Admins, "NumCC", "NumCC");
             return View();
         }
 
@@ -61,11 +45,11 @@ namespace HealthUp.Controllers
         {
             if (ModelState.IsValid)
             {
+                exercicio.NumAdmin = HttpContext.Session.GetString("UserId");
                 _context.Add(exercicio);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["NumAdmin"] = new SelectList(_context.Admins, "NumCC", "NumCC", exercicio.NumAdmin);
             return View(exercicio);
         }
 
@@ -82,13 +66,10 @@ namespace HealthUp.Controllers
             {
                 return NotFound();
             }
-            ViewData["NumAdmin"] = new SelectList(_context.Admins, "NumCC", "NumCC", exercicio.NumAdmin);
             return View(exercicio);
         }
 
-        // POST: Exercicios/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdExercicio,NumAdmin,Nome,Descricao,Video,Fotografia")] Exercicio exercicio)
@@ -118,7 +99,6 @@ namespace HealthUp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["NumAdmin"] = new SelectList(_context.Admins, "NumCC", "NumCC", exercicio.NumAdmin);
             return View(exercicio);
         }
 

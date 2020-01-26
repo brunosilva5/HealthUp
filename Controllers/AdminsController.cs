@@ -118,11 +118,24 @@ namespace HealthUp.Controllers
         public IActionResult CriarAdmin(string id)
         {
             Pessoa p = _context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).FirstOrDefault(p => p.NumCC == id);
-            p.Admin = new Admin();
-            p.Professor = null;
-            p.Socio = null;
+
+            // era professor
+            if (p.Professor!=null)
+            {
+                _context.Professores.Remove(p.Professor);
+            }
+
+            // era socio
+            if (p.Socio != null)
+            {
+                _context.Socios.Remove(p.Socio);
+            }
+            // tornar admin
+            p.Admin = new Admin(p);
+
             _context.Admins.Add(p.Admin);
-            _context.Update(p);
+            _context.Pessoas.Update(p);
+
             _context.SaveChanges();
             return RedirectToAction(nameof(GerirPessoas));
         }
@@ -157,6 +170,7 @@ namespace HealthUp.Controllers
         {
             return View(_context.SolicitacaoProfessores.Include(s => s.Socio).ThenInclude(s => s.NumSocioNavigation).Include(s => s.Professor).ThenInclude(p => p.NumProfessorNavigation).Include(a => a.NumAdminNavigation).ThenInclude(x => x.NumAdminNavigation).Where(s => s.NumAdmin == null).ToList().OrderByDescending(p => p.Data));
         }
+
         public IActionResult PedidoProf_Aprovado(int id)
         {
             var solicitacao = _context.SolicitacaoProfessores.Include(s => s.Socio).ThenInclude(s => s.NumSocioNavigation).Include(s => s.Professor).ThenInclude(p => p.NumProfessorNavigation).Include(a => a.NumAdminNavigation).ThenInclude(x => x.NumAdminNavigation).FirstOrDefault(s => s.IdSolicitacao == id);
@@ -182,7 +196,7 @@ namespace HealthUp.Controllers
             // --------------------------------------------------------------------------------------------------------------------------------------
             _context.SaveChanges();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AprovarPedidoProf));
         }
 
         public IActionResult PedidoProf_Rejeitado(int id)
@@ -191,7 +205,7 @@ namespace HealthUp.Controllers
             _context.SolicitacaoProfessores.Remove(solicitacao);
             _context.SaveChanges();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AprovarPedidoProf));
         }
 
         #endregion
@@ -206,7 +220,7 @@ namespace HealthUp.Controllers
         // POST: Exercicios/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [RequestSizeLimit(100_000_000)]
+        [RequestSizeLimit(1048576000)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CriarExercicio(string Nome, string Descricao, IFormFile Fotografia, IFormFile Video)
@@ -232,7 +246,28 @@ namespace HealthUp.Controllers
 
                 _context.Add(exercicio);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                //guardar ficheiros no wwwroot
+                string caminho = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
+                string nome_ficheiro = Path.GetFileName(Fotografia.FileName);
+                string caminho_completo = Path.Combine(caminho, nome_ficheiro);
+
+                FileStream f = new FileStream(caminho_completo, FileMode.Create);
+                Fotografia.CopyTo(f);
+
+                f.Close();
+
+
+                string caminho1 = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
+                string nome_ficheiro1 = Path.GetFileName(Video.FileName);
+                string caminho_completo1 = Path.Combine(caminho1, nome_ficheiro1);
+
+                FileStream ff = new FileStream(caminho_completo1, FileMode.Create);
+                Video.CopyTo(ff);
+
+                ff.Close();
+
+                return RedirectToAction(nameof(Index), "Home");
             }
             return View(exercicio);
         }
@@ -591,7 +626,6 @@ namespace HealthUp.Controllers
         }
 
         #endregion
-
 
         #region Cotas
         public IActionResult GerirCotas()

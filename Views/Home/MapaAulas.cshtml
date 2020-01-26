@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<HealthUp.Models.Aula>
 @{
     ViewData["Title"] = "Mapa de Aulas";
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
@@ -11,309 +11,232 @@
             <div class="col order-1">
                 <div class="daily-routine">
                     <div class="week-name">
-                        Monday
+                        Segunda-Feira
                     </div>
                     <div class="daily-work">
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>06:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>02:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>04:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
+                        @foreach (var item in Model)
+                        {
+                            var cont_H = 6;
+                            if (item.GetDiaSemana() == "Segunda-Feira")
+                            {
+                                if (item.HoraInicio.Hours == cont_H)
+                                {
+                                    <div class="work-hours bg-color">
+                                        <ul>
+                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
+                                            <li>@item.HoraInicio</li>
+                                        </ul>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="work-hours"></div>
+                                }
+                                cont_H += 2;
+                            }
+                        }
+
                     </div>
                 </div>
             </div>
+
             <div class="col order-2">
                 <div class="daily-routine">
                     <div class="week-name">
-                        Tuesday
+                        Terça-Feira
                     </div>
                     <div class="daily-work">
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>06:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>02:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>04:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours"></div>
+                        @foreach (var item in Model)
+                        {
+                            var cont_H = 6;
+                            if (item.GetDiaSemana() == "Terça-Feira")
+                            {
+                                if (item.HoraInicio.Hours == cont_H)
+                                {
+                                    <div class="work-hours bg-color">
+                                        <ul>
+                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
+                                            <li>@item.HoraInicio</li>
+                                        </ul>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="work-hours"></div>
+                                }
+                                cont_H += 2;
+                            }
+                        }
+
                     </div>
                 </div>
             </div>
+
             <div class="col order-3">
                 <div class="daily-routine">
                     <div class="week-name">
-                        Wednesday
+                        Quarta-Feira
                     </div>
                     <div class="daily-work">
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>06:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>10:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>02:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>04:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>06:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 PM</li>
-                            </ul>
-                        </div>
+                        @foreach (var item in Model)
+                        {
+                            var cont_H = 6;
+                            if (item.GetDiaSemana() == "Quarta-Feira")
+                            {
+                                if (item.HoraInicio.Hours == cont_H)
+                                {
+                                    <div class="work-hours bg-color">
+                                        <ul>
+                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
+                                            <li>@item.HoraInicio</li>
+                                        </ul>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="work-hours"></div>
+                                }
+                                cont_H += 2;
+                            }
+                        }
+
                     </div>
                 </div>
             </div>
+
+
             <div class="col order-4">
                 <div class="daily-routine">
                     <div class="week-name">
-                        Thursday
+                        Quinta-Feira
                     </div>
                     <div class="daily-work">
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>06:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>10:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>02:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>04:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>06:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 PM</li>
-                            </ul>
-                        </div>
+                        @foreach (var item in Model)
+                        {
+                            var cont_H = 6;
+                            if (item.GetDiaSemana() == "Quinta-Feira")
+                            {
+                                if (item.HoraInicio.Hours == cont_H)
+                                {
+                                    <div class="work-hours bg-color">
+                                        <ul>
+                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
+                                            <li>@item.HoraInicio</li>
+                                        </ul>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="work-hours"></div>
+                                }
+                                cont_H += 2;
+                            }
+                        }
+
                     </div>
                 </div>
             </div>
+
             <div class="col order-5">
                 <div class="daily-routine">
                     <div class="week-name">
-                        Friday
+                        Sexta-Feira
                     </div>
                     <div class="daily-work">
-                        <div class="work-hours"></div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>04:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours"></div>
+                        @foreach (var item in Model)
+                        {
+                            var cont_H = 6;
+                            if (item.GetDiaSemana() == "Sexta-Feira")
+                            {
+                                if (item.HoraInicio.Hours == cont_H)
+                                {
+                                    <div class="work-hours bg-color">
+                                        <ul>
+                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
+                                            <li>@item.HoraInicio</li>
+                                        </ul>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="work-hours"></div>
+                                }
+                                cont_H += 2;
+                            }
+                        }
+
                     </div>
                 </div>
             </div>
+
             <div class="col order-6">
                 <div class="daily-routine">
                     <div class="week-name">
-                        Saturday
+                        Sábado
                     </div>
                     <div class="daily-work">
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>06:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>10:00 AM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>02:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>04:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>06:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 PM</li>
-                            </ul>
-                        </div>
-                        <div class="work-hours bg-color">
-                            <ul>
-                                <li>Crossfit Level 1, 2</li>
-                                <li>08:00 PM</li>
-                            </ul>
-                        </div>
+                        @foreach (var item in Model)
+                        {
+                            var cont_H = 6;
+                            if (item.GetDiaSemana() == "Sábado")
+                            {
+                                if (item.HoraInicio.Hours == cont_H)
+                                {
+                                    <div class="work-hours bg-color">
+                                        <ul>
+                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
+                                            <li>@item.HoraInicio</li>
+                                        </ul>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="work-hours"></div>
+                                }
+                                cont_H += 2;
+                            }
+                        }
+
                     </div>
                 </div>
             </div>
+
             <div class="col order-7">
                 <div class="daily-routine">
                     <div class="week-name">
-                        Sunday
+                        Domingo
                     </div>
-                    <div class="daily-work last">
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
-                        <div class="work-hours"></div>
+                    <div class="daily-work">
+                        @foreach (var item in Model)
+                        {
+                            var cont_H = 6;
+                            if (item.GetDiaSemana() == "Domingo")
+                            {
+                                if (item.HoraInicio.Hours == cont_H)
+                                {
+                                    <div class="work-hours bg-color">
+                                        <ul>
+                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
+                                            <li>@item.HoraInicio</li>
+                                        </ul>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="work-hours"></div>
+                                }
+                                cont_H += 2;
+                            }
+                        }
+
                     </div>
                 </div>
             </div>
+
+
+
+
+
         </div>
     </div>
 </div>

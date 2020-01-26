@@ -7,70 +7,79 @@
 
 <div class="container">
     <h1>Minha lista de alunos</h1>
-
-<table class="content-table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sexo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Socio.Peso) 
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Socio.Altura) 
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fotografia)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataNascimento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telemovel)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sexo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Socio.Peso) Kg
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Socio.Altura) Cm
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fotografia)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataNascimento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telemovel)
-            </td>
-            <td>
-                <a asp-action="HistoricoAulas" asp-route-id="@item.NumCC">Historico de Aulas</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+    <hr />
+    <br />
+    @if (Model.Any() == false)
+    {
+        <h3>Não tem nenhum aluno de momento!</h3>
+    }
+    else
+    {
+        <table class="content-table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Sexo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Socio.Peso) 
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Socio.Altura) 
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fotografia)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataNascimento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Telemovel)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sexo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Socio.Peso) Kg
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Socio.Altura) Cm
+                        </td>
+                        <td>
+                            <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.Fotografia)" width="100" height="100" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataNascimento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Telemovel)
+                        </td>
+                        <td>
+                            <a asp-action="HistoricoAulas" asp-route-id="@item.NumCC">Histórico de Aulas</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 
 </div>

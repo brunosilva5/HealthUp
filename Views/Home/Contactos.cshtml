@@ -1,4 +1,4 @@
-﻿
+﻿@model HealthUp.Models.Ginasio
 @{
     ViewData["Title"] = "Contactos";
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
@@ -15,12 +15,11 @@
         <br />
         <hr />
         <h4>
-            Rua Alameda da Grasse, Nosso Shopping,
-            PT, Vila-Real
+            @Model.Endereco
         </h4>
         <br />
-        <h4><i class="fa fa-phone"></i><span>253 123 123</span></h4>
-        <h4>healthupgym@gmail.com</h4>
+        <h4><i class="fa fa-phone"></i><span> @Model.Telemovel.Substring(4, 9)</span></h4>
+        <h4>@Model.Email</h4>
         <br />
     </div>
 </div>

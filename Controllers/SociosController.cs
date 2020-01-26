@@ -43,6 +43,7 @@ namespace HealthUp.Controllers
         #endregion
 
         #region SolicitarPersonalTrainer
+        [Socios_PTs_Filter(Pessoa = "Socio")]
         public IActionResult SolicitarPT()
         {
             List<Pessoa> Lista = new List<Pessoa>();
@@ -64,13 +65,14 @@ namespace HealthUp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Socios_PTs_Filter(Pessoa = "Socio")]
         public async Task<IActionResult> SolicitarPT(string ProfessorEscolhido)
         {
             var Prof = _context.Professores.SingleOrDefault(p => p.NumCC == ProfessorEscolhido);
             var Socio = _context.Socios.Include(s=>s.NumProfessorNavigation).SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
             SolicitacaoProfessor solicitacao = new SolicitacaoProfessor();
 
-            if (_context.Socios.SingleOrDefault(s=>s.NumCC==HttpContext.Session.GetString("UserId")).ID_Solicitacao!=null)
+            if (_context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId")).ID_Solicitacao != null)
             {
                 ModelState.AddModelError("", "Já existe um pedido de personal trainer pendente! Aguarde a aprovação ou rejeição por parte de um administrador!");
             }
@@ -83,7 +85,7 @@ namespace HealthUp.Controllers
 
                 _context.Add(solicitacao);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Home");
             }
 
             // Passar para a view de novo a lista de professores
@@ -164,13 +166,15 @@ namespace HealthUp.Controllers
         #endregion
 
         #region ConsultarInfoPT
+
+        [Socios_PTs_Filter(Pessoa = "Socio", DeixarAcederSeTiver = true)]
         public IActionResult ConsultarInfoPT()
         {
             var x = _context.Socios.Include(s => s.NumProfessorNavigation).ThenInclude(s => s.NumProfessorNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId")).NumProfessorNavigation.NumProfessorNavigation;
             return View(x);
         }
 
-        
+        [Socios_PTs_Filter(Pessoa = "Socio", DeixarAcederSeTiver = true)]
         public IActionResult DeixarSerAluno(string NumProf)
         {
             var prof = _context.Professores.SingleOrDefault(x => x.NumCC == NumProf);
@@ -188,7 +192,7 @@ namespace HealthUp.Controllers
 
             HttpContext.Session.SetString("ExistePT", "Nao");
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "Home");
         }
         #endregion
         #region HistoricoAulas

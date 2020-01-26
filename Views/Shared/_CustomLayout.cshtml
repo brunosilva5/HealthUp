@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>@ViewData["Title"] - HealthUp</title>
+    <!--Ícon do site-->
+    <link rel="shortcut icon" type="image/x-icon" href="~/logoicon.ico" />
 
     <!--Fonte AweSome-->
     <script src="https://kit.fontawesome.com/210c3af75f.js" crossorigin="anonymous"></script>
@@ -32,8 +34,13 @@
         <ul class="nav">
             <li><a asp-controller="Home" asp-action="Index">Página Inicial</a></li>
             <li><a asp-controller="Home" asp-action="Sobrenos">Sobre Nós</a></li>
-            <li><a asp-controller="Home" asp-action="Index">Treinar</a></li>
             <li><a asp-controller="Home" asp-action="Contactos">Contactos</a></li>
+            <li>
+                @if (Context.Session.GetString("UserId") == null)
+                {
+                    <a asp-controller="Utilizadores" asp-action="PedidoSocio">Adesão</a>
+                }
+            </li>
             <li>
                 @if (Context.Session.GetString("UserId") == null)
                 {
@@ -48,7 +55,7 @@
                     </a>
                     <ul>
                         <li><a href="#">Ver Perfil</a></li>
-                        <li><a href="#">Mensagens</a></li>
+                        <li><a asp-controller="Mensagens" asp-action="CaixaEntrada">Mensagens</a></li>
                         <li><a asp-controller="Home" asp-action="MapaAulas">Mapa de aulas</a></li>
                         <li><a asp-controller="Socios" asp-action="ConsultarPlanoTreino">Plano de exercícios</a></li>
                         <li><a asp-controller="Socios" asp-action="ListarAulas">Listar Aulas</a></li>
@@ -62,7 +69,7 @@
                         {
                             <li><a asp-controller="Socios" asp-action="SolicitarPT">Solicitar Personal Trainer</a></li>
                         }
-                        <li><a asp-controller="Utilizadores" asp-action="Logout">Sair</a></li>
+                        
                     </ul>
                 }
 
@@ -73,12 +80,12 @@
                         <i class="fa fa-chevron-down" style="font-size: .8em;"></i>
                     </a>
                     <ul>
+                        <li><a asp-controller="Mensagens" asp-action="CaixaEntrada">Mensagens</a></li>
                         <li><a asp-controller="Professores" asp-action="RegistarPesoSocio">Registar peso de sócio</a></li>
-                        <li><a asp-controller="Professores" asp-action="CriarPlanoExercicioSocio">Criar plano de exercício para sócio</a></li>
-                        <li><a asp-controller="Professores" asp-action="ConsultarMapaAulas">Consultar mapa de aulas de grupo que leciono</a></li>
+                        <li><a asp-controller="PlanoTreinos" asp-action="Index">Gerir plano de treinos</a></li>
+                        <li><a asp-controller="Professores" asp-action="ConsultarAulasQueLeciona">Consultar aulas que leciono</a></li>
                         <li><a asp-controller="Professores" asp-action="ConsultarSociosInscritosAulas">Consultar sócios inscritos nas minhas aulas</a></li>
                         <li><a asp-controller="Professores" asp-action="ConsultarMeusAlunos">Consultar os meus alunos</a></li>
-                        <li><a asp-controller="Professores" asp-action="LerArquivarMensagens">Ler/arquivar mensagens</a></li>
                     </ul>
                 }
 
@@ -94,19 +101,33 @@
                         <li><a asp-controller="Admins" asp-action="AprovarPedidoProf">Aprovar pedidos de personal trainer</a></li>
                         <li><a asp-controller="Admins" asp-action="CriarExercicio">Criar exercício</a></li>
                         <li><a asp-controller="Admins" asp-action="SuspenderUtilizador">Suspender utilizador</a></li>
+                        <li><a asp-controller="Admins" asp-action="GerirCotas">Gerir cotas</a></li>
                         <li><a asp-controller="Admins" asp-action="EditarInfoHealthUp">Editar informações do ginásio</a></li>
                     </ul>
                 }
             </li>
 
             <li>
-                @if (Context.Session.GetString("Role") == "Admin" || Context.Session.GetString("Role") == "Professor")
+                @if (Context.Session.GetString("UserId") != null)
                 {
                     <a asp-controller="Utilizadores" asp-action="Logout">Sair</a>
                 }
             </li>
 
-            <li class="phone-num"><i class="fa fa-phone"></i><span>253 123 123</span></li>
+            @{
+                var db = Context.RequestServices.GetRequiredService<HealthUpContext>();
+                var gym = db.Ginasios.SingleOrDefault();
+            }
+            <li class="phone-num"><i class="fa fa-phone"></i><span>
+        @{if (gym.Telemovel.Length != 9)
+            {
+            @gym.Telemovel.Substring(4, 9)
+            }
+            else
+            {
+            @gym.Telemovel
+                } }
+        </span></li>
         </ul>
     </header>
 

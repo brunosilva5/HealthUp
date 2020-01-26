@@ -2,25 +2,28 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
+<div class="container">
+    <h1>Planos de treino</h1>
+    <hr />
+    <br />
+    <a asp-action="Create" class="primary-btn-msg">Criar novo plano para o sócio</a>
+    <br />
+    <br />
+    <form asp-action="Index_Filtered" data-ajax="true"
+            data-ajax-method="POST"
+            data-ajax-update="#target"
+            data-ajax-mode="replace">
 
-<h1>Planos de treino</h1>
-<br />
-<a asp-action="Create">Criar novo plano para o sócio</a>
-<br />
-<form asp-action="Index_Filtered" data-ajax="true"
-      data-ajax-method="POST"
-      data-ajax-update="#target"
-      data-ajax-mode="replace">
-
-    <select name="SocioEscolhido" id="SocioEscolhido" class="form-control" style="width:auto" asp-items="@ViewBag.Socios"></select>
-    <input type="submit" value="Ver planos de treino" class="btn btn-primary" />
-</form>
+        <select name="SocioEscolhido" id="SocioEscolhido" class="form-control" style="width:auto" asp-items="@ViewBag.Socios"></select>
+        <input type="submit" value="Ver planos de treino" class="primary-btn" />
+    </form>
 
 
-<div id="target">
+    <div id="target">
+
+    </div>
 
 </div>
-
-

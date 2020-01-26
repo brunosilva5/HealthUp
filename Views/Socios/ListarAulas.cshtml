@@ -5,65 +5,69 @@
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
-@if (Model.Count() == 0)
-{
-<h3>Não está previsto o início de nenhuma aula na próxima hora </h3>
-}
-else
-{
-<h3>Aulas a começar</h3>
+<br />
+<div class="container">
+    @if (Model.Count() == 0)
+    {
+        <hr />
+        <h3>Não está previsto o início de nenhuma aula na próxima hora </h3>
+    }
+    else
+    {
+        <h3>Aulas a começar</h3>
+        <hr />
+        <br />
 
+        <div class="row">
+            <div class="column">
+                <table class="content-table">
+                    <thead>
 
-<div class="row">
-    <div class="column">
-        <table class="content-table">
-            <thead>
-
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(item => item.HoraInicio)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(item => item.Lotacao)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(item => item.Nome)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @item.HoraInicio.ToString(@"hh\:mm")
-                        </td>
-                        <td>
-                            <span>@item.Inscreve.Count/@item.Lotacao</span>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nome)
-                        </td>
-                        @if (item.Lotacao > item.Inscreve.Count && item.Inscreve.SingleOrDefault(p => p.IdAula == item.IdAula && p.NumSocio == ViewBag.Socio) == null)
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(item => item.HoraInicio)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(item => item.Lotacao)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(item => item.Nome)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
                         {
-                            <td>
-                                <a asp-action="Inscrever" asp-route-aula="@item.IdAula">Inscrever</a>
-                            </td>
+                            <tr>
+                                <td>
+                                    @item.HoraInicio.ToString(@"hh\:mm")
+                                </td>
+                                <td>
+                                    <span>@item.Inscreve.Count/@item.Lotacao</span>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nome)
+                                </td>
+                                @if (item.Lotacao > item.Inscreve.Count && item.Inscreve.SingleOrDefault(p => p.IdAula == item.IdAula && p.NumSocio == ViewBag.Socio) == null)
+                                {
+                                    <td>
+                                        <a asp-action="Inscrever" asp-route-aula="@item.IdAula">Inscrever</a>
+                                    </td>
+                                }
+                                else if (item.Inscreve.SingleOrDefault(p => p.IdAula == item.IdAula && p.NumSocio == ViewBag.Socio) != null)
+                                {
+                                    <td>
+                                        <a asp-action="Desinscrever" asp-route-aula="@item.IdAula">Desinscrever</a>
+                                    </td>
+                                }
+                            </tr>
                         }
-                        else if (item.Inscreve.SingleOrDefault(p => p.IdAula == item.IdAula && p.NumSocio == ViewBag.Socio) != null)
-                        {
-                            <td>
-                                <a asp-action="Desinscrever" asp-route-aula="@item.IdAula">Desinscrever</a>
-                            </td>
-                        }
-                    </tr>
-                }
 
-            </tbody>
-        </table>
-    </div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
 </div>
-}
-
 

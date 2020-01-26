@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -266,6 +267,51 @@ namespace HealthUp.Helpers
                 yield return cur;
             }
             yield return value;
+        }
+
+        public static bool DoesProfHaveStudents(HttpContext context)
+        {
+            var db = context.RequestServices.GetRequiredService<HealthUpContext>();
+            var prof = db.Professores.Include(x=>x.Socio).SingleOrDefault(p => p.NumCC == context.Session.GetString("UserId"));
+            if (prof!=null && prof.Socio.Count>0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool DoesSocioHavePT(HttpContext context)
+        {
+            var db = context.RequestServices.GetRequiredService<HealthUpContext>();
+            var socio = db.Socios.Include(x => x.NumProfessorNavigation).SingleOrDefault(p => p.NumCC == context.Session.GetString("UserId"));
+            if (socio != null && socio.NumProfessorNavigation != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static int GetWeekOfTheYear(DateTime data)
+        {
+            CultureInfo myCI = new CultureInfo("pt-PT");
+            Calendar myCal = myCI.Calendar;
+
+            // Gets the DTFI properties required by GetWeekOfYear.
+            CalendarWeekRule myCWR = myCI.DateTimeFormat.CalendarWeekRule;
+            DayOfWeek myFirstDOW = myCI.DateTimeFormat.FirstDayOfWeek;
+
+            return myCal.GetWeekOfYear(data, myCWR, myFirstDOW);
+        }
+
+        public static List<DateTime> GetDatesBetween(DateTime start, DateTime end, params DayOfWeek[] weekdays)
+        {
+            bool allDays = weekdays == null || !weekdays.Any();
+
+            var dates = Enumerable.Range(0, 1 + end.Subtract(start).Days)
+                                  .Select(offset => start.AddDays(offset))
+                                  .Where(d => allDays || weekdays.Contains(d.DayOfWeek))
+                                  .ToList();
+            return dates;
         }
 
 

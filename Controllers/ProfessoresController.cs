@@ -167,27 +167,5 @@ namespace HealthUp.Controllers
 
         #endregion
 
-
-
-        #region Consulta lista de alunos inscritos nas suas aulas
-        public IActionResult ListAulas()
-        {
-            var lista = _context.Aulas.Where(x => x.NumProfessor == HttpContext.Session.GetString("UserId"));
-            return View(lista);
-        }
-
-        public IActionResult ListSocios(int id)
-        {
-            var lista = _context.Inscricoes.Where(x => x.IdAula == id);
-            List<Socio> socios = new List<Socio>();
-
-            foreach (var item in lista)
-            {
-                socios.Add(_context.Socios.Include(x=>x.NumSocioNavigation).First(x => x.NumCC == item.NumSocio));
-            }
-            return View(socios);
-        }
-
-        #endregion
     }
 }

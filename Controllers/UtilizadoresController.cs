@@ -122,7 +122,9 @@ namespace HealthUp.Controllers
         }
         #endregion
 
+
         #region Logout
+        [Autenticado]
         public IActionResult Logout()
         {
             HttpContext.Response.Cookies.Delete("CookieSessao");
