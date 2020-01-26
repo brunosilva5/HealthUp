@@ -1,0 +1,100 @@
+﻿@model IEnumerable<HealthUp.Models.Aula>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+
+}
+
+    <div class="container">
+        <h1>Index</h1>
+
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+        <table class="content-table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ValidoDe)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ValidoAte)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Lotacao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.HoraInicio)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DiaSemana)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NumAdminNavigation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NumProfessorNavigation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FotografiaDivulgacao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.VideoDivulgacao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Descricao)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValidoDe)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValidoAte)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Lotacao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraInicio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DiaSemana)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumAdminNavigation.NumCC)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumCC)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FotografiaDivulgacao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VideoDivulgacao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descricao)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.IdAula">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.IdAula">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.IdAula">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>

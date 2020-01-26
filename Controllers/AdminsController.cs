@@ -152,7 +152,7 @@ namespace HealthUp.Controllers
             return RedirectToAction(nameof(GerirPessoas));
         }
 
-        public IActionResult CriarSo cio(string id)
+        public IActionResult CriarSocio(string id)
         {
             Pessoa p = _context.Pessoas.Include(p=>p.Admin).Include(p=>p.Professor).Include(p=>p.Socio).FirstOrDefault(p => p.NumCC == id);
             p.Admin = null;
@@ -212,65 +212,65 @@ namespace HealthUp.Controllers
 
         #region CriarExercicio
 
-        public IActionResult CriarExercicio()
-        {
-            return View();
-        }
+        //public IActionResult CriarExercicio()
+        //{
+        //    return View();
+        //}
 
-        // POST: Exercicios/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [RequestSizeLimit(1048576000)]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CriarExercicio(string Nome, string Descricao, IFormFile Fotografia, IFormFile Video)
-        {
-            Exercicio exercicio = new Exercicio
-            {
-                Nome = Nome,
-                Descricao = Descricao,
-                Fotografia = Fotografia.FileName,
-                Video = Video.FileName
-            };
+        //// POST: Exercicios/Create
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[RequestSizeLimit(1048576000)]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CriarExercicio(string Nome, string Descricao, IFormFile Fotografia, IFormFile Video)
+        //{
+        //    Exercicio exercicio = new Exercicio
+        //    {
+        //        Nome = Nome,
+        //        Descricao = Descricao,
+        //        Fotografia = Fotografia.FileName,
+        //        Video = Video.FileName
+        //    };
 
-            if (ModelState.IsValid)
-            {
-                //--------------------------------------------------------------------------------------------------------------------------------------
-                // Adicionar na tabela de solicitacoes do admin
-                var admin = _context.Admins.Include(x => x.Exercicio).Include(x => x.NumAdminNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
-                admin.Exercicio.Add(exercicio);
-                _context.Admins.Update(admin);
-                // --------------------------------------------------------------------------------------------------------------------------------------
+        //    if (ModelState.IsValid)
+        //    {
+        //        //--------------------------------------------------------------------------------------------------------------------------------------
+        //        // Adicionar na tabela de solicitacoes do admin
+        //        var admin = _context.Admins.Include(x => x.Exercicio).Include(x => x.NumAdminNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
+        //        admin.Exercicio.Add(exercicio);
+        //        _context.Admins.Update(admin);
+        //        // --------------------------------------------------------------------------------------------------------------------------------------
 
-                exercicio.NumAdmin = _context.Admins.Include(x => x.NumAdminNavigation).SingleOrDefault(a => a.NumCC == HttpContext.Session.GetString("UserId")).NumCC;
+        //        exercicio.NumAdmin = _context.Admins.Include(x => x.NumAdminNavigation).SingleOrDefault(a => a.NumCC == HttpContext.Session.GetString("UserId")).NumCC;
 
-                _context.Add(exercicio);
-                await _context.SaveChangesAsync();
+        //        _context.Add(exercicio);
+        //        await _context.SaveChangesAsync();
 
-                //guardar ficheiros no wwwroot
-                string caminho = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
-                string nome_ficheiro = Path.GetFileName(Fotografia.FileName);
-                string caminho_completo = Path.Combine(caminho, nome_ficheiro);
+        //        //guardar ficheiros no wwwroot
+        //        string caminho = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
+        //        string nome_ficheiro = Path.GetFileName(Fotografia.FileName);
+        //        string caminho_completo = Path.Combine(caminho, nome_ficheiro);
 
-                FileStream f = new FileStream(caminho_completo, FileMode.Create);
-                Fotografia.CopyTo(f);
+        //        FileStream f = new FileStream(caminho_completo, FileMode.Create);
+        //        Fotografia.CopyTo(f);
 
-                f.Close();
+        //        f.Close();
 
 
-                string caminho1 = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
-                string nome_ficheiro1 = Path.GetFileName(Video.FileName);
-                string caminho_completo1 = Path.Combine(caminho1, nome_ficheiro1);
+        //        string caminho1 = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
+        //        string nome_ficheiro1 = Path.GetFileName(Video.FileName);
+        //        string caminho_completo1 = Path.Combine(caminho1, nome_ficheiro1);
 
-                FileStream ff = new FileStream(caminho_completo1, FileMode.Create);
-                Video.CopyTo(ff);
+        //        FileStream ff = new FileStream(caminho_completo1, FileMode.Create);
+        //        Video.CopyTo(ff);
 
-                ff.Close();
+        //        ff.Close();
 
-                return RedirectToAction(nameof(Index), "Home");
-            }
-            return View(exercicio);
-        }
+        //        return RedirectToAction(nameof(Index), "Home");
+        //    }
+        //    return View(exercicio);
+        //}
 
 
         #endregion
@@ -405,7 +405,6 @@ namespace HealthUp.Controllers
         #region Aulas
         public async Task<IActionResult> ListAulas()
         {
-
             var healthUpContext = _context.Aulas.Include(a => a.NumAdminNavigation).ThenInclude(a=>a.NumAdminNavigation).Include(a => a.NumProfessorNavigation).ThenInclude(p=>p.NumProfessorNavigation);
             return View(await healthUpContext.ToListAsync());
         }

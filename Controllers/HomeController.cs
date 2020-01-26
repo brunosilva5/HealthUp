@@ -50,14 +50,14 @@ namespace HealthUp.Controllers
             var Aulas = _context.Aulas.ToList();
             foreach (var item in Aulas)
             {
-                var datas_aulas_semanaAtual=item.GetAulasInCurrentWeek();
-                foreach (var subitem in datas_aulas_semanaAtual)
+                // verificar se a aula vai ocorrer esta semana
+                if (item.IsAulaInCurrentWeek())
                 {
-                   
+                    Listafinal.Add(item); // se sim, adicionar a lista
                 }
 
             }
-            return View(_context.Aulas.ToList());
+            return View(Listafinal);
         }
 
         public IActionResult Privacy()

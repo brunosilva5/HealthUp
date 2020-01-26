@@ -7,8 +7,6 @@
 
 <div class="container">
     <h1>Criar Aula</h1>
-
-
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -21,12 +19,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="FotografiaDivulgacao" class="control-label"></label>
-                <input name="FotografiaDivulgacao" type="file" class="form-control" />
+                <input name="FotografiaDivulgacao" type="file" required class="form-control" />
                 <span asp-validation-for="FotografiaDivulgacao" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="VideoDivulgacao" class="control-label"></label>
-                <input name="VideoDivulgacao" type="file" class="form-control" />
+                <input name="VideoDivulgacao" type="file" required class="form-control" />
                 <span asp-validation-for="VideoDivulgacao" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,7 +53,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="HoraInicio" class="control-label"></label>
-                <input type="time" id="appt" name="HoraInicio" min="07:00" max="21:00" required>
+                <input  asp-for="HoraInicio" type="time" id="appt" value="06:00:00" step="7200" name="HoraInicio" min="06:00" max="21:00" required>
                 <span asp-validation-for="HoraInicio" class="text-danger"></span>
             </div>
             <div class="form-group">

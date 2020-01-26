@@ -204,5 +204,10 @@ namespace HealthUp.Controllers
 
 
         }
+        [HttpPost]
+        public JsonResult IsValidNomeAula()
+        {
+            return Json(true);
+        }
     }
 }

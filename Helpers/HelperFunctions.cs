@@ -314,6 +314,10 @@ namespace HealthUp.Helpers
             return dates;
         }
 
+        // ir buscar todas as aulas que vao ocorrer esta semana
+        // para isso vou a cada aula buscar as datas todas que vao ocorrer das aulas
+        // a aula vai ocorrer na semana atual? juntar a lista
+        // 
 
     }
 }

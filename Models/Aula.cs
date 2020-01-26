@@ -23,6 +23,7 @@ namespace HealthUp.Models
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(30)]
         [Display(Name = "Aula")]
+        [Remote("IsValidNomeAula", "Validation_Register", HttpMethod = "POST", ErrorMessage = "Esta aula já existe!")]
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
@@ -45,7 +46,7 @@ namespace HealthUp.Models
         
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Display(Name = "Lotação")]
-        public int Lotacao { get; set; }
+        public int? Lotacao { get; set; }
         
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Display(Name = "Hora de início")]
@@ -86,10 +87,10 @@ namespace HealthUp.Models
         [InverseProperty("IdAulaNavigation")]
         public virtual ICollection<Inscreve> Inscreve { get; set; }
 
-        public List<DateTime> GetAulasInCurrentWeek()
+        public bool IsAulaInCurrentWeek()
         {
             List<DateTime> ListaDatas = new List<DateTime>();
-            if (GetDiaSemana()=="Domingo")
+            if (GetDiaSemana() == "Domingo")
             {
                 ListaDatas = HelperFunctions.GetDatesBetween(ValidoDe, ValidoAte, DayOfWeek.Sunday);
             }
@@ -120,14 +121,15 @@ namespace HealthUp.Models
 
             // vai ser criada uma lista de datas de todos os dias da semana ( ex: quarta-feira) entre as datas valido de e valido ate
             // depois abaixo vamos excluir todas as datas que nao se encontrem na semana atual
+            List<DateTime> NewListaDatas = new List<DateTime>();
             foreach (var item in ListaDatas)
             {
                 if (HelperFunctions.GetWeekOfTheYear(DateTime.Now) != HelperFunctions.GetWeekOfTheYear(item))
                 {
-                    ListaDatas.Remove(item);
+                    NewListaDatas.Add(item);
                 }
             }
-            return ListaDatas;
+            return ListaDatas.Count != 0 ? true : false;
         }
         public string GetDiaSemana()
         {
