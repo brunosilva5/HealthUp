@@ -139,7 +139,7 @@ namespace HealthUp.Controllers
             return RedirectToAction(nameof(GerirPessoas));
         }
 
-        public IActionResult CriarSocio(string id)
+        public IActionResult CriarSo cio(string id)
         {
             Pessoa p = _context.Pessoas.Include(p=>p.Admin).Include(p=>p.Professor).Include(p=>p.Socio).FirstOrDefault(p => p.NumCC == id);
             p.Admin = null;
