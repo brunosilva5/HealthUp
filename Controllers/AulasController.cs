@@ -205,7 +205,7 @@ namespace HealthUp.Controllers
             }
 
             var aula = await _context.Aulas
-                .Include(a => a.NumAdminNavigation).ThenInclude(a=>a.Pessoa)
+                .Include(a => a.NumAdminNavigation).ThenInclude(a=>a.NumAdminNavigation)
                 .Include(a => a.NumProfessorNavigation).ThenInclude(a=>a.NumProfessorNavigation)
                 .FirstOrDefaultAsync(m => m.IdAula == id);
             if (aula == null)

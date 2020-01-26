@@ -76,7 +76,7 @@ namespace HealthUp.Controllers
 
             // --------------------------------------------------------------------------------------------------------------------------------------
             // Adicionar na tabela de socios do admin
-            var admin = _context.Admins.Include(x => x.PedidosSocio).Include(x => x.Pessoa).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
+            var admin = _context.Admins.Include(x => x.PedidosSocio).Include(x => x.NumAdminNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
             admin.PedidosSocio.Add(pedido);
             _context.Admins.Update(admin);
             // --------------------------------------------------------------------------------------------------------------------------------------
@@ -222,12 +222,12 @@ namespace HealthUp.Controllers
         #region AprovarPedidoProf
         public IActionResult AprovarPedidoProf()
         {
-            return View(_context.SolicitacaoProfessores.Include(s => s.Socio).ThenInclude(s => s.NumSocioNavigation).Include(s => s.Professor).ThenInclude(p => p.NumProfessorNavigation).Include(a => a.NumAdminNavigation).ThenInclude(x => x.Pessoa).Where(s => s.NumAdmin == null).ToList().OrderByDescending(p => p.Data));
+            return View(_context.SolicitacaoProfessores.Include(s => s.Socio).ThenInclude(s => s.NumSocioNavigation).Include(s => s.Professor).ThenInclude(p => p.NumProfessorNavigation).Include(a => a.NumAdminNavigation).ThenInclude(x => x.NumAdminNavigation).Where(s => s.NumAdmin == null).ToList().OrderByDescending(p => p.Data));
         }
 
         public IActionResult PedidoProf_Aprovado(int id)
         {
-            var solicitacao = _context.SolicitacaoProfessores.Include(s => s.Socio).ThenInclude(s => s.NumSocioNavigation).Include(s => s.Professor).ThenInclude(p => p.NumProfessorNavigation).Include(a => a.NumAdminNavigation).ThenInclude(x => x.Pessoa).FirstOrDefault(s => s.IdSolicitacao == id);
+            var solicitacao = _context.SolicitacaoProfessores.Include(s => s.Socio).ThenInclude(s => s.NumSocioNavigation).Include(s => s.Professor).ThenInclude(p => p.NumProfessorNavigation).Include(a => a.NumAdminNavigation).ThenInclude(x => x.NumAdminNavigation).FirstOrDefault(s => s.IdSolicitacao == id);
 
             // Atribuir o ID do admin a esta solicitacao
             solicitacao.NumAdmin = HttpContext.Session.GetString("UserId");
@@ -244,7 +244,7 @@ namespace HealthUp.Controllers
 
             // --------------------------------------------------------------------------------------------------------------------------------------
             // Adicionar na tabela de solicitacoes do admin
-            var admin = _context.Admins.Include(x => x.SolicitacaoProfessor).Include(x => x.Pessoa).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
+            var admin = _context.Admins.Include(x => x.SolicitacaoProfessor).Include(x => x.NumAdminNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
             admin.SolicitacaoProfessor.Add(solicitacao);
             _context.Admins.Update(admin);
             // --------------------------------------------------------------------------------------------------------------------------------------
@@ -459,7 +459,7 @@ namespace HealthUp.Controllers
         #region Aulas
         public async Task<IActionResult> ListAulas()
         {
-            var healthUpContext = _context.Aulas.Include(a => a.NumAdminNavigation).ThenInclude(a=>a.Pessoa).Include(a => a.NumProfessorNavigation).ThenInclude(p=>p.NumProfessorNavigation);
+            var healthUpContext = _context.Aulas.Include(a => a.NumAdminNavigation).ThenInclude(a=>a.NumAdminNavigation).Include(a => a.NumProfessorNavigation).ThenInclude(p=>p.NumProfessorNavigation);
             return View(await healthUpContext.ToListAsync());
         }
 
