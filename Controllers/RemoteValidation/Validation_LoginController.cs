@@ -20,7 +20,7 @@ namespace HealthUp.Controllers.RemoteValidation
         
         public JsonResult IsValidUsername(string Username)
         {
-            var Pessoa = _context.Pessoas.Include(p=>p.Socio).Include(p=>p.Professor).SingleOrDefault(p => p.Username == Username);
+            var Pessoa = _context.Pessoas.Include(p=>p.Socio).ThenInclude(s=>s.Cotas).Include(p=>p.Professor).SingleOrDefault(p => p.Username == Username);
             if (Pessoa == null)
             {
                 return Json(new string("Este username não existe!"));
@@ -42,15 +42,11 @@ namespace HealthUp.Controllers.RemoteValidation
                     return Json("Esta conta encontra-se suspensa pelo seguinte motivo:" + Environment.NewLine + Pessoa.Socio.Motivo);
                 }
 
-                // agora verificamos se tem as cotas pagas
-                DateTime dataRegisto = DateTime.Parse(Pessoa.Socio.DataRegisto.ToString());
-                var nMeses = Math.Abs((DateTime.Now.Month - dataRegisto.Month) + 12 * (DateTime.Now.Year - dataRegisto.Year)) + 1;
-                int cotasPagas = _context.Cota.Where(x => x.NumSocio == Pessoa.Socio.NumCC.ToString()).Count();
-                int cotasNaoPagas = nMeses - cotasPagas;
-
-                if (cotasNaoPagas > 0)
+                
+                
+                if (!Pessoa.Socio.Cotas.AreCotasPagas())
                 {
-                    return Json(new string("Tem de pagar as cotas em atraso para poder efetuar login!"));
+                    return Json(new string("Tem de pagar as cotas em atraso para poder efetuar login! Meses em atraso: " + Pessoa.Socio.Cotas.GetNumeroCotasNaoPagas()));
                 }
             }
             

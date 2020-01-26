@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20200125163945_FirstCreate")]
+    [Migration("20200125220832_FirstCreate")]
     partial class FirstCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -122,15 +122,20 @@ namespace HealthUp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("NumSocio")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("DataRegisto")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("NumSocioNavigationNumCC")
+                    b.Property<string>("NumSocio")
                         .HasColumnType("nvarchar(8)");
+
+                    b.Property<int>("NumeroCotasPagas")
+                        .HasColumnType("int");
 
                     b.HasKey("IdCota");
 
-                    b.HasIndex("NumSocioNavigationNumCC");
+                    b.HasIndex("NumSocio")
+                        .IsUnique()
+                        .HasFilter("[NumSocio] IS NOT NULL");
 
                     b.ToTable("Cota");
                 });
@@ -455,9 +460,6 @@ namespace HealthUp.Migrations
                         .HasColumnType("nvarchar(3)")
                         .HasMaxLength(3);
 
-                    b.Property<DateTime?>("DataRegisto")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime?>("DataRegisto_Peso")
                         .HasColumnType("datetime2");
 
@@ -553,8 +555,8 @@ namespace HealthUp.Migrations
             modelBuilder.Entity("HealthUp.Models.Cota", b =>
                 {
                     b.HasOne("HealthUp.Models.Socio", "NumSocioNavigation")
-                        .WithMany()
-                        .HasForeignKey("NumSocioNavigationNumCC");
+                        .WithOne("Cotas")
+                        .HasForeignKey("HealthUp.Models.Cota", "NumSocio");
                 });
 
             modelBuilder.Entity("HealthUp.Models.Exercicio", b =>

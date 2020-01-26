@@ -1,0 +1,55 @@
+﻿@model IEnumerable<HealthUp.Models.Socio>
+
+
+@{
+    ViewData["Title"] = "AprovarPedidoProf";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+}
+<div class="container">
+    <table class="content-table">
+        <thead>
+            <tr>
+                <th>
+                    Nome
+                </th>
+                <th>
+                    Telemóvel
+                </th>
+                <th>
+                    Fotografia
+                </th>
+                <th>
+                    Número de cotas em atraso
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumSocioNavigation.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumSocioNavigation.Telemovel)
+                    </td>
+                    <td>
+                        <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.NumSocioNavigation.Fotografia)" height="100" width="100" />
+                    </td>
+                    <td>
+                        @item.Cotas.GetNumeroCotasNaoPagas()
+                    </td>
+                    @if (item.Cotas.GetNumeroCotasNaoPagas()>0)
+                    {
+                        <td>
+                            <a asp-action="AcertarCotas" asp-route-id="@item.NumCC">Acertar cotas</a>
+                        </td>
+                    }
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -63,12 +63,14 @@ namespace HealthUp.Controllers
             };
             Socio S = new Socio()
             {
-                DataRegisto = DateTime.Now,
+                
                 NumCC = P.NumCC,
                 NumSocioNavigation = P,
                 NumAdmin = (HttpContext.Session.GetString("UserId")),
-                NumAdminNavigation = _context.Admins.FirstOrDefault(a => a.NumCC == (HttpContext.Session.GetString("UserId")))
+                NumAdminNavigation = _context.Admins.FirstOrDefault(a => a.NumCC == (HttpContext.Session.GetString("UserId"))),
+                
             };
+            S.Cotas = new Cota(S.NumCC);
             P.Socio = S;
             _context.Socios.Add(S);
 
@@ -627,58 +629,21 @@ namespace HealthUp.Controllers
 
 
         #region Cotas
-        public IActionResult ListarSocios()
+        public IActionResult GerirCotas()
         {
-            var lista = _context.Socios.Include(x=>x.NumSocioNavigation).ToList();
+            var lista = _context.Socios.Include(x=>x.NumSocioNavigation).Include(s=>s.Cotas).ToList();
             return View(lista);
         }
 
-        public IActionResult ListarCotas(int id)
+        public IActionResult AcertarCotas(string id)
         {
-            ViewBag.id = id;
-            Socio s = _context.Socios.Include(x => x.NumSocioNavigation).First(x => x.NumCC == id.ToString());
-            string registo = s.DataRegisto.ToString();
-            DateTime dataRegisto = DateTime.Parse(registo);
-            var nMeses = Math.Abs((DateTime.Now.Month -dataRegisto.Month) + 12 * (DateTime.Now.Year -dataRegisto.Year))+1;
-
-            int cotasPagas = _context.Cota.Where(x => x.NumSocio == id.ToString()).Count();
-            int cotasNaoPagas = nMeses - cotasPagas;
-
-            List<DateTime> listaNaoPagas = new List<DateTime>();
-
-            for (int i = 0; i < cotasNaoPagas; i++)
-            {
-                DateTime x = dataRegisto.AddMonths(i+cotasPagas);
-                listaNaoPagas.Add(x);
-            }
-
-            return View(listaNaoPagas);
             
-        }
-
-        public IActionResult AcertarCotas(int id)
-        {
-            Socio s = _context.Socios.Include(x => x.NumSocioNavigation).First(x => x.NumCC == id.ToString());
-            string registo = s.DataRegisto.ToString();
-            DateTime dataRegisto = DateTime.Parse(registo);
-            var nMeses = Math.Abs((DateTime.Now.Month - dataRegisto.Month) + 12 * (DateTime.Now.Year - dataRegisto.Year)) + 1;
-
-            int cotasPagas = _context.Cota.Where(x => x.NumSocio == id.ToString()).Count();
-            int cotasNaoPagas = nMeses - cotasPagas;
-
-            for (int i = 0; i < cotasNaoPagas; i++)
-            {
-                DateTime x = dataRegisto.AddMonths(i + cotasPagas);
-                Cota nova = new Cota
-                {
-                    NumSocio = id.ToString()
-                };
-                _context.Cota.Add(nova);
-            }
-
+            Cota cotas = _context.Cota.Include(c => c.NumSocioNavigation).SingleOrDefault(c => c.NumSocio==id);
+            cotas.AcertarCotas();
+            _context.Update(cotas);
             _context.SaveChanges();
 
-            return RedirectToAction("ListarSocios");
+            return RedirectToAction(nameof(GerirCotas));
         }
 
 

@@ -33,6 +33,7 @@ namespace HealthUp.Data
                         Password=SecurePasswordHasher.Hash("admin"),
                         Admin=new Admin()
                     };
+
                 context.Pessoas.Add(p1);
                     Pessoa p2 = new Pessoa()
                     {
@@ -79,13 +80,16 @@ namespace HealthUp.Data
                         Nome = "Diogo Silva",
                         Telemovel = "+351937372277",
                         Password = SecurePasswordHasher.Hash("socio"),
-                        Socio = new Socio(),
+                        
                         
                     };
+                p4.Socio = new Socio(p4);
                     p4.Socio.Peso = 50;
                     p4.Socio.Altura = "150";
-                    p4.Socio.DataRegisto = DateTime.Now;
                     context.Pessoas.Add(p4);
+                    context.Socios.Add(p4.Socio);
+                context.Cota.Add(p4.Socio.Cotas);
+
     
             }
             if (context.Ginasios.Any() == false)
