@@ -118,5 +118,22 @@ namespace HealthUp.Models
                 item.Ativo = false;
             }
         }
+
+        public void DeleteEntities(HealthUpContext context)
+        {
+
+            // apagar Lista inscricoes
+            context.Inscricoes.RemoveRange(Inscreve);
+
+            // apagar planos treino
+            context.PlanosTreino.RemoveRange(PlanoTreino);
+
+            // apagar cota
+            var cota = context.Cota.SingleOrDefault(p => p.NumSocio == NumCC);
+            context.Cota.Remove(cota);
+
+            context.SaveChanges();
+            
+        }
     }
 }

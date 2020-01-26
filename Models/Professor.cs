@@ -1,4 +1,5 @@
-﻿using HealthUp.Helpers;
+﻿using HealthUp.Data;
+using HealthUp.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -62,20 +63,20 @@ namespace HealthUp.Models
 
         // -----------------------------------------------------------------------------------------
         // REFERENCIA A PESSOA
-        //[ForeignKey(nameof(NumCC))]
-        //[InverseProperty(nameof(Pessoa.Professor))]
+        [ForeignKey(nameof(NumCC))]
+        [InverseProperty(nameof(Pessoa.Professor))]
         [Display(Name = "Número de navegação do professor")]
         public virtual Pessoa NumProfessorNavigation { get; set; }
         // -----------------------------------------------------------------------------------------
 
-        //[InverseProperty("NumProfessorNavigation")]
+        [InverseProperty("NumProfessorNavigation")]
         public virtual ICollection<Aula> Aula { get; set; }
          
-        //[InverseProperty("NumProfessorNavigation")]
+        [InverseProperty("NumProfessorNavigation")]
         public virtual ICollection<PlanoTreino> PlanoTreino { get; set; }
 
         // Lista de alunos
-        //[InverseProperty("NumProfessorNavigation")]
+        [InverseProperty("NumProfessorNavigation")]
         public virtual ICollection<Socio> Socio { get; set; }
 
         // string json
@@ -109,6 +110,18 @@ namespace HealthUp.Models
             var RegistosSocios = HelperFunctions.JSONDeserialize(RegistoPesos);
             RegistosSocios.Add(idSocio, peso.ToString()+"-"+Data);
             RegistoPesos = HelperFunctions.JSONSerialize(RegistosSocios);
+        }
+        public void DeleteEntities(HealthUpContext context)
+        {
+
+            // apagar Lista inscricoes
+            context.Aulas.RemoveRange(Aula);
+
+            // apagar planos treino
+            context.PlanosTreino.RemoveRange(PlanoTreino);
+
+            context.SaveChanges();
+
         }
     }
 }

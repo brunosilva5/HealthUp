@@ -122,27 +122,17 @@ namespace HealthUp.Controllers
             if (pessoa.Professor!=null)
             {
                 
-                var professor = _context.Professores.Include(p=>p.Aula).FirstOrDefault(x => x.NumCC == id);
-                // quando um professor é apagado, apagamos tambem as suas aulas!
-                if (professor.Aula.Count!=0)
-                {
-                    foreach (var item in professor.Aula)
-                    {
-                        _context.Aulas.Remove(item);
-                    }
-                }
+                var professor = _context.Professores.Include(p=>p.Aula).Include(x=>x.PlanoTreino).FirstOrDefault(x => x.NumCC == id);
+                professor.DeleteEntities(_context);
                 pessoa.Professor = null;
                 _context.Professores.Remove(professor);
                 _context.SaveChanges();
             }
             if (pessoa.Socio != null)
             {
-                var socio = _context.Socios.FirstOrDefault(x => x.NumCC == id);
-                // apagar cotas socio
-                var cota = _context.Cota.SingleOrDefault(c => c.NumSocio == socio.NumCC);
-                _context.Cota.Remove(cota);
-                // apagar planos treino
-                
+                var socio = _context.Socios.Include(s=>s.Inscreve).Include(s=>s.PlanoTreino).Include(s=>s.Cotas).FirstOrDefault(x => x.NumCC == id);
+                socio.DeleteEntities(_context);
+
                 pessoa.Socio = null;
                 _context.Socios.Remove(socio);
                 
@@ -151,13 +141,9 @@ namespace HealthUp.Controllers
             }
 
 
-            Admin administrador = new Admin
-            {
-                NumCC = pessoa.NumCC,
-            };
-            pessoa.Admin = administrador;
+            pessoa.Admin = new Admin(pessoa);
 
-            _context.Admins.Add(administrador);
+            _context.Admins.Add(pessoa.Admin);
             _context.Pessoas.Update(pessoa);
             _context.SaveChanges();
 
@@ -167,13 +153,36 @@ namespace HealthUp.Controllers
 
         public IActionResult CriarProfessor(string id)
         {
-            Pessoa p = _context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).FirstOrDefault(p => p.NumCC == id);
-           
-            p.Professor = new Professor(p);
-            p.Socio = null;
-            _context.Professores.Add(p.Professor);
-            _context.Update(p);
+            var pessoa = _context.Pessoas.Include(p => p.Admin).Include(p => p.Socio).Include(p => p.Professor).FirstOrDefault(x => x.NumCC == id);
+
+            if (pessoa.Socio != null)
+            {
+
+                var socio = _context.Socios.Include(s => s.Inscreve).Include(s => s.PlanoTreino).Include(s => s.Cotas).FirstOrDefault(x => x.NumCC == id);
+                socio.DeleteEntities(_context);
+                pessoa.Socio = null;
+                _context.Socios.Remove(socio);
+                _context.SaveChanges();
+            }
+            if (pessoa.Admin != null)
+            {
+                var admin = _context.Admins.Include(a=>a.SolicitacaoProfessor).Include(a=>a.PedidosSocio).Include(a=>a.Exercicio).Include(a=>a.Aula).FirstOrDefault(x => x.NumCC == id);
+                admin.DeleteEntities(_context);
+                
+                pessoa.Admin = null;
+                _context.Admins.Remove(admin);
+
+                _context.SaveChanges();
+            }
+
+
+            pessoa.Professor = new Professor(pessoa);
+
+            _context.Professores.Add(pessoa.Professor);
+            _context.Pessoas.Update(pessoa);
             _context.SaveChanges();
+
+
             return RedirectToAction(nameof(GerirPessoas));
         }
 
@@ -183,24 +192,16 @@ namespace HealthUp.Controllers
 
             if (pessoa.Professor != null)
             {
-                var professor = _context.Professores.Include(p => p.Aula).FirstOrDefault(x => x.NumCC == id);
-                // quando um professor é apagado, apagamos tambem as suas aulas!
-                if (professor.Aula.Count != 0)
-                {
-                    foreach (var item in professor.Aula)
-                    {
-                        _context.Aulas.Remove(item);
-                    }
-                }
+                var professor = _context.Professores.Include(p => p.Aula).Include(x => x.PlanoTreino).FirstOrDefault(x => x.NumCC == id);
+                professor.DeleteEntities(_context);
                 pessoa.Professor = null;
                 _context.Professores.Remove(professor);
                 _context.SaveChanges();
             }
             if (pessoa.Admin != null)
             {
-                var admin = _context.Admins.FirstOrDefault(x => x.NumCC == id);
-                // quando um professor é apagado, apagamos tambem as suas aulas!
-                
+                var admin = _context.Admins.Include(a => a.SolicitacaoProfessor).Include(a => a.PedidosSocio).Include(a => a.Exercicio).Include(a => a.Aula).FirstOrDefault(x => x.NumCC == id);
+                admin.DeleteEntities(_context);                
                 pessoa.Admin = null;
                 _context.Admins.Remove(admin);
                 _context.SaveChanges();
