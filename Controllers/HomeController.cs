@@ -26,7 +26,12 @@ namespace HealthUp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var gym = _context.Ginasios.SingleOrDefault();
+
+            string[] coordenadas = gym.LocalizacaoGps.Split(',');
+            ViewBag.Latitude = coordenadas[0];
+            ViewBag.Longitude = coordenadas[1];
+            return View(gym);
         }
 
         public IActionResult PedidoRegisto()
@@ -41,7 +46,13 @@ namespace HealthUp.Controllers
         
         public IActionResult Contactos()
         {
-            return View(_context.Ginasios.SingleOrDefault());
+            var gym = _context.Ginasios.SingleOrDefault();
+
+            string[] coordenadas = gym.LocalizacaoGps.Split(',');
+            ViewBag.Latitude = coordenadas[0];
+            ViewBag.Longitude = coordenadas[1];
+
+            return View(gym);
         }
 
         public IActionResult MapaAulas()

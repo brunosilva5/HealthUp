@@ -288,8 +288,14 @@ h3 {
   Fim das Tabelas
 -----------------------*/
 
-
-
+/*---------------------
+  Imagem conctactos
+-----------------------*/
+.contact{
+    background-image: url(../img/contactos-bg.jpg);
+    width: 100%;
+    height: 239px;
+}
 
 /*---------------------
   Helper CSS
@@ -565,9 +571,17 @@ h3 {
 .map iframe{
     width: 100%;
 }
+
+/*Mapa dinamico*/
+#map{
+    height:585px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
 /*----------------------*/
 
-.notification {
+/*.notification {
     background-color: #555;
     color: white;
     text-decoration: none;
@@ -589,4 +603,4 @@ h3 {
     border-radius: 50%;
     background: red;
     color: white;
-}
+}*/

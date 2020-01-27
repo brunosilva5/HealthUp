@@ -1,4 +1,4 @@
-﻿
+﻿@model HealthUp.Models.Ginasio
 @{
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
@@ -56,9 +56,25 @@
     </div>
 </section>
 <!-- Call To Section End -->
-<!--Nosso Mapa-->
-<div class="map">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2997.555796776067!2d-7.736500284331506!3d41.29677110957019!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd3b4bac48dd2fab%3A0x91c79cf4bd177e0!2sNosso%20Shopping%20-%20Vila%20Real!5e0!3m2!1spt-PT!2spt!4v1577669455199!5m2!1spt-PT!2spt"
-            height="585" style="border:0;" allowfullscreen></iframe>
-</div>
-<!--Fim do Mapa-->
+<!--Mapa dinâmico-->
+<div id="map"></div>
+<script>
+    // Initialize and add the map
+    function initMap() {
+        var latitude = @ViewBag.Latitude;
+        var longitude = @ViewBag.Longitude;
+        //Obter coordenadas base de dados
+        var uluru = { lat: latitude, lng: longitude };
+        // Mapa centrado nesse ponto, com o respetivo zoom
+        var map = new google.maps.Map(
+            document.getElementById('map'), { zoom: 16, center: uluru });
+        // Marcador posicionado no mapa
+        var marker = new google.maps.Marker({ position: uluru, map: map });
+    }
+</script>
+<!--Faz load do API map a partir do link,
+    contém a APIKey do projeto, assim como a função: initMap
+-->
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9eT62A6hmBtUQ710Zrb9rA5c2BlnwFws&callback=initMap">
+</script>

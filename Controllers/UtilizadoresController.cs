@@ -23,6 +23,7 @@ namespace HealthUp.Controllers
             
         }
         #region PedidoSocio
+        [NaoAutenticado]
         public IActionResult PedidoSocio()
         {
             return View();
@@ -30,6 +31,7 @@ namespace HealthUp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [NaoAutenticado]
         public IActionResult PedidoSocio(IFormCollection data)
         {
             var indicativo = data["Indicativo"];
