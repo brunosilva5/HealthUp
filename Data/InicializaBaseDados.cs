@@ -89,7 +89,6 @@ namespace HealthUp.Data
                     context.Pessoas.Add(p4);
                     context.Socios.Add(p4.Socio);
                 context.Cota.Add(p4.Socio.Cotas);
-
             }
             if (context.Ginasios.Any() == false)
             {
