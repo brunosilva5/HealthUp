@@ -57,14 +57,14 @@
                 </div>
                 <div class="form-group">
                     <label name="DiaSemana" class="control-label">Dia da Semana</label>
-                    <select asp-for="DiaSemana" name="DiaSemana" class="form-control" asp-items="ViewBag.DiaSemana" required></select>
+                    <select  name="DiaSemana" class="form-control" asp-items="ViewBag.DiaSemana" required></select>
                     <span asp-validation-for="DiaSemana" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
                     <label asp-for="HoraInicio" class="control-label"></label>
                     <select asp-for="HoraInicio" name="HoraInicio" class="form-control" asp-items="ViewBag.HorasInicio" required></select>
-                    <span asp-validation-for="DiaSemana" class="text-danger"></span>
+                    <span asp-validation-for="HoraInicio" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">

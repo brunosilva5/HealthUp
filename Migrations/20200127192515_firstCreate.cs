@@ -112,15 +112,14 @@ namespace HealthUp.Migrations
                     Hora_Abertura = table.Column<TimeSpan>(nullable: false),
                     Hora_Fecho = table.Column<TimeSpan>(nullable: false),
                     Telemovel = table.Column<string>(maxLength: 13, nullable: false),
-                    LocalizacaoGps = table.Column<string>(maxLength: 200, nullable: false),
-                    NumAdminNavigationNumCC = table.Column<string>(nullable: true)
+                    LocalizacaoGps = table.Column<string>(maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ginasios", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ginasios_Admins_NumAdminNavigationNumCC",
-                        column: x => x.NumAdminNavigationNumCC,
+                        name: "FK_Ginasios_Admins_NumAdmin",
+                        column: x => x.NumAdmin,
                         principalTable: "Admins",
                         principalColumn: "NumCC",
                         onDelete: ReferentialAction.Restrict);
@@ -416,9 +415,9 @@ namespace HealthUp.Migrations
                 column: "NumAdmin");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ginasios_NumAdminNavigationNumCC",
+                name: "IX_Ginasios_NumAdmin",
                 table: "Ginasios",
-                column: "NumAdminNavigationNumCC");
+                column: "NumAdmin");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inscricoes_IdAula",

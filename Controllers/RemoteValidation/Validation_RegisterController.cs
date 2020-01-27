@@ -239,7 +239,7 @@ namespace HealthUp.Controllers
         }
 
         [HttpGet]
-        public JsonResult IsValidDataDe(DateTime ValidoDe, DateTime ValidoAte)
+        public JsonResult IsValidDataAte(DateTime ValidoDe, DateTime ValidoAte)
         {
             if (ValidoDe == null || ValidoAte == null)
             {

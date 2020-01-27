@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20200127171141_firstCreate")]
+    [Migration("20200127192515_firstCreate")]
     partial class firstCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -212,9 +212,6 @@ namespace HealthUp.Migrations
                         .HasMaxLength(30);
 
                     b.Property<string>("NumAdmin")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NumAdminNavigationNumCC")
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("Telemovel")
@@ -224,7 +221,7 @@ namespace HealthUp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NumAdminNavigationNumCC");
+                    b.HasIndex("NumAdmin");
 
                     b.ToTable("Ginasios");
                 });
@@ -586,7 +583,7 @@ namespace HealthUp.Migrations
                 {
                     b.HasOne("HealthUp.Models.Admin", "NumAdminNavigation")
                         .WithMany("Ginasio")
-                        .HasForeignKey("NumAdminNavigationNumCC");
+                        .HasForeignKey("NumAdmin");
                 });
 
             modelBuilder.Entity("HealthUp.Models.Inscreve", b =>

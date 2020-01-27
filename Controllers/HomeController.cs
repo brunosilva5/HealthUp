@@ -140,7 +140,8 @@ namespace HealthUp.Controllers
         {
             // Reorganizar lista por ordem certa
             List<Aula> NewLista = new List<Aula>(Lista);
-            var cont = HttpContext.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
+            var gym = HttpContext.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault();
+            var cont = gym.Hora_Abertura.TotalMinutes;
             foreach (var item in Lista)
             {
                 // se é null, continuar
@@ -148,19 +149,17 @@ namespace HealthUp.Controllers
                 {
                     continue;
                 }
-                // primeiro caso, esta certo
-                if (item.HoraInicio.TotalMinutes == cont)
+                if (item!=null)
                 {
-                    NewLista[0] = item;
-                }
-                cont += 50;
-                if (item.HoraInicio.TotalMinutes == cont)
-                {
-                    var ordem = (cont - HttpContext.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes) / 50;
-                    var index = NewLista.FindIndex(p => p.IdAula == item.IdAula);
-                    NewLista[index] = null;
+                    
+                    var ordem = (item.HoraInicio.TotalMinutes - gym.Hora_Abertura.TotalMinutes) / 50;
+                    //var index = NewLista.FindIndex(p => p.IdAula == item.IdAula);
+                    //NewLista[index] = null;
                     NewLista[(int)ordem] = item;
                 }
+                
+                cont += 50;
+                
             }
             return NewLista;
         }

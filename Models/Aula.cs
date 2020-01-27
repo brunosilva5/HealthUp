@@ -128,7 +128,7 @@ namespace HealthUp.Models
             List<DateTime> NewListaDatas = new List<DateTime>();
             foreach (var item in ListaDatas)
             {
-                if (HelperFunctions.GetWeekOfTheYear(DateTime.Now) != HelperFunctions.GetWeekOfTheYear(item))
+                if (HelperFunctions.GetWeekOfTheYear(DateTime.Now) == HelperFunctions.GetWeekOfTheYear(item))
                 {
                     NewListaDatas.Add(item);
                 }
