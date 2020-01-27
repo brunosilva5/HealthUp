@@ -44,7 +44,7 @@ namespace HealthUp.Controllers
         public IActionResult MapaAulas()
         {
             var gym=_context.Ginasios.SingleOrDefault();
-            var numero_aulas_diarias= Convert.ToInt32(((gym.Hora_Fecho - gym.Hora_Abertura) * 60) / 50);
+            var numero_aulas_diarias= Convert.ToInt32(((gym.Hora_Fecho.TotalMinutes - gym.Hora_Abertura.TotalMinutes) ) / 50);
             // Listas de aulas diarias
             List<Aula> ListaAulas_SegundaFeira = new List<Aula>(numero_aulas_diarias);
             List<Aula> ListaAulas_TercaFeira = new List<Aula>(numero_aulas_diarias);
@@ -129,7 +129,7 @@ namespace HealthUp.Controllers
         {
             // Reorganizar lista por ordem certa
             List<Aula> NewLista = new List<Aula>(Lista);
-            var cont = HttpContext.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura * 60;
+            var cont = HttpContext.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
             foreach (var item in Lista)
             {
                 // se é null, continuar
@@ -145,10 +145,10 @@ namespace HealthUp.Controllers
                 cont += 50;
                 if (item.HoraInicio.TotalMinutes == cont)
                 {
-                    var ordem = (cont - HttpContext.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura * 60) / 50;
+                    var ordem = (cont - HttpContext.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes) / 50;
                     var index = NewLista.FindIndex(p => p.IdAula == item.IdAula);
                     NewLista[index] = null;
-                    NewLista[ordem] = item;
+                    NewLista[(int)ordem] = item;
                 }
             }
             return NewLista;

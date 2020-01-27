@@ -13,90 +13,98 @@
     <br />
 
     <a style="margin-left:auto;margin-right:auto" asp-action="Create" class="primary-btn-msg">Criar aula</a>
+
+    @if (Model.Any() == false)
+    {
+        <h3>Não há aulas criadas!</h3>
+    }
+    else
+    {
+        <table class="content-table" style="margin-left:auto;margin-right:auto;">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ValidoDe)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ValidoAte)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Lotacao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.HoraInicio)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DiaSemana)
+                    </th>
+                    <th>
+                        Criado por
+                    </th>
+                    <th>
+                        Professor
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FotografiaDivulgacao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.VideoDivulgacao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Descricao)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValidoDe)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValidoAte)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Lotacao)
+                        </td>
+                        <td>
+                            @item.HoraInicio.ToString(@"hh\:mm")
+                        </td>
+                        <td>
+                            @item.GetDiaSemana()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumAdminNavigation.NumCC) | @Html.DisplayFor(modelItem => item.NumAdminNavigation.NumAdminNavigation.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumCC) | @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumProfessorNavigation.Nome)
+                        </td>
+                        <td>
+                            <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" width="100" height="100" />
+                        </td>
+                        <td>
+                            <video width="320" height="240" controls>
+                                <source src="~/Ficheiros/@Html.DisplayFor(modelItem => item.VideoDivulgacao)" type="video/mp4">
+                            </video>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descricao)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.IdAula">Editar aula</a> |
+                            <a asp-action="Delete" asp-route-id="@item.IdAula">Apagar aula</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
-<table class="content-table" style="margin-left:auto;margin-right:auto;">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ValidoDe)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ValidoAte)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lotacao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HoraInicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiaSemana)
-            </th>
-            <th>
-                Criado por
-            </th>
-            <th>
-                Professor
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FotografiaDivulgacao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VideoDivulgacao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ValidoDe)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ValidoAte)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Lotacao)
-                </td>
-                <td>
-                    @item.HoraInicio.ToString(@"hh\:mm")
-                </td>
-                <td>
-                    @item.GetDiaSemana()
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumAdminNavigation.NumCC) | @Html.DisplayFor(modelItem => item.NumAdminNavigation.NumAdminNavigation.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumCC) | @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumProfessorNavigation.Nome)
-                </td>
-                <td>
-                    <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" width="100" height="100" />
-                </td>
-                <td>
-                    <video width="320" height="240" controls>
-                        <source src="~/Ficheiros/@Html.DisplayFor(modelItem => item.VideoDivulgacao)" type="video/mp4">
-                    </video>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descricao)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.IdAula">Editar aula</a> |
-                    <a asp-action="Delete" asp-route-id="@item.IdAula">Apagar aula</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>

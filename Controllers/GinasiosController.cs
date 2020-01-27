@@ -66,7 +66,9 @@ namespace HealthUp.Controllers
             g.Email = dados["Email"];
             g.Endereco = dados["Endereco"];
             g.Nome = dados["Nome"];
-
+            
+            g.Hora_Abertura = TimeSpan.Parse(dados["Hora_Abertura"]);
+            g.Hora_Fecho = TimeSpan.Parse(dados["Hora_Fecho"]);
             if (ModelState.IsValid)
             {
                 try

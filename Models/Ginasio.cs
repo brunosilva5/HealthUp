@@ -33,11 +33,10 @@ namespace HealthUp.Models
 
 
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
-        [Range(1, 24, ErrorMessage = "A hora de abertura tem que ser entre a 1h e as 24h")]
-        public int Hora_Abertura { get; set; }
-        [Range(1, 24, ErrorMessage = "A hora de fecho tem que ser entre a 1h e as 24h")]
-        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
-        public int Hora_Fecho { get; set; }
+        [Display(Name = "Hora de abertura")]
+        public TimeSpan Hora_Abertura { get; set; }
+        [Display(Name ="Hora de fecho")]
+        public TimeSpan Hora_Fecho { get; set; }
 
 
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
@@ -52,8 +51,8 @@ namespace HealthUp.Models
         [Display(Name = "Coordenadas GPS")]
         public string LocalizacaoGps { get; set; }
 
-        //[ForeignKey(nameof(NumAdmin))]
-        //[InverseProperty(nameof(Admin.Ginasio))]
+        [ForeignKey(nameof(NumAdmin))]
+        [InverseProperty(nameof(Admin.Ginasio))]
         [Display(Name = "Número de navegação do administrador")]
         public virtual Admin NumAdminNavigation { get; set; }
     }

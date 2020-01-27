@@ -265,70 +265,6 @@ namespace HealthUp.Controllers
 
         #endregion
 
-        #region CriarExercicio
-
-        //public IActionResult CriarExercicio()
-        //{
-        //    return View();
-        //}
-
-        //// POST: Exercicios/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[RequestSizeLimit(1048576000)]
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> CriarExercicio(string Nome, string Descricao, IFormFile Fotografia, IFormFile Video)
-        //{
-        //    Exercicio exercicio = new Exercicio
-        //    {
-        //        Nome = Nome,
-        //        Descricao = Descricao,
-        //        Fotografia = Fotografia.FileName,
-        //        Video = Video.FileName
-        //    };
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        //--------------------------------------------------------------------------------------------------------------------------------------
-        //        // Adicionar na tabela de solicitacoes do admin
-        //        var admin = _context.Admins.Include(x => x.Exercicio).Include(x => x.NumAdminNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
-        //        admin.Exercicio.Add(exercicio);
-        //        _context.Admins.Update(admin);
-        //        // --------------------------------------------------------------------------------------------------------------------------------------
-
-        //        exercicio.NumAdmin = _context.Admins.Include(x => x.NumAdminNavigation).SingleOrDefault(a => a.NumCC == HttpContext.Session.GetString("UserId")).NumCC;
-
-        //        _context.Add(exercicio);
-        //        await _context.SaveChangesAsync();
-
-        //        //guardar ficheiros no wwwroot
-        //        string caminho = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
-        //        string nome_ficheiro = Path.GetFileName(Fotografia.FileName);
-        //        string caminho_completo = Path.Combine(caminho, nome_ficheiro);
-
-        //        FileStream f = new FileStream(caminho_completo, FileMode.Create);
-        //        Fotografia.CopyTo(f);
-
-        //        f.Close();
-
-
-        //        string caminho1 = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
-        //        string nome_ficheiro1 = Path.GetFileName(Video.FileName);
-        //        string caminho_completo1 = Path.Combine(caminho1, nome_ficheiro1);
-
-        //        FileStream ff = new FileStream(caminho_completo1, FileMode.Create);
-        //        Video.CopyTo(ff);
-
-        //        ff.Close();
-
-        //        return RedirectToAction(nameof(Index), "Home");
-        //    }
-        //    return View(exercicio);
-        //}
-
-
-        #endregion
 
         #region SuspenderUtilizador
         public IActionResult SuspenderUtilizador()
@@ -684,7 +620,7 @@ namespace HealthUp.Controllers
         #region Cotas
         public IActionResult GerirCotas()
         {
-            var lista = _context.Socios.Include(x=>x.NumSocioNavigation).Include(s=>s.Cotas).ToList();
+            var lista = _context.Socios.Include(x=>x.NumSocioNavigation).Include(s=>s.Cotas).ToList().Where(s=>s.Cotas.NumeroCotasNaoPagas>0).OrderByDescending(x=>x.Cotas.NumeroCotasNaoPagas).ToList();
             return View(lista);
         }
 

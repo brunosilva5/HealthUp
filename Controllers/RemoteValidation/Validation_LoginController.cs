@@ -48,7 +48,7 @@ namespace HealthUp.Controllers.RemoteValidation
                 
                 if (!Pessoa.Socio.Cotas.AreCotasPagas())
                 {
-                    return Json(new string("Tem de pagar as cotas em atraso para poder efetuar login! Meses em atraso: " + Pessoa.Socio.Cotas.GetNumeroCotasNaoPagas()));
+                    return Json(new string("Tem de pagar as cotas em atraso para poder efetuar login! Meses em atraso: " + Pessoa.Socio.Cotas.NumeroCotasNaoPagas));
                 }
             }
             

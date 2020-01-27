@@ -2,54 +2,64 @@
 
 
 @{
-    ViewData["Title"] = "AprovarPedidoProf";
+    ViewData["Title"] = "Gerir cotas";
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 <div class="container">
-    <table class="content-table">
-        <thead>
-            <tr>
-                <th>
-                    Nome
-                </th>
-                <th>
-                    Telemóvel
-                </th>
-                <th>
-                    Fotografia
-                </th>
-                <th>
-                    Número de cotas em atraso
-                </th>
-
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    <h1>@ViewData["Title"]</h1>
+    <hr />
+    <br />
+    @if (Model.Any() == false)
+    {
+        <h3>Não há cotas em atraso!</h3>
+    }
+    else
+    {
+        <table class="content-table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NumSocioNavigation.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NumSocioNavigation.Telemovel)
-                    </td>
-                    <td>
-                        <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.NumSocioNavigation.Fotografia)" height="100" width="100" />
-                    </td>
-                    <td>
-                        @item.Cotas.GetNumeroCotasNaoPagas()
-                    </td>
-                    @if (item.Cotas.GetNumeroCotasNaoPagas()>0)
-                    {
-                        <td>
-                            <a asp-action="AcertarCotas" asp-route-id="@item.NumCC">Acertar cotas</a>
-                        </td>
-                    }
-                    
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Telemóvel
+                    </th>
+                    <th>
+                        Fotografia
+                    </th>
+                    <th>
+                        Número de cotas em atraso
+                    </th>
+
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumSocioNavigation.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumSocioNavigation.Telemovel)
+                        </td>
+                        <td>
+                            <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.NumSocioNavigation.Fotografia)" height="100" width="100" />
+                        </td>
+                        <td>
+                            @item.Cotas.NumeroCotasNaoPagas
+                        </td>
+                        <td>
+                            @if (item.Cotas.NumeroCotasNaoPagas > 0)
+                            {
+                                <a asp-action="AcertarCotas" asp-route-id="@item.NumCC">Acertar cotas</a>
+                            }
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>

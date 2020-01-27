@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HealthUp.Migrations
 {
-    public partial class first : Migration
+    public partial class firstCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -109,8 +109,8 @@ namespace HealthUp.Migrations
                     Nome = table.Column<string>(maxLength: 30, nullable: false),
                     Endereco = table.Column<string>(maxLength: 200, nullable: false),
                     Email = table.Column<string>(maxLength: 50, nullable: false),
-                    Hora_Abertura = table.Column<int>(nullable: false),
-                    Hora_Fecho = table.Column<int>(nullable: false),
+                    Hora_Abertura = table.Column<TimeSpan>(nullable: false),
+                    Hora_Fecho = table.Column<TimeSpan>(nullable: false),
                     Telemovel = table.Column<string>(maxLength: 13, nullable: false),
                     LocalizacaoGps = table.Column<string>(maxLength: 200, nullable: false),
                     NumAdminNavigationNumCC = table.Column<string>(nullable: true)

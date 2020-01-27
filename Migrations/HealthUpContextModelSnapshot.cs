@@ -193,11 +193,11 @@ namespace HealthUp.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<int>("Hora_Abertura")
-                        .HasColumnType("int");
+                    b.Property<TimeSpan>("Hora_Abertura")
+                        .HasColumnType("time");
 
-                    b.Property<int>("Hora_Fecho")
-                        .HasColumnType("int");
+                    b.Property<TimeSpan>("Hora_Fecho")
+                        .HasColumnType("time");
 
                     b.Property<string>("LocalizacaoGps")
                         .IsRequired()

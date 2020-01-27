@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20200126231414_first")]
-    partial class first
+    [Migration("20200127171141_firstCreate")]
+    partial class firstCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -195,11 +195,11 @@ namespace HealthUp.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<int>("Hora_Abertura")
-                        .HasColumnType("int");
+                    b.Property<TimeSpan>("Hora_Abertura")
+                        .HasColumnType("time");
 
-                    b.Property<int>("Hora_Fecho")
-                        .HasColumnType("int");
+                    b.Property<TimeSpan>("Hora_Fecho")
+                        .HasColumnType("time");
 
                     b.Property<string>("LocalizacaoGps")
                         .IsRequired()

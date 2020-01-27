@@ -17,7 +17,7 @@
                     </div>
                     <div class="daily-work">
                         @{
-                            var cont = Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura * 60;
+                            var cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
                             List<Aula> Aulas_SegundaFeira = ViewBag.SegundaFeira;
                         }
                         @foreach (var item in Aulas_SegundaFeira)
@@ -50,7 +50,7 @@
                     </div>
                     <div class="daily-work">
                         @{
-                            cont = Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura * 60;
+                            cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
                             List<Aula> Aulas_TercaFeira = ViewBag.TercaFeira;
                         }
                         @foreach (var item in Aulas_TercaFeira)
@@ -84,7 +84,7 @@
                     </div>
                     <div class="daily-work">
                         @{
-                            cont = Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura * 60;
+                            cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
                             List<Aula> Aulas_QuartaFeira = ViewBag.QuartaFeira;
                         }
                         @foreach (var item in Aulas_QuartaFeira)
@@ -117,7 +117,7 @@
                     </div>
                     <div class="daily-work">
                         @{
-                            cont = Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura * 60;
+                            cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
                             List<Aula> Aulas_QuintaFeira = ViewBag.QuintaFeira;
                         }
                         @foreach (var item in Aulas_QuintaFeira)
@@ -150,7 +150,7 @@
                     </div>
                     <div class="daily-work">
                         @{
-                            cont = Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura * 60;
+                            cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
                             List<Aula> Aulas_SextaFeira = ViewBag.SextaFeira;
                         }
                         @foreach (var item in Aulas_SextaFeira)
@@ -183,7 +183,7 @@
                     </div>
                     <div class="daily-work">
                         @{
-                            cont = Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura * 60;
+                            cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
                             List<Aula> Aulas_Sabado = ViewBag.Sabado;
                         }
                         @foreach (var item in Aulas_Sabado)
@@ -216,7 +216,7 @@
                     </div>
                     <div class="daily-work">
                         @{
-                            cont = Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura * 60;
+                            cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
                             List<Aula> Aulas_Domingo = ViewBag.Domingo;
                         }
                         @foreach (var item in Aulas_Domingo)

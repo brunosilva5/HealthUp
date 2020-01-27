@@ -42,7 +42,7 @@ namespace HealthUp.Controllers
             ViewData["NomeProfessor"] = new SelectList(_context.Professores.Include(x => x.NumProfessorNavigation), "NumProfessorNavigation.NumCC", "NumProfessorNavigation.Nome");
             List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
             ViewData["DiaSemana"] = new SelectList(dias);
-            for (int i = _context.Ginasios.SingleOrDefault().Hora_Abertura*60; i < _context.Ginasios.SingleOrDefault().Hora_Fecho*60; i+=50)
+            for (int i = Convert.ToInt32(_context.Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes); i < _context.Ginasios.SingleOrDefault().Hora_Fecho.TotalMinutes; i+=50)
             {
                 // timespan do total de minutos
                 Horas.Add(new TimeSpan(0, i, 0).ToString(@"hh\:mm"));
@@ -112,7 +112,7 @@ namespace HealthUp.Controllers
             ViewData["NomeProfessor"] = new SelectList(_context.Professores.Include(x => x.NumProfessorNavigation), "NumProfessorNavigation.NumCC", "NumProfessorNavigation.Nome");
             List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
             ViewData["DiaSemana"] = new SelectList(dias);
-            for (int i = _context.Ginasios.SingleOrDefault().Hora_Abertura * 60; i < _context.Ginasios.SingleOrDefault().Hora_Fecho * 60; i += 50)
+            for (int i = Convert.ToInt32(_context.Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes); i < _context.Ginasios.SingleOrDefault().Hora_Fecho.TotalMinutes; i += 50)
             {
                 // timespan do total de minutos
                 Horas.Add(new TimeSpan(0, i, 0).ToString(@"hh\:mm"));
@@ -139,7 +139,7 @@ namespace HealthUp.Controllers
             ViewData["NumProfessor"] = new SelectList(_context.Professores, "NumCC", "NumCC", aula.NumProfessor);
             List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
             ViewData["DiaSemana"] = new SelectList(dias);
-            for (int i = _context.Ginasios.SingleOrDefault().Hora_Abertura * 60; i < _context.Ginasios.SingleOrDefault().Hora_Fecho * 60; i += 50)
+            for (int i = Convert.ToInt32(_context.Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes); i < _context.Ginasios.SingleOrDefault().Hora_Fecho.TotalMinutes; i += 50)
             {
                 // timespan do total de minutos
                 Horas.Add(new TimeSpan(0, i, 0).ToString(@"hh\:mm"));
@@ -185,7 +185,7 @@ namespace HealthUp.Controllers
             ViewData["NumProfessor"] = new SelectList(_context.Professores, "NumCC", "NumCC", aula.NumProfessor);
             List<string> dias = new List<string>() { "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" };
             ViewData["DiaSemana"] = new SelectList(dias);
-            for (int i = _context.Ginasios.SingleOrDefault().Hora_Abertura * 60; i < _context.Ginasios.SingleOrDefault().Hora_Fecho * 60; i += 50)
+            for (int i = Convert.ToInt32(_context.Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes); i < _context.Ginasios.SingleOrDefault().Hora_Fecho.TotalMinutes; i += 50)
             {
                 // timespan do total de minutos
                 Horas.Add(new TimeSpan(0, i, 0).ToString(@"hh\:mm"));
