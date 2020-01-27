@@ -18,7 +18,6 @@ using OfficeOpenXml.Style;
 namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Socio, Professor")]
-    [PerfilCompleto]
     public class SociosController : BaseController
     {
         #region PrivateVariables
@@ -198,21 +197,23 @@ namespace HealthUp.Controllers
         #region HistoricoAulas
         public IActionResult HistoricoAulas(string IdSocio = null)
         {
+
             List<Inscreve> Inscricoes = new List<Inscreve>();
             if (IdSocio!=null)
             {
-                Inscricoes = _context.Inscricoes.Where(x => x.NumSocio == IdSocio).ToList();
+                Inscricoes = _context.Inscricoes.Include(i=>i.IdAulaNavigation).ThenInclude(a=>a.NumProfessorNavigation).ThenInclude(a=>a.NumProfessorNavigation)
+                    .Include(i=>i.NumSocioNavigation).ThenInclude(s=>s.NumSocioNavigation)
+                    .Where(x => x.NumSocio == IdSocio).ToList();
             }
             else
             {
-                Inscricoes = _context.Inscricoes.Where(x => x.NumSocio == HttpContext.Session.GetString("UserId")).ToList();
+                Inscricoes = _context.Inscricoes.Include(i => i.IdAulaNavigation).ThenInclude(a => a.NumProfessorNavigation).ThenInclude(a => a.NumProfessorNavigation)
+                    .Include(i => i.NumSocioNavigation).ThenInclude(s => s.NumSocioNavigation)
+                    .Where(x => x.NumSocio == HttpContext.Session.GetString("UserId")).ToList();
             }
-            List<Aula> Lista = new List<Aula>();
-            foreach (var item in Inscricoes)
-            {
-                Lista.Add(_context.Aulas.Include(x=>x.NumAdminNavigation).Include(x=>x.NumProfessorNavigation).ThenInclude(x=>x.NumProfessorNavigation).FirstOrDefault(x => x.IdAula == item.IdAula));
-            }
-            return View(Lista);
+
+            
+            return View(Inscricoes);
         }
         
         #endregion

@@ -1,76 +1,90 @@
-﻿@model IEnumerable<HealthUp.Models.Aula>
+﻿@model IEnumerable<HealthUp.Models.Inscreve>
 
 @{
-    ViewData["Title"] = "Histórico de Aulas";
+    ViewData["Title"] = "Histórico de aulas";
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
 <div class="container">
-    <h1>Histórico de aulas</h1>
+    <h1>@ViewData["Title"]</h1>
+    <hr />
+    <br />
+    @if (Model.Any() == false)
+    {
+        <h3>Não tem nenhum registo de aula!</h3>
+    }
+    else
+    {
+        <table class="content-table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Data)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdAulaNavigation.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdAulaNavigation.Lotacao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdAulaNavigation.HoraInicio)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdAulaNavigation.DiaSemana)
+                    </th>
+                    <th>
+                        Professor
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdAulaNavigation.FotografiaDivulgacao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdAulaNavigation.VideoDivulgacao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdAulaNavigation.Descricao)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Data)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdAulaNavigation.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdAulaNavigation.Lotacao)
+                    </td>
+                    <td>
+                        @item.IdAulaNavigation.HoraInicio.ToString(@"hh\:mm")
+                    </td>
+                    <td>
+                        @item.IdAulaNavigation.GetDiaSemana()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdAulaNavigation.NumProfessorNavigation.NumProfessorNavigation.Nome)
+                    </td>
+                    <td>
+                        <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.IdAulaNavigation.FotografiaDivulgacao)" width="100" height="100" />
+                    </td>
+                    <td>
+                        <video width="320" height="240" controls>
+                            <source src="~/Ficheiros/@Html.DisplayFor(modelItem => item.IdAulaNavigation.VideoDivulgacao)" type="video/mp4">
+                        </video>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdAulaNavigation.Descricao)
+                    </td>
 
-
-<table class="content-table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lotacao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HoraInicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiaSemana)
-            </th>
-            <th>
-                Professor
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FotografiaDivulgacao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VideoDivulgacao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lotacao)
-            </td>
-            <td>
-                @item.HoraInicio.ToString(@"hh\:mm")
-            </td>
-            <td>
-                @item.GetDiaSemana()
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumProfessorNavigation.NumProfessorNavigation.Nome)
-            </td>
-            <td>
-                <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.FotografiaDivulgacao)" width="100" height="100"/>
-            </td>
-            <td>
-                <video width="320" height="240" controls>
-                    <source src="~/Ficheiros/@Html.DisplayFor(modelItem => item.VideoDivulgacao)" type="video/mp4">
-                </video>            
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            
-        </tr>
-}
-    </tbody>
-</table>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>

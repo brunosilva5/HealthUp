@@ -28,7 +28,7 @@ else
         }
         @if (HelperFunctions.IsCurrentUserSocio(Context) && HelperFunctions.DoesSocioHavePT(Context))
         {
-            <a class="pr" asp-action="EnviarMensagem">Enviar mensagem ao meu personal trainer</a>
+            <a class="primary-btn-msg" asp-action="EnviarMensagem">Enviar mensagem ao meu personal trainer</a>
         }
         <a class="primary-btn-msg" asp-action="CaixaEntrada">Caixa de entrada</a>
         @if (ViewBag.Arquivadas != true)

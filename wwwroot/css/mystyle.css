@@ -181,26 +181,23 @@ h3 {
     font-weight: bold;
 }
 
-
-
+.col-sm-2 {
+    color: #82D026;
+}
 /*---------------------
   Footer
 -----------------------*/
-
 .footer-section {
     background: #081624;
     padding-top: 35px;
     padding-bottom: 30px;
     padding-left: 40px;
     padding-right: 40px;
-
-
     bottom: 0;
     width: 100%;
     white-space: nowrap;
     position: absolute;
-
-    z-index:3;
+    z-index: 3;
 }
 
 .footer-section .reserved {

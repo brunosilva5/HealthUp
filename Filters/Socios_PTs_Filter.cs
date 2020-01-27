@@ -47,12 +47,11 @@ namespace HealthUp.Filters
             {
                 if (HelperFunctions.IsCurrentUserSocio(context.HttpContext))
                 {
-
                     if (HelperFunctions.DoesSocioHavePT(context.HttpContext) && DeixarAcederSeTiver == true)
                     {
                         redirect = false;
                     }
-                    if (!HelperFunctions.DoesSocioHavePT(context.HttpContext) && DeixarAcederSeTiver == false)
+                    else if (!HelperFunctions.DoesSocioHavePT(context.HttpContext) && DeixarAcederSeTiver == false)
                     {
                         redirect = false;
                     }

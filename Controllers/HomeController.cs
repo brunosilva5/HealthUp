@@ -15,7 +15,6 @@ using Microsoft.Extensions.DependencyInjection;
 namespace HealthUp.Controllers
 {
     [ApagarAulasAntigas]
-    [PerfilCompleto]
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;

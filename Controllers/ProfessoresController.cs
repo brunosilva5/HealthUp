@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Routing;
 namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Professor")]
-    [PerfilCompleto]
+    
     public class ProfessoresController : BaseController
     {
         #region PrivateVariables
