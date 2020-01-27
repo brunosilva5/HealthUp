@@ -1,4 +1,5 @@
-﻿using HealthUp.Helpers;
+﻿using HealthUp.Data;
+using HealthUp.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -50,13 +51,13 @@ namespace HealthUp.Models
         [StringLength(30)]
         public string Especialidade { get; set; }
 
-        [ForeignKey(nameof(IdSolicitacao))]
-        [InverseProperty(nameof(SolicitacaoProfessor.Professor))]
+        //[ForeignKey(nameof(IdSolicitacao))]
+        //[InverseProperty(nameof(SolicitacaoProfessor.Professor))]
         [Display(Name = "Id de navegação da solicitação")]
         public virtual SolicitacaoProfessor IdSolicitacaoNavigation { get; set; }
         
-        [ForeignKey(nameof(NumAdmin))]
-        [InverseProperty(nameof(Admin.ProfessoresSuspensos))]
+        //[ForeignKey(nameof(NumAdmin))]
+        //[InverseProperty(nameof(Admin.ProfessoresSuspensos))]
         [Display(Name = "Número de navegação do administrador")]
         public virtual Admin NumAdminNavigation { get; set; }
 
@@ -109,6 +110,18 @@ namespace HealthUp.Models
             var RegistosSocios = HelperFunctions.JSONDeserialize(RegistoPesos);
             RegistosSocios.Add(idSocio, peso.ToString()+"-"+Data);
             RegistoPesos = HelperFunctions.JSONSerialize(RegistosSocios);
+        }
+        public void DeleteEntities(HealthUpContext context)
+        {
+
+            // apagar Lista inscricoes
+            context.Aulas.RemoveRange(Aula);
+
+            // apagar planos treino
+            context.PlanosTreino.RemoveRange(PlanoTreino);
+
+            context.SaveChanges();
+
         }
     }
 }

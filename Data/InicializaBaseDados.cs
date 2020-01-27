@@ -89,8 +89,6 @@ namespace HealthUp.Data
                     context.Pessoas.Add(p4);
                     context.Socios.Add(p4.Socio);
                 context.Cota.Add(p4.Socio.Cotas);
-
-    
             }
             if (context.Ginasios.Any() == false)
             {
@@ -99,8 +97,10 @@ namespace HealthUp.Data
                     Email = "geral@healthup.pt",
                     Endereco = "HealthUp Street",
                     Telemovel = "+351938778987",
-                    LocalizacaoGps = "Some Coordinates",
+                    LocalizacaoGps = "41.297073600000004,-7.735144830710286",
                     Nome = "HealthUp",
+                    Hora_Abertura=new TimeSpan(6,0,0),
+                    Hora_Fecho=new TimeSpan(22,0,0)
                 };
 
                 context.Ginasios.Add(gym);

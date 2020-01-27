@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HealthUp.Data;
+using HealthUp.Filters;
 using HealthUp.Helpers;
 using HealthUp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthUp.Controllers.RemoteValidation
 {
-    public class Validation_LoginController : Controller
+    [AjaxOnly]
+    public class Validation_LoginController : BaseController
     {
         private readonly HealthUpContext _context;
         public Validation_LoginController(HealthUpContext context)
@@ -46,7 +48,7 @@ namespace HealthUp.Controllers.RemoteValidation
                 
                 if (!Pessoa.Socio.Cotas.AreCotasPagas())
                 {
-                    return Json(new string("Tem de pagar as cotas em atraso para poder efetuar login! Meses em atraso: " + Pessoa.Socio.Cotas.GetNumeroCotasNaoPagas()));
+                    return Json(new string("Tem de pagar as cotas em atraso para poder efetuar login! Meses em atraso: " + Pessoa.Socio.Cotas.NumeroCotasNaoPagas));
                 }
             }
             

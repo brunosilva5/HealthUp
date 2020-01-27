@@ -6,12 +6,14 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HealthUp.Data;
+using HealthUp.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthUp.Controllers
 {
 
-    public class Validation_RegisterController : Controller
+    [AjaxOnly]
+    public class Validation_RegisterController : BaseController
     {
         private readonly HealthUpContext _context;
 
@@ -203,6 +205,55 @@ namespace HealthUp.Controllers
             }
 
 
+        }
+        [HttpPost]
+        public JsonResult IsValidNomeAula(string Nome)
+        {
+            var aula = _context.Aulas.SingleOrDefault(p => p.Nome == Nome);
+            if (aula==null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json("Já existe uma aula com o nome " + Nome);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult IsValidDataDe(DateTime ValidoDe)
+        {
+            if (ValidoDe==null)
+            {
+                return Json(false);
+            }
+            //var data = DateTime.Parse(ValidoDe);
+            if (ValidoDe<DateTime.Now.Date)
+            {
+                return Json("Esta data não pode ser inferior à data atual!");
+            }
+            else
+            {
+                return Json(true);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult IsValidDataDe(DateTime ValidoDe, DateTime ValidoAte)
+        {
+            if (ValidoDe == null || ValidoAte == null)
+            {
+                return Json(false);
+            }
+
+            if (ValidoAte < ValidoDe )
+            {
+                return Json("Esta data não pode ser inferior à data inicial de validade!");
+            }
+            else
+            {
+                return Json(true);
+            }
         }
     }
 }

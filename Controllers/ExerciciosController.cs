@@ -9,17 +9,20 @@ using HealthUp.Data;
 using HealthUp.Models;
 using HealthUp.Filters;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.Extensions.Hosting;
 
 namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Admin")]
-    public class ExerciciosController : Controller
+    public class ExerciciosController : BaseController
     {
         private readonly HealthUpContext _context;
-
-        public ExerciciosController(HealthUpContext context)
+        private readonly IHostEnvironment _hostEnvironment;
+        public ExerciciosController(HealthUpContext context, IHostEnvironment he)
         {
             _context = context;
+            _hostEnvironment = he;
         }
 
         // GET: Exercicios
@@ -36,22 +39,58 @@ namespace HealthUp.Controllers
             return View();
         }
 
-        // POST: Exercicios/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [RequestSizeLimit(1048576000)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdExercicio,NumAdmin,Nome,Descricao,Video,Fotografia")] Exercicio exercicio)
+        public async Task<IActionResult> Create(string Nome, string Descricao, IFormFile Fotografia, IFormFile Video)
         {
+            Exercicio exercicio = new Exercicio
+            {
+                Nome = Nome,
+                Descricao = Descricao,
+                Fotografia = Fotografia.FileName,
+                Video = Video.FileName
+            };
+
             if (ModelState.IsValid)
             {
-                exercicio.NumAdmin = HttpContext.Session.GetString("UserId");
+                //--------------------------------------------------------------------------------------------------------------------------------------
+                // Adicionar na tabela de solicitacoes do admin
+                var admin = _context.Admins.Include(x => x.Exercicio).Include(x => x.NumAdminNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
+                admin.Exercicio.Add(exercicio);
+                _context.Admins.Update(admin);
+                // --------------------------------------------------------------------------------------------------------------------------------------
+
+                exercicio.NumAdmin = _context.Admins.Include(x => x.NumAdminNavigation).SingleOrDefault(a => a.NumCC == HttpContext.Session.GetString("UserId")).NumCC;
+
                 _context.Add(exercicio);
                 await _context.SaveChangesAsync();
+
+                //guardar ficheiros no wwwroot
+                string caminho = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot\\Ficheiros");
+                string nome_ficheiro = Path.GetFileName(Fotografia.FileName);
+                string caminho_completo = Path.Combine(caminho, nome_ficheiro);
+
+                FileStream f = new FileStream(caminho_completo, FileMode.Create);
+                Fotografia.CopyTo(f);
+
+                f.Close();
+
+
+                string caminho1 = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot\\Ficheiros");
+                string nome_ficheiro1 = Path.GetFileName(Video.FileName);
+                string caminho_completo1 = Path.Combine(caminho1, nome_ficheiro1);
+
+                FileStream ff = new FileStream(caminho_completo1, FileMode.Create);
+                Video.CopyTo(ff);
+
+                ff.Close();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(exercicio);
         }
+
 
         // GET: Exercicios/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -111,7 +150,7 @@ namespace HealthUp.Controllers
             }
 
             var exercicio = await _context.Exercicios
-                .Include(e => e.NumAdminNavigation)
+                .Include(e => e.NumAdminNavigation).ThenInclude(e=>e.NumAdminNavigation)
                 .FirstOrDefaultAsync(m => m.IdExercicio == id);
             if (exercicio == null)
             {

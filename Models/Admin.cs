@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HealthUp.Data;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -65,5 +66,22 @@ namespace HealthUp.Models
         [InverseProperty("NumAdminNavigation")]
         [Display(Name = "Solicitação de professor")]
         public virtual ICollection<SolicitacaoProfessor> SolicitacaoProfessor { get; set; }
+
+        public void DeleteEntities(HealthUpContext context)
+        {
+
+            // apagar Lista inscricoes
+            context.SolicitacaoProfessores.RemoveRange(SolicitacaoProfessor);
+
+            // apagar planos treino
+            context.PedidosSocios.RemoveRange(PedidosSocio);
+
+            context.Exercicios.RemoveRange(Exercicio);
+
+            context.Aulas.RemoveRange(Aula);
+
+            context.SaveChanges();
+
+        }
     }
 }

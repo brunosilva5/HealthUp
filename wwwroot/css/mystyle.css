@@ -7,6 +7,7 @@
     box-sizing: border-box;
 }
 
+
 body {
     padding: 0px;
     margin: 0px;
@@ -267,10 +268,15 @@ h3 {
     font-weight: bold;
 }
 
+.content-table td
+{
+    text-align:center;
+}
 .content-table th,
 .content-table td{
     padding: 12px 15px;
     resize:none;
+    
 }
 
 .content-table tbody tr{
@@ -513,6 +519,7 @@ h3 {
 @media (min-width: 1200px) {
     .container {
         max-width: 1176px;
+        
     }
 }
 

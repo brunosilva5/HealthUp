@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthUp.Controllers
 {
-    public class UtilizadoresController : Controller
+    public class UtilizadoresController : BaseController
     {
         private readonly HealthUpContext _context;
         public UtilizadoresController(HealthUpContext contexto)

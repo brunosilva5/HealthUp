@@ -18,7 +18,7 @@ namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Professor")]
     [PerfilCompleto]
-    public class ProfessoresController : Controller
+    public class ProfessoresController : BaseController
     {
         #region PrivateVariables
         private readonly HealthUpContext _context;

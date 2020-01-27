@@ -1,0 +1,82 @@
+﻿@model HealthUp.Models.Aula
+
+@{
+    ViewData["Title"] = "Editar aula";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+    <hr />
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="IdAula" />
+                <div class="form-group">
+                    <label asp-for="Nome" class="control-label"></label>
+                    <input asp-for="Nome" class="form-control" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Descricao" class="control-label"></label>
+                    <input asp-for="Descricao" class="form-control" />
+                    <span asp-validation-for="Descricao" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ValidoDe" class="control-label"></label>
+                    <input asp-for="ValidoDe" class="form-control" />
+                    <span asp-validation-for="ValidoDe" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ValidoAte" class="control-label"></label>
+                    <input asp-for="ValidoAte" class="form-control" />
+                    <span asp-validation-for="ValidoAte" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FotografiaDivulgacao" class="control-label"></label>
+                    <input asp-for="FotografiaDivulgacao" name="FotografiaDivulgacao" type="file" accept="image/jpeg" required class="form-control" />
+                    <span asp-validation-for="FotografiaDivulgacao" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VideoDivulgacao" class="control-label"></label>
+                    <input asp-for="VideoDivulgacao" name="VideoDivulgacao" type="file" accept="video/mp4" required class="form-control" />
+                    <span asp-validation-for="VideoDivulgacao" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Lotacao" class="control-label"></label>
+                    <input asp-for="Lotacao" class="form-control" />
+                    <span asp-validation-for="Lotacao" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NumProfessor" class="control-label"></label>
+                    <select asp-for="NumProfessor" class="form-control" asp-items="ViewBag.NumProfessor"></select>
+                    <span asp-validation-for="NumProfessor" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Lotacao" class="control-label"></label>
+                    <input asp-for="Lotacao" class="form-control" />
+                    <span asp-validation-for="Lotacao" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label name="DiaSemana" class="control-label">Dia da Semana</label>
+                    <select asp-for="DiaSemana" name="DiaSemana" class="form-control" asp-items="ViewBag.DiaSemana" required></select>
+                    <span asp-validation-for="DiaSemana" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HoraInicio" class="control-label"></label>
+                    <select asp-for="HoraInicio" name="HoraInicio" class="form-control" asp-items="ViewBag.HorasInicio" required></select>
+                    <span asp-validation-for="DiaSemana" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Guardar" class="primary-btn" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

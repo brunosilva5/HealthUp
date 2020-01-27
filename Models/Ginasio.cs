@@ -30,7 +30,15 @@ namespace HealthUp.Models
         [StringLength(50)]
         [EmailAddress]
         public string Email { get; set; }
-        
+
+
+        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
+        [Display(Name = "Hora de abertura")]
+        public TimeSpan Hora_Abertura { get; set; }
+        [Display(Name ="Hora de fecho")]
+        public TimeSpan Hora_Fecho { get; set; }
+
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(13)]
         [Display(Name = "Telemóvel")]

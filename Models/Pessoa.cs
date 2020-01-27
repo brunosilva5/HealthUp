@@ -78,7 +78,7 @@ namespace HealthUp.Models
         //----------------------------------------------------------------------------------------
         // REFERENCIA A ADMIN
         [InverseProperty("NumAdminNavigation")]
-        public Admin Admin { get; set; }
+        public virtual Admin Admin { get; set; }
         //----------------------------------------------------------------------------------------
 
         [InverseProperty("NumProfessorNavigation")]

@@ -9,9 +9,10 @@ namespace HealthUp.Models
 {
     public class Cota
     {
-        public Cota() 
+        
+        public Cota()
         {
-            
+
 
         }
         public Cota(string numsocio)
@@ -36,24 +37,15 @@ namespace HealthUp.Models
         [Display(Name = "Número de cotas pagas")]
         public int NumeroCotasPagas { get; set; } = 0;
 
-        
+
         private int N_Meses { get => Math.Abs(DateTime.Now.Month - DataRegisto.GetValueOrDefault().Month + (12 * (DateTime.Now.Year - DataRegisto.GetValueOrDefault().Year))) + 1; set => N_Meses = value; }
-        
-        private int _numeroCotasNaoPagas;
 
-        public int GetNumeroCotasNaoPagas()
-        {
-            return N_Meses - NumeroCotasPagas;
-        }
-
-        public void SetNumeroCotasNaoPagas(int value)
-        {
-            _numeroCotasNaoPagas = value;
-        }
+        [NotMapped]
+        public int NumeroCotasNaoPagas { get => N_Meses - NumeroCotasPagas; }
 
         public bool AreCotasPagas()
         {
-            if (GetNumeroCotasNaoPagas()>0)
+            if (NumeroCotasNaoPagas > 0)
             {
                 return false;
             }
@@ -61,8 +53,7 @@ namespace HealthUp.Models
         }
         public void AcertarCotas()
         {
-            NumeroCotasPagas += GetNumeroCotasNaoPagas();
-            SetNumeroCotasNaoPagas(0);
+            NumeroCotasPagas += NumeroCotasNaoPagas;
         }
     }
 }

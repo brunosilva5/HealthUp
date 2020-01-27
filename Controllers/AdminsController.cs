@@ -16,7 +16,7 @@ using Microsoft.Extensions.Hosting;
 namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Admin")]
-    public class AdminsController : Controller
+    public class AdminsController : BaseController
     {
         #region PrivateVariables
         private readonly HealthUpContext _context;
@@ -117,50 +117,105 @@ namespace HealthUp.Controllers
 
         public IActionResult CriarAdmin(string id)
         {
-            Pessoa p = _context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).FirstOrDefault(p => p.NumCC == id);
-
-            // era professor
-            if (p.Professor!=null)
+            var pessoa = _context.Pessoas.Include(p=>p.Admin).Include(p=>p.Socio).Include(p=>p.Professor).FirstOrDefault(x => x.NumCC == id);
+            
+            if (pessoa.Professor!=null)
             {
-                _context.Professores.Remove(p.Professor);
+                
+                var professor = _context.Professores.Include(p=>p.Aula).Include(x=>x.PlanoTreino).FirstOrDefault(x => x.NumCC == id);
+                professor.DeleteEntities(_context);
+                pessoa.Professor = null;
+                _context.Professores.Remove(professor);
+                _context.SaveChanges();
+            }
+            if (pessoa.Socio != null)
+            {
+                var socio = _context.Socios.Include(s=>s.Inscreve).Include(s=>s.PlanoTreino).Include(s=>s.Cotas).FirstOrDefault(x => x.NumCC == id);
+                socio.DeleteEntities(_context);
+
+                pessoa.Socio = null;
+                _context.Socios.Remove(socio);
+                
+
+                _context.SaveChanges();
             }
 
-            // era socio
-            if (p.Socio != null)
-            {
-                _context.Socios.Remove(p.Socio);
-            }
-            // tornar admin
-            p.Admin = new Admin(p);
 
-            _context.Admins.Add(p.Admin);
-            _context.Pessoas.Update(p);
+            pessoa.Admin = new Admin(pessoa);
 
+            _context.Admins.Add(pessoa.Admin);
+            _context.Pessoas.Update(pessoa);
             _context.SaveChanges();
+
+
             return RedirectToAction(nameof(GerirPessoas));
         }
 
         public IActionResult CriarProfessor(string id)
         {
-            Pessoa p = _context.Pessoas.Include(p => p.Admin).Include(p => p.Professor).Include(p => p.Socio).FirstOrDefault(p => p.NumCC == id);
-            p.Admin = null;
-            p.Professor = new Professor(p);
-            p.Socio = null;
-            _context.Professores.Add(p.Professor);
-            _context.Update(p);
+            var pessoa = _context.Pessoas.Include(p => p.Admin).Include(p => p.Socio).Include(p => p.Professor).FirstOrDefault(x => x.NumCC == id);
+
+            if (pessoa.Socio != null)
+            {
+
+                var socio = _context.Socios.Include(s => s.Inscreve).Include(s => s.PlanoTreino).Include(s => s.Cotas).FirstOrDefault(x => x.NumCC == id);
+                socio.DeleteEntities(_context);
+                pessoa.Socio = null;
+                _context.Socios.Remove(socio);
+                _context.SaveChanges();
+            }
+            if (pessoa.Admin != null)
+            {
+                var admin = _context.Admins.Include(a=>a.SolicitacaoProfessor).Include(a=>a.PedidosSocio).Include(a=>a.Exercicio).Include(a=>a.Aula).FirstOrDefault(x => x.NumCC == id);
+                admin.DeleteEntities(_context);
+                
+                pessoa.Admin = null;
+                _context.Admins.Remove(admin);
+
+                _context.SaveChanges();
+            }
+
+
+            pessoa.Professor = new Professor(pessoa);
+
+            _context.Professores.Add(pessoa.Professor);
+            _context.Pessoas.Update(pessoa);
             _context.SaveChanges();
+
+
             return RedirectToAction(nameof(GerirPessoas));
         }
 
         public IActionResult CriarSocio(string id)
         {
-            Pessoa p = _context.Pessoas.Include(p=>p.Admin).Include(p=>p.Professor).Include(p=>p.Socio).FirstOrDefault(p => p.NumCC == id);
-            p.Admin = null;
-            p.Professor = null;
-            p.Socio = new Socio(p);
-            _context.Socios.Add(p.Socio);
-            _context.Update(p);
+            var pessoa = _context.Pessoas.Include(p => p.Admin).Include(p => p.Socio).Include(p => p.Professor).FirstOrDefault(x => x.NumCC == id);
+
+            if (pessoa.Professor != null)
+            {
+                var professor = _context.Professores.Include(p => p.Aula).Include(x => x.PlanoTreino).FirstOrDefault(x => x.NumCC == id);
+                professor.DeleteEntities(_context);
+                pessoa.Professor = null;
+                _context.Professores.Remove(professor);
+                _context.SaveChanges();
+            }
+            if (pessoa.Admin != null)
+            {
+                var admin = _context.Admins.Include(a => a.SolicitacaoProfessor).Include(a => a.PedidosSocio).Include(a => a.Exercicio).Include(a => a.Aula).FirstOrDefault(x => x.NumCC == id);
+                admin.DeleteEntities(_context);                
+                pessoa.Admin = null;
+                _context.Admins.Remove(admin);
+                _context.SaveChanges();
+            }
+
+            pessoa.Socio = new Socio(pessoa); 
+            
+            
+
+            _context.Socios.Add(pessoa.Socio);
+            _context.Pessoas.Update(pessoa);
             _context.SaveChanges();
+
+
             return RedirectToAction(nameof(GerirPessoas));
         }
         #endregion
@@ -210,70 +265,6 @@ namespace HealthUp.Controllers
 
         #endregion
 
-        #region CriarExercicio
-
-        public IActionResult CriarExercicio()
-        {
-            return View();
-        }
-
-        // POST: Exercicios/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [RequestSizeLimit(1048576000)]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CriarExercicio(string Nome, string Descricao, IFormFile Fotografia, IFormFile Video)
-        {
-            Exercicio exercicio = new Exercicio
-            {
-                Nome = Nome,
-                Descricao = Descricao,
-                Fotografia = Fotografia.FileName,
-                Video = Video.FileName
-            };
-
-            if (ModelState.IsValid)
-            {
-                //--------------------------------------------------------------------------------------------------------------------------------------
-                // Adicionar na tabela de solicitacoes do admin
-                var admin = _context.Admins.Include(x => x.Exercicio).Include(x => x.NumAdminNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
-                admin.Exercicio.Add(exercicio);
-                _context.Admins.Update(admin);
-                // --------------------------------------------------------------------------------------------------------------------------------------
-
-                exercicio.NumAdmin = _context.Admins.Include(x => x.NumAdminNavigation).SingleOrDefault(a => a.NumCC == HttpContext.Session.GetString("UserId")).NumCC;
-
-                _context.Add(exercicio);
-                await _context.SaveChangesAsync();
-
-                //guardar ficheiros no wwwroot
-                string caminho = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
-                string nome_ficheiro = Path.GetFileName(Fotografia.FileName);
-                string caminho_completo = Path.Combine(caminho, nome_ficheiro);
-
-                FileStream f = new FileStream(caminho_completo, FileMode.Create);
-                Fotografia.CopyTo(f);
-
-                f.Close();
-
-
-                string caminho1 = Path.Combine(_e.ContentRootPath, "wwwroot\\Ficheiros");
-                string nome_ficheiro1 = Path.GetFileName(Video.FileName);
-                string caminho_completo1 = Path.Combine(caminho1, nome_ficheiro1);
-
-                FileStream ff = new FileStream(caminho_completo1, FileMode.Create);
-                Video.CopyTo(ff);
-
-                ff.Close();
-
-                return RedirectToAction(nameof(Index), "Home");
-            }
-            return View(exercicio);
-        }
-
-
-        #endregion
 
         #region SuspenderUtilizador
         public IActionResult SuspenderUtilizador()
@@ -405,7 +396,6 @@ namespace HealthUp.Controllers
         #region Aulas
         public async Task<IActionResult> ListAulas()
         {
-
             var healthUpContext = _context.Aulas.Include(a => a.NumAdminNavigation).ThenInclude(a=>a.NumAdminNavigation).Include(a => a.NumProfessorNavigation).ThenInclude(p=>p.NumProfessorNavigation);
             return View(await healthUpContext.ToListAsync());
         }
@@ -630,7 +620,7 @@ namespace HealthUp.Controllers
         #region Cotas
         public IActionResult GerirCotas()
         {
-            var lista = _context.Socios.Include(x=>x.NumSocioNavigation).Include(s=>s.Cotas).ToList();
+            var lista = _context.Socios.Include(x=>x.NumSocioNavigation).Include(s=>s.Cotas).ToList().Where(s=>s.Cotas.NumeroCotasNaoPagas>0).OrderByDescending(x=>x.Cotas.NumeroCotasNaoPagas).ToList();
             return View(lista);
         }
 

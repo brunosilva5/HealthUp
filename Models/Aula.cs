@@ -23,6 +23,7 @@ namespace HealthUp.Models
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(30)]
         [Display(Name = "Aula")]
+        [Remote("IsValidNomeAula", "Validation_Register", HttpMethod = "POST", ErrorMessage = "Esta aula já existe!")]
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
@@ -36,16 +37,19 @@ namespace HealthUp.Models
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [DataType(DataType.Date)]
         [Display(Name = "Válido de")]
+        [Remote("IsValidDataDe", "Validation_Register", HttpMethod = "GET", ErrorMessage = "Esta data não é válida!")]
         public DateTime ValidoDe { get; set; }
         
         [DataType(DataType.Date)]
         [Display(Name = "Válido até")]
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
+        [Remote("IsValidDataAte", "Validation_Register", HttpMethod = "GET", ErrorMessage = "Esta data não é válida!", AdditionalFields = "ValidoDe")]
         public DateTime ValidoAte { get; set; }
         
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Display(Name = "Lotação")]
-        public int Lotacao { get; set; }
+        [Range(0 , Int32.MaxValue)]
+        public int? Lotacao { get; set; }
         
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Display(Name = "Hora de início")]
@@ -53,6 +57,7 @@ namespace HealthUp.Models
         
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Display(Name = "Dia da semana")]
+        [Range(1,7)]
         public int DiaSemana { get; set; }
 
         [ForeignKey(nameof(NumAdmin))]
@@ -86,10 +91,10 @@ namespace HealthUp.Models
         [InverseProperty("IdAulaNavigation")]
         public virtual ICollection<Inscreve> Inscreve { get; set; }
 
-        public List<DateTime> GetAulasInCurrentWeek()
+        public bool IsAulaInCurrentWeek()
         {
             List<DateTime> ListaDatas = new List<DateTime>();
-            if (GetDiaSemana()=="Domingo")
+            if (GetDiaSemana() == "Domingo")
             {
                 ListaDatas = HelperFunctions.GetDatesBetween(ValidoDe, ValidoAte, DayOfWeek.Sunday);
             }
@@ -120,14 +125,15 @@ namespace HealthUp.Models
 
             // vai ser criada uma lista de datas de todos os dias da semana ( ex: quarta-feira) entre as datas valido de e valido ate
             // depois abaixo vamos excluir todas as datas que nao se encontrem na semana atual
+            List<DateTime> NewListaDatas = new List<DateTime>();
             foreach (var item in ListaDatas)
             {
                 if (HelperFunctions.GetWeekOfTheYear(DateTime.Now) != HelperFunctions.GetWeekOfTheYear(item))
                 {
-                    ListaDatas.Remove(item);
+                    NewListaDatas.Add(item);
                 }
             }
-            return ListaDatas;
+            return NewListaDatas.Count != 0 ? true : false;
         }
         public string GetDiaSemana()
         {

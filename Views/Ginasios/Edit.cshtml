@@ -261,6 +261,17 @@
                         <span asp-validation-for="LocalizacaoGps" class="text-danger"></span>
                     </div>
                     <div class="form-group">
+                        <label asp-for="Hora_Abertura" class="control-label"></label>
+                        <input type="time" asp-for="Hora_Abertura" class="form-control" />
+                        <span asp-validation-for="Hora_Abertura" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Hora_Fecho" class="control-label"></label>
+                        <input  type="time" asp-for="Hora_Fecho" class="form-control" />
+                        <span asp-validation-for="Hora_Fecho" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
                         <input type="submit" value="Guardar" class="primary-btn" />
                     </div>
                 </form>

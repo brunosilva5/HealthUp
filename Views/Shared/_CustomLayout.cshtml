@@ -35,6 +35,7 @@
             <li><a asp-controller="Home" asp-action="Index">Página Inicial</a></li>
             <li><a asp-controller="Home" asp-action="Sobrenos">Sobre Nós</a></li>
             <li><a asp-controller="Home" asp-action="Contactos">Contactos</a></li>
+            <li><a asp-controller="Home" asp-action="MapaAulas">Mapa semanal de aulas</a></li>
             <li>
                 @if (Context.Session.GetString("UserId") == null)
                 {
@@ -69,7 +70,7 @@
                         {
                             <li><a asp-controller="Socios" asp-action="SolicitarPT">Solicitar Personal Trainer</a></li>
                         }
-                        
+
                     </ul>
                 }
 
@@ -99,7 +100,8 @@
                         <li><a asp-controller="Admins" asp-action="AprovarSocios">Aprovar pedidos de sócio pendentes</a></li>
                         <li><a asp-controller="Admins" asp-action="GerirPessoas">Gerir pessoas </a></li>
                         <li><a asp-controller="Admins" asp-action="AprovarPedidoProf">Aprovar pedidos de personal trainer</a></li>
-                        <li><a asp-controller="Admins" asp-action="CriarExercicio">Criar exercício</a></li>
+                        <li><a asp-controller="Exercicios" asp-action="Index">Gerir exercícios</a></li>
+                        <li><a asp-controller="Aulas" asp-action="Index">Gerir aulas</a></li>
                         <li><a asp-controller="Admins" asp-action="SuspenderUtilizador">Suspender utilizador</a></li>
                         <li><a asp-controller="Admins" asp-action="GerirCotas">Gerir cotas</a></li>
                         <li><a asp-controller="Admins" asp-action="EditarInfoHealthUp">Editar informações do ginásio</a></li>
@@ -118,16 +120,18 @@
                 var db = Context.RequestServices.GetRequiredService<HealthUpContext>();
                 var gym = db.Ginasios.SingleOrDefault();
             }
-            <li class="phone-num"><i class="fa fa-phone"></i><span>
-        @{if (gym.Telemovel.Length != 9)
-            {
-            @gym.Telemovel.Substring(4, 9)
-            }
-            else
-            {
-            @gym.Telemovel
-                } }
-        </span></li>
+            <li class="phone-num">
+                <i class="fa fa-phone"></i><span>
+                    @{if (gym.Telemovel.Length != 9)
+                        {
+                            @gym.Telemovel.Substring(4, 9)
+                        }
+                        else
+                        {
+                            @gym.Telemovel
+                        } }
+                </span>
+            </li>
         </ul>
     </header>
 
@@ -162,6 +166,7 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)

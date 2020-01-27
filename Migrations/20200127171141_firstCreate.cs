@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HealthUp.Migrations
 {
-    public partial class first : Migration
+    public partial class firstCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -109,15 +109,18 @@ namespace HealthUp.Migrations
                     Nome = table.Column<string>(maxLength: 30, nullable: false),
                     Endereco = table.Column<string>(maxLength: 200, nullable: false),
                     Email = table.Column<string>(maxLength: 50, nullable: false),
+                    Hora_Abertura = table.Column<TimeSpan>(nullable: false),
+                    Hora_Fecho = table.Column<TimeSpan>(nullable: false),
                     Telemovel = table.Column<string>(maxLength: 13, nullable: false),
-                    LocalizacaoGps = table.Column<string>(maxLength: 200, nullable: false)
+                    LocalizacaoGps = table.Column<string>(maxLength: 200, nullable: false),
+                    NumAdminNavigationNumCC = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ginasios", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ginasios_Admins_NumAdmin",
-                        column: x => x.NumAdmin,
+                        name: "FK_Ginasios_Admins_NumAdminNavigationNumCC",
+                        column: x => x.NumAdminNavigationNumCC,
                         principalTable: "Admins",
                         principalColumn: "NumCC",
                         onDelete: ReferentialAction.Restrict);
@@ -179,20 +182,22 @@ namespace HealthUp.Migrations
                     Motivo = table.Column<string>(maxLength: 200, nullable: true),
                     DataSuspensao = table.Column<DateTime>(nullable: true),
                     Especialidade = table.Column<string>(maxLength: 30, nullable: true),
+                    IdSolicitacaoNavigationIdSolicitacao = table.Column<int>(nullable: true),
+                    NumAdminNavigationNumCC = table.Column<string>(nullable: true),
                     RegistoPesos = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Professores", x => x.NumCC);
                     table.ForeignKey(
-                        name: "FK_Professores_SolicitacaoProfessores_IdSolicitacao",
-                        column: x => x.IdSolicitacao,
+                        name: "FK_Professores_SolicitacaoProfessores_IdSolicitacaoNavigationIdSolicitacao",
+                        column: x => x.IdSolicitacaoNavigationIdSolicitacao,
                         principalTable: "SolicitacaoProfessores",
                         principalColumn: "IdSolicitacao",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Professores_Admins_NumAdmin",
-                        column: x => x.NumAdmin,
+                        name: "FK_Professores_Admins_NumAdminNavigationNumCC",
+                        column: x => x.NumAdminNavigationNumCC,
                         principalTable: "Admins",
                         principalColumn: "NumCC",
                         onDelete: ReferentialAction.Restrict);
@@ -411,9 +416,9 @@ namespace HealthUp.Migrations
                 column: "NumAdmin");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ginasios_NumAdmin",
+                name: "IX_Ginasios_NumAdminNavigationNumCC",
                 table: "Ginasios",
-                column: "NumAdmin");
+                column: "NumAdminNavigationNumCC");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inscricoes_IdAula",
@@ -446,14 +451,14 @@ namespace HealthUp.Migrations
                 column: "NumSocio");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Professores_IdSolicitacao",
+                name: "IX_Professores_IdSolicitacaoNavigationIdSolicitacao",
                 table: "Professores",
-                column: "IdSolicitacao");
+                column: "IdSolicitacaoNavigationIdSolicitacao");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Professores_NumAdmin",
+                name: "IX_Professores_NumAdminNavigationNumCC",
                 table: "Professores",
-                column: "NumAdmin");
+                column: "NumAdminNavigationNumCC");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Socios_ID_Solicitacao",

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthUp.Migrations
 {
     [DbContext(typeof(HealthUpContext))]
-    [Migration("20200126001507_first")]
-    partial class first
+    [Migration("20200127171141_firstCreate")]
+    partial class firstCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,7 +55,8 @@ namespace HealthUp.Migrations
                     b.Property<TimeSpan>("HoraInicio")
                         .HasColumnType("time");
 
-                    b.Property<int>("Lotacao")
+                    b.Property<int?>("Lotacao")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -194,6 +195,12 @@ namespace HealthUp.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
+                    b.Property<TimeSpan>("Hora_Abertura")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("Hora_Fecho")
+                        .HasColumnType("time");
+
                     b.Property<string>("LocalizacaoGps")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)")
@@ -205,6 +212,9 @@ namespace HealthUp.Migrations
                         .HasMaxLength(30);
 
                     b.Property<string>("NumAdmin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumAdminNavigationNumCC")
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("Telemovel")
@@ -214,7 +224,7 @@ namespace HealthUp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NumAdmin");
+                    b.HasIndex("NumAdminNavigationNumCC");
 
                     b.ToTable("Ginasios");
                 });
@@ -431,11 +441,17 @@ namespace HealthUp.Migrations
                     b.Property<int?>("IdSolicitacao")
                         .HasColumnType("int");
 
+                    b.Property<int?>("IdSolicitacaoNavigationIdSolicitacao")
+                        .HasColumnType("int");
+
                     b.Property<string>("Motivo")
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.Property<string>("NumAdmin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumAdminNavigationNumCC")
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("RegistoPesos")
@@ -443,9 +459,9 @@ namespace HealthUp.Migrations
 
                     b.HasKey("NumCC");
 
-                    b.HasIndex("IdSolicitacao");
+                    b.HasIndex("IdSolicitacaoNavigationIdSolicitacao");
 
-                    b.HasIndex("NumAdmin");
+                    b.HasIndex("NumAdminNavigationNumCC");
 
                     b.ToTable("Professores");
                 });
@@ -570,7 +586,7 @@ namespace HealthUp.Migrations
                 {
                     b.HasOne("HealthUp.Models.Admin", "NumAdminNavigation")
                         .WithMany("Ginasio")
-                        .HasForeignKey("NumAdmin");
+                        .HasForeignKey("NumAdminNavigationNumCC");
                 });
 
             modelBuilder.Entity("HealthUp.Models.Inscreve", b =>
@@ -621,11 +637,11 @@ namespace HealthUp.Migrations
                 {
                     b.HasOne("HealthUp.Models.SolicitacaoProfessor", "IdSolicitacaoNavigation")
                         .WithMany("Professor")
-                        .HasForeignKey("IdSolicitacao");
+                        .HasForeignKey("IdSolicitacaoNavigationIdSolicitacao");
 
                     b.HasOne("HealthUp.Models.Admin", "NumAdminNavigation")
                         .WithMany("ProfessoresSuspensos")
-                        .HasForeignKey("NumAdmin");
+                        .HasForeignKey("NumAdminNavigationNumCC");
 
                     b.HasOne("HealthUp.Models.Pessoa", "NumProfessorNavigation")
                         .WithOne("Professor")

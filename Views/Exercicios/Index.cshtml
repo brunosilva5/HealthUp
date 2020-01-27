@@ -5,60 +5,67 @@
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 <div class="container">
-    <h1>@ViewData["Tittle"]</h1>
+    <h1>@ViewData["Title"]</h1>
     <hr />
     <br />
     <p>
         <a asp-action="Create" class="primary-btn-msg">Criar novo exercício</a>
     </p>
-    <table class="content-table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Nome)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Descricao)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Video)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Fotografia)
-                </th>
-                <th>
-                    Criado por
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    @if (Model.Any() == false)
+    {
+        <h3>Não há exercícios criados!</h3>
+    }
+    else
+    {
+        <table class="content-table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Descricao)
-                    </td>
-                    <td>
-                        <video width="320" height="240" controls>
-                            <source src="~/Ficheiros/@Html.DisplayFor(modelItem => item.Video)" type="video/mp4">
-                        </video>
-                    </td>
-                    <td>
-                        <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.Fotografia)" width="100" height="100" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NumAdminNavigation.NumAdminNavigation.Nome)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.IdExercicio">Editar exercício</a> |
-                        <a asp-action="Delete" asp-route-id="@item.IdExercicio">Apagar exercício</a>
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Descricao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Video)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fotografia)
+                    </th>
+                    <th>
+                        Criado por
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descricao)
+                        </td>
+                        <td>
+                            <video width="320" height="240" controls>
+                                <source src="~/Ficheiros/@Html.DisplayFor(modelItem => item.Video)" type="video/mp4">
+                            </video>
+                        </td>
+                        <td>
+                            <img src="~/Ficheiros/@Html.DisplayFor(modelItem => item.Fotografia)" width="100" height="100" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumAdminNavigation.NumAdminNavigation.Nome)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.IdExercicio">Editar exercício</a> |
+                            <a asp-action="Delete" asp-route-id="@item.IdExercicio">Apagar exercício</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>

@@ -14,7 +14,7 @@ using HealthUp.Helpers;
 namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Professor, Socio")]
-    public class MensagensController : Controller
+    public class MensagensController : BaseController
     {
         private readonly HealthUpContext _context;
 

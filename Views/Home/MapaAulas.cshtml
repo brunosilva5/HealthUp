@@ -1,12 +1,14 @@
-﻿@model IEnumerable<HealthUp.Models.Aula>
-@{
-    ViewData["Title"] = "Mapa de Aulas";
+﻿@{
+    ViewData["Title"] = "Mapa semanal de aulas";
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
 <!--Calendário com foto de fundo-->
 <div class="classes-time-section spad set-bg" data-setbg="img/classes-time-bg.jpg">
     <div class="container">
+        <h1>@ViewData["Title"]</h1>
+        <hr />
+        <br />
         <div class="row">
             <div class="col order-1">
                 <div class="daily-routine">
@@ -14,28 +16,29 @@
                         Segunda-Feira
                     </div>
                     <div class="daily-work">
-                        @foreach (var item in Model)
-                        {
-                            var cont_H = 6;
-                            if (item.GetDiaSemana() == "Segunda-Feira")
-                            {
-                                if (item.HoraInicio.Hours == cont_H)
-                                {
-                                    <div class="work-hours bg-color">
-                                        <ul>
-                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
-                                            <li>@item.HoraInicio</li>
-                                        </ul>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="work-hours"></div>
-                                }
-                                cont_H += 2;
-                            }
+                        @{
+                            var cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
+                            List<Aula> Aulas_SegundaFeira = ViewBag.SegundaFeira;
                         }
-
+                        @foreach (var item in Aulas_SegundaFeira)
+                        {
+                            if (item != null && item.HoraInicio.TotalMinutes == cont)
+                            {
+                                <div class="work-hours bg-color">
+                                    <ul style="display:inline-block">
+                                        <li>@item.Nome</li>
+                                        <li>
+                                            @item.HoraInicio.ToString(@"hh\:mm")
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="work-hours"></div>
+                            }
+                            cont += 50;
+                        }
                     </div>
                 </div>
             </div>
@@ -46,31 +49,33 @@
                         Terça-Feira
                     </div>
                     <div class="daily-work">
-                        @foreach (var item in Model)
-                        {
-                            var cont_H = 6;
-                            if (item.GetDiaSemana() == "Terça-Feira")
-                            {
-                                if (item.HoraInicio.Hours == cont_H)
-                                {
-                                    <div class="work-hours bg-color">
-                                        <ul>
-                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
-                                            <li>@item.HoraInicio</li>
-                                        </ul>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="work-hours"></div>
-                                }
-                                cont_H += 2;
-                            }
+                        @{
+                            cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
+                            List<Aula> Aulas_TercaFeira = ViewBag.TercaFeira;
                         }
-
+                        @foreach (var item in Aulas_TercaFeira)
+                        {
+                            if (item != null && item.HoraInicio.TotalMinutes == cont)
+                            {
+                                <div class="work-hours bg-color">
+                                    <ul>
+                                        <li>@item.Nome</li>
+                                        <li>
+                                            @item.HoraInicio.ToString(@"hh\:mm")
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="work-hours"></div>
+                            }
+                            cont += 50;
+                        }
                     </div>
                 </div>
             </div>
+
 
             <div class="col order-3">
                 <div class="daily-routine">
@@ -78,32 +83,32 @@
                         Quarta-Feira
                     </div>
                     <div class="daily-work">
-                        @foreach (var item in Model)
-                        {
-                            var cont_H = 6;
-                            if (item.GetDiaSemana() == "Quarta-Feira")
-                            {
-                                if (item.HoraInicio.Hours == cont_H)
-                                {
-                                    <div class="work-hours bg-color">
-                                        <ul>
-                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
-                                            <li>@item.HoraInicio</li>
-                                        </ul>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="work-hours"></div>
-                                }
-                                cont_H += 2;
-                            }
+                        @{
+                            cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
+                            List<Aula> Aulas_QuartaFeira = ViewBag.QuartaFeira;
                         }
-
+                        @foreach (var item in Aulas_QuartaFeira)
+                        {
+                            if (item != null && item.HoraInicio.TotalMinutes == cont)
+                            {
+                                <div class="work-hours bg-color">
+                                    <ul>
+                                        <li>@item.Nome</li>
+                                        <li>
+                                            @item.HoraInicio.ToString(@"hh\:mm")
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="work-hours"></div>
+                            }
+                            cont += 50;
+                        }
                     </div>
                 </div>
             </div>
-
 
             <div class="col order-4">
                 <div class="daily-routine">
@@ -111,28 +116,29 @@
                         Quinta-Feira
                     </div>
                     <div class="daily-work">
-                        @foreach (var item in Model)
-                        {
-                            var cont_H = 6;
-                            if (item.GetDiaSemana() == "Quinta-Feira")
-                            {
-                                if (item.HoraInicio.Hours == cont_H)
-                                {
-                                    <div class="work-hours bg-color">
-                                        <ul>
-                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
-                                            <li>@item.HoraInicio</li>
-                                        </ul>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="work-hours"></div>
-                                }
-                                cont_H += 2;
-                            }
+                        @{
+                            cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
+                            List<Aula> Aulas_QuintaFeira = ViewBag.QuintaFeira;
                         }
-
+                        @foreach (var item in Aulas_QuintaFeira)
+                        {
+                            if (item != null && item.HoraInicio.TotalMinutes == cont)
+                            {
+                                <div class="work-hours bg-color">
+                                    <ul>
+                                        <li>@item.Nome</li>
+                                        <li>
+                                            @item.HoraInicio.ToString(@"hh\:mm")
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="work-hours"></div>
+                            }
+                            cont += 50;
+                        }
                     </div>
                 </div>
             </div>
@@ -143,28 +149,29 @@
                         Sexta-Feira
                     </div>
                     <div class="daily-work">
-                        @foreach (var item in Model)
-                        {
-                            var cont_H = 6;
-                            if (item.GetDiaSemana() == "Sexta-Feira")
-                            {
-                                if (item.HoraInicio.Hours == cont_H)
-                                {
-                                    <div class="work-hours bg-color">
-                                        <ul>
-                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
-                                            <li>@item.HoraInicio</li>
-                                        </ul>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="work-hours"></div>
-                                }
-                                cont_H += 2;
-                            }
+                        @{
+                            cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
+                            List<Aula> Aulas_SextaFeira = ViewBag.SextaFeira;
                         }
-
+                        @foreach (var item in Aulas_SextaFeira)
+                        {
+                            if (item != null && item.HoraInicio.TotalMinutes == cont)
+                            {
+                                <div class="work-hours bg-color">
+                                    <ul>
+                                        <li>@item.Nome</li>
+                                        <li>
+                                            @item.HoraInicio.ToString(@"hh\:mm")
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="work-hours"></div>
+                            }
+                            cont += 50;
+                        }
                     </div>
                 </div>
             </div>
@@ -172,31 +179,32 @@
             <div class="col order-6">
                 <div class="daily-routine">
                     <div class="week-name">
-                        Sábado
+                        Sabado
                     </div>
                     <div class="daily-work">
-                        @foreach (var item in Model)
-                        {
-                            var cont_H = 6;
-                            if (item.GetDiaSemana() == "Sábado")
-                            {
-                                if (item.HoraInicio.Hours == cont_H)
-                                {
-                                    <div class="work-hours bg-color">
-                                        <ul>
-                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
-                                            <li>@item.HoraInicio</li>
-                                        </ul>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="work-hours"></div>
-                                }
-                                cont_H += 2;
-                            }
+                        @{
+                            cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
+                            List<Aula> Aulas_Sabado = ViewBag.Sabado;
                         }
-
+                        @foreach (var item in Aulas_Sabado)
+                        {
+                            if (item != null && item.HoraInicio.TotalMinutes == cont)
+                            {
+                                <div class="work-hours bg-color">
+                                    <ul>
+                                        <li>@item.Nome</li>
+                                        <li>
+                                            @item.HoraInicio.ToString(@"hh\:mm")
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="work-hours"></div>
+                            }
+                            cont += 50;
+                        }
                     </div>
                 </div>
             </div>
@@ -207,34 +215,32 @@
                         Domingo
                     </div>
                     <div class="daily-work">
-                        @foreach (var item in Model)
-                        {
-                            var cont_H = 6;
-                            if (item.GetDiaSemana() == "Domingo")
-                            {
-                                if (item.HoraInicio.Hours == cont_H)
-                                {
-                                    <div class="work-hours bg-color">
-                                        <ul>
-                                            <li>@item.Nome - Lotação(@item.Lotacao)</li>
-                                            <li>@item.HoraInicio</li>
-                                        </ul>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="work-hours"></div>
-                                }
-                                cont_H += 2;
-                            }
+                        @{
+                            cont = (int)Context.RequestServices.GetRequiredService<HealthUpContext>().Ginasios.SingleOrDefault().Hora_Abertura.TotalMinutes;
+                            List<Aula> Aulas_Domingo = ViewBag.Domingo;
                         }
-
+                        @foreach (var item in Aulas_Domingo)
+                        {
+                            if (item != null && item.HoraInicio.TotalMinutes == cont)
+                            {
+                                <div class="work-hours bg-color">
+                                    <ul>
+                                        <li>@item.Nome</li>
+                                        <li>
+                                            @item.HoraInicio.ToString(@"hh\:mm")
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="work-hours"></div>
+                            }
+                            cont += 50;
+                        }
                     </div>
                 </div>
             </div>
-
-
-
 
 
         </div>
