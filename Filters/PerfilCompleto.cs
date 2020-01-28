@@ -20,26 +20,41 @@ namespace HealthUp.Filters
         {
             if (HelperFunctions.EstaAutenticado(context.HttpContext))
             {
-                var db = context.HttpContext.RequestServices.GetRequiredService<HealthUpContext>();
-
                 bool redirect = false;
-                if (HelperFunctions.IsCurrentUserProfessor(context.HttpContext))
+                var NoRedirect = false;
+                var db = context.HttpContext.RequestServices.GetRequiredService<HealthUpContext>();
+                // se ja estiver na pagina, para nao causar loops infinitos de redirecionamento!
+                if (context.HttpContext.Request.Path == "/Utilizadores/CompletarPerfil")
                 {
-                    var professor = db.Professores.Include(p => p.NumProfessorNavigation).SingleOrDefault(p => p.NumCC == context.HttpContext.Session.GetString("UserId"));
-                    if (String.IsNullOrWhiteSpace(professor.Especialidade))
-                    {
-                        redirect = true;
-                    }
+                    NoRedirect = true;
                 }
-                if (HelperFunctions.IsCurrentUserSocio(context.HttpContext))
+                // deixar utilizador dar logout
+                if (context.HttpContext.Request.Path == "/Utilizadores/Logout")
                 {
-                    var socio = db.Socios.Include(s => s.NumSocioNavigation).SingleOrDefault(p => p.NumCC == context.HttpContext.Session.GetString("UserId"));
-                    if (socio.Peso == null || socio.Altura == null)
-                    {
-                        redirect = true;
-                    }
+                    NoRedirect = true;
+                }
 
+                if (!NoRedirect)
+                {
+                    if (HelperFunctions.IsCurrentUserProfessor(context.HttpContext))
+                    {
+                        var professor = db.Professores.Include(p => p.NumProfessorNavigation).SingleOrDefault(p => p.NumCC == context.HttpContext.Session.GetString("UserId"));
+                        if (String.IsNullOrWhiteSpace(professor.Especialidade))
+                        {
+                            redirect = true;
+                        }
+                    }
+                    if (HelperFunctions.IsCurrentUserSocio(context.HttpContext))
+                    {
+                        var socio = db.Socios.Include(s => s.NumSocioNavigation).SingleOrDefault(p => p.NumCC == context.HttpContext.Session.GetString("UserId"));
+                        if (socio.Peso == null || socio.Altura == null)
+                        {
+                            redirect = true;
+                        }
+
+                    }
                 }
+                
                 if (redirect)
                 {
                     var values = new RouteValueDictionary(new
