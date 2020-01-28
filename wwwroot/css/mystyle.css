@@ -585,3 +585,9 @@ h3 {
     z-index: 1;
 }
 /*----------------------*/
+
+.mapasemanal {
+    /*background-image: url(../img/classes-time-bg.jpg);*/
+    background-color: #000000;
+    width:100%;
+}
