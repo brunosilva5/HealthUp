@@ -266,7 +266,7 @@ namespace HealthUp.Helpers
             var db = context.RequestServices.GetRequiredService<HealthUpContext>();
             var pessoa = db.Pessoas.SingleOrDefault(p => p.Email == Email);
 
-            string mensagem = "Olá " + pessoa.Nome + "\n" + "Para alterar a sua password de acesso ao HealthUp, por favor clique no botão abaixo\n"
+            string mensagem = "Olá " + pessoa.Nome + "\n" + ". Para alterar a sua password de acesso ao HealthUp, por favor clique no botão abaixo\n"
                 + $"<br /><a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Mudar password</a>. \n Este link é valido durante as próximas 24 horas, caso contrário, o link expira, necessitando de novo pedido de alteração da password no HealthUp.\n" +
                 "Se não efetuou o pedido para alteração de password, por favor ignore esta mensagem.";
 
@@ -359,10 +359,8 @@ namespace HealthUp.Helpers
             return dates;
         }
 
-        // ir buscar todas as aulas que vao ocorrer esta semana
-        // para isso vou a cada aula buscar as datas todas que vao ocorrer das aulas
-        // a aula vai ocorrer na semana atual? juntar a lista
-        // 
+        
+       
 
     }
 }
