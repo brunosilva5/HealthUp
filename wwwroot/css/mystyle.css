@@ -584,29 +584,3 @@ h3 {
     z-index: 1;
 }
 /*----------------------*/
-
-
-/*i.fa-bell{
-font-size:17px;
-display:inline-block;
-position:relative;
-color:#bdbdbd;
-z-index:0;
-border-radius:400px;
-box-shadow: 0px 0px 4px rgba(0,0,0,0.5);
-}
-span.alert{
-    display:inline-block;
-    height:20px;
-    width:20px;
-    position:absolute;
-    top:0;
-    right:0;
-    opacity:0;
-    font-size: 16px;
-    text-align:center;
-    border-radius:500px;
-    background-color: #4550e9;
-    padding:2px;
-    color:#fff;
-}*/
