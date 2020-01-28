@@ -585,26 +585,28 @@ h3 {
 }
 /*----------------------*/
 
-/*.notification {
-    background-color: #555;
-    color: white;
-    text-decoration: none;
-    padding: 15px 26px;
-    position: relative;
-    display: inline-block;
-    border-radius: 2px;
-}
 
-.notification:hover {
-    background: red;
+/*i.fa-bell{
+font-size:17px;
+display:inline-block;
+position:relative;
+color:#bdbdbd;
+z-index:0;
+border-radius:400px;
+box-shadow: 0px 0px 4px rgba(0,0,0,0.5);
 }
-
-.notification .badge {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    padding: 5px 10px;
-    border-radius: 50%;
-    background: red;
-    color: white;
+span.alert{
+    display:inline-block;
+    height:20px;
+    width:20px;
+    position:absolute;
+    top:0;
+    right:0;
+    opacity:0;
+    font-size: 16px;
+    text-align:center;
+    border-radius:500px;
+    background-color: #4550e9;
+    padding:2px;
+    color:#fff;
 }*/
