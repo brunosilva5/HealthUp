@@ -84,7 +84,7 @@ namespace HealthUp.Controllers
                 // Definir a password (primeiro login)
                 if (p.Password == null)
                 {
-                    p.Password = Password;
+                    p.Password = SecurePasswordHasher.Hash(Password);
                     _context.Pessoas.Update(p);
                     _context.SaveChanges();
                 }

@@ -33,12 +33,9 @@ namespace HealthUp.Controllers
         }
         #endregion
 
-        #region Index
-        public IActionResult Index()
-        {
-            return View();
-        }
-        #endregion
+        
+        
+        
 
         #region AprovarSócios
         public IActionResult AprovarSocios()
@@ -88,7 +85,7 @@ namespace HealthUp.Controllers
             // Apagar da tabela
             RejeitarSocio(id, true);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AprovarSocios));
         }
 
         public IActionResult RejeitarSocio(int id, bool? flag)

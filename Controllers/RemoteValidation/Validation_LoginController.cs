@@ -66,7 +66,7 @@ namespace HealthUp.Controllers.RemoteValidation
             {
                 return Json(false);
             }
-            if (Pessoa.Password == null)
+            if (String.IsNullOrWhiteSpace(Pessoa.Password))
             {
                 if (HelperFunctions.IsValidPassword(Password))
                 {
