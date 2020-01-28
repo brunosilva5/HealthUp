@@ -48,6 +48,7 @@ namespace HealthUp.Models
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(50)]
         [EmailAddress]
+        [Remote("IsValidEmail", "Validation_Login", HttpMethod = "POST", ErrorMessage = "Este email não é válido!")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]

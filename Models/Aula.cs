@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace HealthUp.Models
 {
+    
     public partial class Aula
     {
         public Aula()

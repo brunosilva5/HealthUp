@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using HealthUp.Data;
 using HealthUp.Filters;
@@ -10,6 +11,7 @@ using HealthUp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthUp.Controllers
@@ -215,6 +217,72 @@ namespace HealthUp.Controllers
 
             }
             return Json(false);
+        }
+        #endregion
+
+        #region Recuperar Password
+        [NaoAutenticado]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [NaoAutenticado]
+        public IActionResult ForgotPassword(string Email)
+        {
+            if (ModelState.IsValid)
+            {
+                Pessoa pessoa = _context.Pessoas.SingleOrDefault(x => x.Email == Email);
+
+                var callbackUrl = Url.Action("ForgotPassword_Confirm", "Utilizadores", new { IdPessoa = pessoa.NumCC, code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(pessoa.Email)), valid = DateTime.Now.AddHours(24) }, Request.Scheme);
+
+                HelperFunctions.SendEmailReposicaoPassword(Email, HttpContext, callbackUrl);
+
+                ViewBag.Message = "success, Foi enviado para o seu email um link para mudar a sua password.";
+                return View();
+            }
+
+            return View();
+        }
+        [NaoAutenticado]
+        public IActionResult ForgotPassword_Confirm(string IdPessoa, string code, DateTime valid)
+        {
+            //Verifica a diferença de tempo entre a data enviada e a data atual
+            var valido = valid - DateTime.Now;
+            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            if (code == _context.Pessoas.FirstOrDefault(x => x.NumCC == IdPessoa).Email && valido.TotalHours < 24 && valido.TotalHours >= 0)
+            {
+                ViewBag.IdPessoa = IdPessoa;
+                return View();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [NaoAutenticado]
+        public IActionResult ForgotPasswordChange_Confirm([Bind("Password1, Password2, IdPessoa")] ForgotPasswordModel forgotPass)
+        {
+           
+
+            if (ModelState.IsValid)
+            {
+                Pessoa pessoa = _context.Pessoas.FirstOrDefault(x => x.NumCC == forgotPass.IdPessoa);
+
+                pessoa.Password = SecurePasswordHasher.Hash(forgotPass.Password1);
+
+
+                _context.Update(pessoa);
+                _context.SaveChanges();
+
+                ViewBag.Result = $"Password alterada com sucesso. \n Clique <a href = \"/Utilizadores/Login\">Aqui</a> para efetuar o login";
+                return View();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
         #endregion
     }
