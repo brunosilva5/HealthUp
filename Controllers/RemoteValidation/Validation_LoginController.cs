@@ -89,6 +89,22 @@ namespace HealthUp.Controllers.RemoteValidation
             }
         }
 
+        public JsonResult IsValidEmail(string Email)
+        {
+            if (Email==null)
+            {
+                return Json(false);
+            }
+            var Pessoa = _context.Pessoas.SingleOrDefault(p => p.Email == Email);
+            if (Pessoa==null)
+            {
+                return Json("Este email não está associado a nenhuma conta!");
+            }
+            else
+            {
+                return Json(true);
+            }
+        }
     }
 
 

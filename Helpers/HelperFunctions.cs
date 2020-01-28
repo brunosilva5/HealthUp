@@ -13,6 +13,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -259,6 +260,50 @@ namespace HealthUp.Helpers
             }
 
         }
+
+        public static string SendEmailReposicaoPassword(string Email, HttpContext context, string callbackUrl)
+        {
+            var db = context.RequestServices.GetRequiredService<HealthUpContext>();
+            var pessoa = db.Pessoas.SingleOrDefault(p => p.Email == Email);
+
+            string mensagem = "Olá " + pessoa.Nome + "\n" + "Para alterar a sua password de acesso ao HealthUp, por favor clique no botão abaixo\n"
+                + $"<br /><a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Mudar password</a>. \n Este link é valido durante as próximas 24 horas, caso contrário, o link expira, necessitando de novo pedido de alteração da password no HealthUp.\n" +
+                "Se não efetuou o pedido para alteração de password, por favor ignore esta mensagem.";
+
+            try
+            {
+
+                // Mail message
+                var mail = new MailMessage()
+                {
+                    From = new MailAddress("healthupgym@gmail.com"),
+                    Subject = "Pedido de Alteração de Password",
+                    Body = mensagem
+                };
+                mail.IsBodyHtml = true;
+                mail.To.Add(new MailAddress(Email));
+                // Smtp client
+
+                var client = new SmtpClient
+                {
+                    Port = 587,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Host = "smtp.gmail.com",
+                    EnableSsl = true,
+                    Credentials = new NetworkCredential("healthupgym@gmail.com", "healthup2019")
+                };
+
+                client.Send(mail);
+                return "Email Sent Successfully!";
+            }
+            catch (System.Exception e)
+            {
+                return e.Message;
+            }
+
+        }
+
 
         public static IEnumerable<T> Add<T>(this IEnumerable<T> e, T value)
         {
