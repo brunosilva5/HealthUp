@@ -4,12 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Filters
 {
@@ -19,8 +14,8 @@ namespace HealthUp.Filters
         public string Pessoa { get; set; }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-                 
-            var db = context.HttpContext.RequestServices.GetRequiredService<HealthUpContext>();
+
+            HealthUpContext db = context.HttpContext.RequestServices.GetRequiredService<HealthUpContext>();
 
             bool redirect = false;
             bool allow = false;
@@ -28,12 +23,12 @@ namespace HealthUp.Filters
             string[] Roles = Pessoa.Split(",");
             string[] RolesNormalized = new string[Roles.Length];
             int i = 0;
-            foreach (var item in Roles)
+            foreach (string item in Roles)
             {
                 RolesNormalized[i] = (HelperFunctions.NormalizeWhiteSpace(item));
                 i++;
             }
-            foreach (var item in RolesNormalized)
+            foreach (string item in RolesNormalized)
             {
                 if (context.HttpContext.Session.GetString("Role") == item)
                 {
@@ -74,7 +69,7 @@ namespace HealthUp.Filters
                 }
                 if (redirect)
                 {
-                    var values = new RouteValueDictionary(new
+                    RouteValueDictionary values = new RouteValueDictionary(new
                     {
                         action = "Index",
                         controller = "Home"

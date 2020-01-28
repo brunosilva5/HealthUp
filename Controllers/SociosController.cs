@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using HealthUp.Data;
+﻿using HealthUp.Data;
 using HealthUp.Filters;
 using HealthUp.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using OfficeOpenXml;
-using OfficeOpenXml.Style;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HealthUp.Controllers
 {
@@ -36,7 +33,7 @@ namespace HealthUp.Controllers
         #region Index
         public IActionResult Index()
         {
-            return View(_context.Socios.Include(s=>s.NumProfessorNavigation).SingleOrDefault(s=>s.NumCC==HttpContext.Session.GetString("UserId")));
+            return View(_context.Socios.Include(s => s.NumProfessorNavigation).SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId")));
         }
 
         #endregion
@@ -47,7 +44,7 @@ namespace HealthUp.Controllers
         {
             List<Pessoa> Lista = new List<Pessoa>();
             // Obter lista de nomes de professores + especialidade 
-            foreach (var pessoa in _context.Pessoas.Include(p => p.Professor))
+            foreach (Pessoa pessoa in _context.Pessoas.Include(p => p.Professor))
             {
                 if (pessoa.Professor != null)
                 {
@@ -67,8 +64,8 @@ namespace HealthUp.Controllers
         [Socios_PTs_Filter(Pessoa = "Socio")]
         public async Task<IActionResult> SolicitarPT(string ProfessorEscolhido)
         {
-            var Prof = _context.Professores.SingleOrDefault(p => p.NumCC == ProfessorEscolhido);
-            var Socio = _context.Socios.Include(s=>s.NumProfessorNavigation).SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
+            Professor Prof = _context.Professores.SingleOrDefault(p => p.NumCC == ProfessorEscolhido);
+            Socio Socio = _context.Socios.Include(s => s.NumProfessorNavigation).SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
             SolicitacaoProfessor solicitacao = new SolicitacaoProfessor();
 
             if (_context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId")).ID_Solicitacao != null)
@@ -77,7 +74,7 @@ namespace HealthUp.Controllers
             }
             if (ModelState.IsValid)
             {
-                 
+
                 solicitacao.Professor.Add(Prof);
                 solicitacao.Socio.Add(Socio);
                 solicitacao.Data = DateTime.Now;
@@ -90,7 +87,7 @@ namespace HealthUp.Controllers
             // Passar para a view de novo a lista de professores
             List<Pessoa> Lista = new List<Pessoa>();
             // Obter lista de nomes de professores + especialidade 
-            foreach (var pessoa in _context.Pessoas.Include(p => p.Professor))
+            foreach (Pessoa pessoa in _context.Pessoas.Include(p => p.Professor))
             {
                 if (pessoa.Professor != null)
                 {
@@ -101,7 +98,7 @@ namespace HealthUp.Controllers
             {
                 Text = c.Nome + " | Especialidade: " + _context.Professores.SingleOrDefault(s => s.NumCC == c.NumCC).Especialidade,
                 Value = c.NumCC
-            }); 
+            });
             return View(solicitacao);
         }
         #endregion
@@ -110,21 +107,21 @@ namespace HealthUp.Controllers
         public IActionResult ConsultarHistoricoPeso()
         {
             // construcao da lista de historico de pesos para construcao do grafico
-             List<SimpleReportViewModel> lstModel = GetHistoricoPeso();
-             
+            List<SimpleReportViewModel> lstModel = GetHistoricoPeso();
+
 
             return View(lstModel);
         }
         public IActionResult HistoricoPesoParaExcel()
         {
-            
+
             List<SimpleReportViewModel> lstModel = GetHistoricoPeso();
 
             byte[] fileContents;
 
-            using (var package = new ExcelPackage())
+            using (ExcelPackage package = new ExcelPackage())
             {
-                var worksheet = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Sheet1");
 
                 // Put whatever you want here in the sheet
                 // For example, for cell on row1 col1
@@ -169,15 +166,15 @@ namespace HealthUp.Controllers
         [Socios_PTs_Filter(Pessoa = "Socio", DeixarAcederSeTiver = true)]
         public IActionResult ConsultarInfoPT()
         {
-            var x = _context.Socios.Include(s => s.NumProfessorNavigation).ThenInclude(s => s.NumProfessorNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId")).NumProfessorNavigation.NumProfessorNavigation;
+            Pessoa x = _context.Socios.Include(s => s.NumProfessorNavigation).ThenInclude(s => s.NumProfessorNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId")).NumProfessorNavigation.NumProfessorNavigation;
             return View(x);
         }
 
         [Socios_PTs_Filter(Pessoa = "Socio", DeixarAcederSeTiver = true)]
         public IActionResult DeixarSerAluno(string NumProf)
         {
-            var prof = _context.Professores.SingleOrDefault(x => x.NumCC == NumProf);
-            var socio = _context.Socios.SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
+            Professor prof = _context.Professores.SingleOrDefault(x => x.NumCC == NumProf);
+            Socio socio = _context.Socios.SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
 
             socio.NumProfessor = null;
             socio.NumProfessorNavigation = null;
@@ -199,10 +196,10 @@ namespace HealthUp.Controllers
         {
 
             List<Inscreve> Inscricoes = new List<Inscreve>();
-            if (IdSocio!=null)
+            if (IdSocio != null)
             {
-                Inscricoes = _context.Inscricoes.Include(i=>i.IdAulaNavigation).ThenInclude(a=>a.NumProfessorNavigation).ThenInclude(a=>a.NumProfessorNavigation)
-                    .Include(i=>i.NumSocioNavigation).ThenInclude(s=>s.NumSocioNavigation)
+                Inscricoes = _context.Inscricoes.Include(i => i.IdAulaNavigation).ThenInclude(a => a.NumProfessorNavigation).ThenInclude(a => a.NumProfessorNavigation)
+                    .Include(i => i.NumSocioNavigation).ThenInclude(s => s.NumSocioNavigation)
                     .Where(x => x.NumSocio == IdSocio).ToList();
             }
             else
@@ -212,20 +209,19 @@ namespace HealthUp.Controllers
                     .Where(x => x.NumSocio == HttpContext.Session.GetString("UserId")).ToList();
             }
 
-            
+
             return View(Inscricoes);
         }
-        
+
         #endregion
 
         #region ConsultarPlanoTreino
-#warning "BRUNO POE ISTO BONITO"
 
         public IActionResult ConsultarPlanoTreino()
         {
-            var planos=_context.PlanosTreino.Include(p=>p.Contem).ThenInclude(cp=>cp.IdExercicioNavigation).Include(p=>p.NumProfessorNavigation).ThenInclude(p=>p.NumProfessorNavigation).Include(p=>p.NumSocioNavigation).ThenInclude(p=>p.NumSocioNavigation).Where(p => p.NumSocio == HttpContext.Session.GetString("UserId"));
+            IQueryable<PlanoTreino> planos = _context.PlanosTreino.Include(p => p.Contem).ThenInclude(cp => cp.IdExercicioNavigation).Include(p => p.NumProfessorNavigation).ThenInclude(p => p.NumProfessorNavigation).Include(p => p.NumSocioNavigation).ThenInclude(p => p.NumSocioNavigation).Where(p => p.NumSocio == HttpContext.Session.GetString("UserId"));
             // load de todas as properties usadas por esta collection
-            if (planos.Any()==false)
+            if (planos.Any() == false)
             {
                 return RedirectToAction(nameof(Index), "Home");
             }
@@ -243,11 +239,11 @@ namespace HealthUp.Controllers
             int dia = (int)data.DayOfWeek;
 
 
-            var lista = _context.Aulas.Include(x => x.Inscreve).Where(x => x.DiaSemana == dia && x.ValidoAte > data && x.ValidoDe < data);
-            foreach (var item in lista)
+            IQueryable<Aula> lista = _context.Aulas.Include(x => x.Inscreve).Where(x => x.DiaSemana == dia && x.ValidoAte > data && x.ValidoDe < data);
+            foreach (Aula item in lista)
             {
-                var diffInSeconds = (item.HoraInicio - DateTime.Now.TimeOfDay).TotalSeconds;
-                if (diffInSeconds<=3600)
+                double diffInSeconds = (item.HoraInicio - DateTime.Now.TimeOfDay).TotalSeconds;
+                if (diffInSeconds <= 3600)
                 {
                     listaAulas.Add(item);
                 }
@@ -260,7 +256,7 @@ namespace HealthUp.Controllers
 
         public IActionResult Inscrever(int aula)
         {
-            
+
             Inscreve i = new Inscreve
             {
                 IdAula = aula,
@@ -287,4 +283,4 @@ namespace HealthUp.Controllers
     }
 }
 
-    
+

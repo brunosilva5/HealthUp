@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Filters
 {
@@ -12,11 +8,11 @@ namespace HealthUp.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var Header = context.HttpContext.Request.Headers["X-Requested-With"];
+            Microsoft.Extensions.Primitives.StringValues Header = context.HttpContext.Request.Headers["X-Requested-With"];
 
             if (Header != "XMLHttpRequest")
             {
-                var values = new RouteValueDictionary(new
+                RouteValueDictionary values = new RouteValueDictionary(new
                 {
                     action = "Index",
                     controller = "Home"

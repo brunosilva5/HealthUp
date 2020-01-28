@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Models
 {
@@ -16,7 +15,7 @@ namespace HealthUp.Models
         {
             Inscreve = new HashSet<Inscreve>();
             PlanoTreino = new HashSet<PlanoTreino>();
-            
+
         }
         public Socio(Pessoa p) : base()
         {
@@ -36,21 +35,21 @@ namespace HealthUp.Models
 
         [Display(Name = "Id de solicitação")]
         public int? ID_Solicitacao { get; set; }
-        
+
         [StringLength(3)]
         public string Altura { get; set; }
-        
-        [Range(0, 300,ErrorMessage ="Insira um valor entre 0 e 300")]
+
+        [Range(0, 300, ErrorMessage = "Insira um valor entre 0 e 300")]
         public double? Peso { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Data de registo do peso")]
         public DateTime? DataRegisto_Peso { get; set; } = null;
-        
+
         [StringLength(200)]
         public string Motivo { get; set; }
 
-        
+
 
         [DataType(DataType.Date)]
         [Display(Name = "Data de suspensão")]
@@ -93,27 +92,27 @@ namespace HealthUp.Models
         public List<SimpleReportViewModel> GetHistoricoPeso(HealthUpContext context)
         {
             List<SimpleReportViewModel> ListaPesos = new List<SimpleReportViewModel>();
-            foreach (var professor in context.Professores.Include(x => x.Socio))
+            foreach (Professor professor in context.Professores.Include(x => x.Socio))
             {
-                var aux=professor.GetRegistoPesosSocio(this.NumCC);
-                foreach (var item in aux)
+                List<SimpleReportViewModel> aux = professor.GetRegistoPesosSocio(NumCC);
+                foreach (SimpleReportViewModel item in aux)
                 {
                     ListaPesos.Add(item);
                 }
             }
             // Ainda nao foi pesado por nenhum professor, adicionar o peso inserido por ele inicialmente
             // este peso inicial vai ser perdido após o registo de algum professor...
-            if (ListaPesos.Count==0)
+            if (ListaPesos.Count == 0)
             {
                 ListaPesos.Add(new SimpleReportViewModel() { DimensionOne = DataRegisto_Peso.GetValueOrDefault().ToShortDateString(), Quantity = Peso.GetValueOrDefault() });
             }
-            
+
             return ListaPesos;
         }
 
         public void TornarPlanosInativos()
         {
-            foreach (var item in PlanoTreino)
+            foreach (PlanoTreino item in PlanoTreino)
             {
                 item.Ativo = false;
             }
@@ -129,11 +128,11 @@ namespace HealthUp.Models
             context.PlanosTreino.RemoveRange(PlanoTreino);
 
             // apagar cota
-            var cota = context.Cota.SingleOrDefault(p => p.NumSocio == NumCC);
+            Cota cota = context.Cota.SingleOrDefault(p => p.NumSocio == NumCC);
             context.Cota.Remove(cota);
 
             context.SaveChanges();
-            
+
         }
     }
 }

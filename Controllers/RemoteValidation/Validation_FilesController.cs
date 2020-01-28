@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using HealthUp.Data;
-using HealthUp.Filters;
+﻿using HealthUp.Filters;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace HealthUp.Controllers.RemoteValidation
 {
     [AjaxOnly]
     public class Validation_FilesController : BaseController
     {
-        private readonly HealthUpContext _context;
-        public Validation_FilesController(HealthUpContext context)
-        {
-            _context = context;
-        }
 
         public JsonResult IsValidFotografiaDivulgacao(string FotografiaDivulgacao)
         {

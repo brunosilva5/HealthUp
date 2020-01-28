@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HealthUp.Data;
+﻿using HealthUp.Data;
 using HealthUp.Filters;
 using HealthUp.Helpers;
 using HealthUp.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 
 namespace HealthUp.Controllers
 {
@@ -22,7 +19,7 @@ namespace HealthUp.Controllers
         public UtilizadoresController(HealthUpContext contexto)
         {
             _context = contexto;
-            
+
         }
         #region PedidoSocio
         [NaoAutenticado]
@@ -36,9 +33,9 @@ namespace HealthUp.Controllers
         [NaoAutenticado]
         public IActionResult PedidoSocio(IFormCollection data)
         {
-            var indicativo = data["Indicativo"];
-            var telemovel = HelperFunctions.NormalizeWhiteSpace(data["Telemovel"]);
-            var nome = HelperFunctions.NormalizeWhiteSpace(data["Nome"]);
+            Microsoft.Extensions.Primitives.StringValues indicativo = data["Indicativo"];
+            string telemovel = HelperFunctions.NormalizeWhiteSpace(data["Telemovel"]);
+            string nome = HelperFunctions.NormalizeWhiteSpace(data["Nome"]);
 
 
             if (ModelState.IsValid)
@@ -85,7 +82,7 @@ namespace HealthUp.Controllers
             if (ModelState.IsValid)
             {
                 // Definir a password (primeiro login)
-                if (p.Password==null)
+                if (p.Password == null)
                 {
                     p.Password = Password;
                     _context.Pessoas.Update(p);
@@ -153,7 +150,7 @@ namespace HealthUp.Controllers
             {
                 if (HelperFunctions.IsCurrentUserProfessor(HttpContext))
                 {
-                    var prof = _context.Professores.SingleOrDefault(p => p.NumCC == HttpContext.Session.GetString("UserId"));
+                    Professor prof = _context.Professores.SingleOrDefault(p => p.NumCC == HttpContext.Session.GetString("UserId"));
                     prof.Especialidade = dados["Professor.Especialidade"].ToString();
                     _context.Professores.Update(prof);
                     _context.SaveChanges();
@@ -161,7 +158,7 @@ namespace HealthUp.Controllers
 
                 if (HelperFunctions.IsCurrentUserSocio(HttpContext))
                 {
-                    var socio = _context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
+                    Socio socio = _context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
                     socio.Peso = double.Parse(dados["Socio.Peso"].ToString(), CultureInfo.InvariantCulture);
                     socio.Altura = dados["Socio.Altura"].ToString();
                     socio.DataRegisto_Peso = DateTime.Now;
@@ -181,7 +178,7 @@ namespace HealthUp.Controllers
         [AjaxOnly]
         public JsonResult IsNewUser(string Username)
         {
-            var pessoa = _context.Pessoas.SingleOrDefault(p => p.Username == Username);
+            Pessoa pessoa = _context.Pessoas.SingleOrDefault(p => p.Username == Username);
 
             // your logic
             if (pessoa != null && pessoa.Password == null)
@@ -209,7 +206,7 @@ namespace HealthUp.Controllers
             {
                 Pessoa pessoa = _context.Pessoas.SingleOrDefault(x => x.Email == Email);
 
-                var callbackUrl = Url.Action("ForgotPassword_Confirm", "Utilizadores", new { IdPessoa = pessoa.NumCC, code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(pessoa.Email)), valid = DateTime.Now.AddHours(24) }, Request.Scheme);
+                string callbackUrl = Url.Action("ForgotPassword_Confirm", "Utilizadores", new { IdPessoa = pessoa.NumCC, code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(pessoa.Email)), valid = DateTime.Now.AddHours(24) }, Request.Scheme);
 
                 HelperFunctions.SendEmailReposicaoPassword(Email, HttpContext, callbackUrl);
 
@@ -223,7 +220,7 @@ namespace HealthUp.Controllers
         public IActionResult ForgotPassword_Confirm(string IdPessoa, string code, DateTime valid)
         {
             //Verifica a diferença de tempo entre a data enviada e a data atual
-            var valido = valid - DateTime.Now;
+            TimeSpan valido = valid - DateTime.Now;
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             if (code == _context.Pessoas.FirstOrDefault(x => x.NumCC == IdPessoa).Email && valido.TotalHours < 24 && valido.TotalHours >= 0)
             {
@@ -239,7 +236,7 @@ namespace HealthUp.Controllers
         [NaoAutenticado]
         public IActionResult ForgotPasswordChange_Confirm([Bind("Password1, Password2, IdPessoa")] ForgotPasswordModel forgotPass)
         {
-           
+
 
             if (ModelState.IsValid)
             {

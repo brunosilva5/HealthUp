@@ -1,23 +1,20 @@
-﻿using System;
+﻿using HealthUp.Data;
+using HealthUp.Filters;
+using HealthUp.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using HealthUp.Data;
-using HealthUp.Models;
-using Microsoft.AspNetCore.Http;
-using HealthUp.Filters;
-using Newtonsoft.Json;
-using System.Collections.Specialized;
-using HealthUp.Helpers;
-using Microsoft.AspNetCore.Routing;
 
 namespace HealthUp.Controllers
 {
     [MyRoleFilter(Perfil = "Professor")]
-    
+
     public class ProfessoresController : BaseController
     {
         #region PrivateVariables
@@ -46,7 +43,7 @@ namespace HealthUp.Controllers
 
             ViewBag.Socios = Lista.Select(s => new SelectListItem()
             {
-                Text = "CC: " + s.NumCC + " | "  + s.NumSocioNavigation.Nome,
+                Text = "CC: " + s.NumCC + " | " + s.NumSocioNavigation.Nome,
                 Value = s.NumCC
             });
 
@@ -62,8 +59,8 @@ namespace HealthUp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegistarPesoSocio(string SocioEscolhido, float Peso)
         {
-            var socio = _context.Socios.SingleOrDefault(s => s.NumCC == SocioEscolhido);
-            
+            Socio socio = _context.Socios.SingleOrDefault(s => s.NumCC == SocioEscolhido);
+
 
             if (ModelState.IsValid)
             {
@@ -72,10 +69,10 @@ namespace HealthUp.Controllers
                 socio.NumProfessor = HttpContext.Session.GetString("UserId");
 
                 _context.Socios.Update(socio);
-                
+
                 //--------------------------------------------------------------------------------------------------------------------------------------
                 // Adicionar à string json do professor
-                var professor = _context.Professores.Include(p => p.Socio).SingleOrDefault(p => p.NumCC == HttpContext.Session.GetString("UserId"));
+                Professor professor = _context.Professores.Include(p => p.Socio).SingleOrDefault(p => p.NumCC == HttpContext.Session.GetString("UserId"));
                 professor.RegistarPesoSocio(Peso, DateTime.Now.ToShortDateString(), SocioEscolhido);
 
                 _context.Professores.Update(professor);
@@ -99,20 +96,20 @@ namespace HealthUp.Controllers
         #region ConsultarMeusAlunos
         public IActionResult ConsultarMeusAlunos()
         {
-            var x = _context.Pessoas.Include(x => x.Socio).Where(x => x.Socio.NumProfessor == HttpContext.Session.GetString("UserId"));
+            IQueryable<Pessoa> x = _context.Pessoas.Include(x => x.Socio).Where(x => x.Socio.NumProfessor == HttpContext.Session.GetString("UserId"));
             return View(_context.Pessoas.Include(x => x.Socio).Where(x => x.Socio.NumProfessor == HttpContext.Session.GetString("UserId")));
         }
 
         public IActionResult HistoricoAulas(int id)
         {
 
-            var values = new RouteValueDictionary(new
+            RouteValueDictionary values = new RouteValueDictionary(new
             {
                 action = "HistoricoAulas",
                 controller = "Socios",
                 IdSocio = id.ToString()
             });
-           
+
             return RedirectToAction("HistoricoAulas", "Socios", values);
         }
         #endregion
@@ -120,11 +117,11 @@ namespace HealthUp.Controllers
         #region ConsultarSociosInscritosAulas
         public IActionResult ConsultarSociosInscritosAulas()
         {
-            List<Aula> Lista = _context.Aulas.Where(a=>a.NumProfessor==HttpContext.Session.GetString("UserId")).ToList();
+            List<Aula> Lista = _context.Aulas.Where(a => a.NumProfessor == HttpContext.Session.GetString("UserId")).ToList();
 
             ViewBag.Aulas = Lista.Select(s => new SelectListItem()
             {
-               
+
                 Value = s.IdAula.ToString()
             });
 
@@ -136,11 +133,11 @@ namespace HealthUp.Controllers
         public IActionResult ConsultarSociosInscritosAulas(string AulaEscolhida)
         {
             List<Pessoa> ListaSocios = new List<Pessoa>();
-            foreach (var item in _context.Inscricoes.Include(i=>i.IdAulaNavigation))
+            foreach (Inscreve item in _context.Inscricoes.Include(i => i.IdAulaNavigation))
             {
-                if (item.IdAula==Convert.ToInt32(AulaEscolhida))
+                if (item.IdAula == Convert.ToInt32(AulaEscolhida))
                 {
-                    var p = _context.Pessoas.SingleOrDefault(p => p.NumCC == item.NumSocio);
+                    Pessoa p = _context.Pessoas.SingleOrDefault(p => p.NumCC == item.NumSocio);
                     ListaSocios.Add(p);
                 }
             }
@@ -160,7 +157,7 @@ namespace HealthUp.Controllers
 
         public IActionResult ConsultarAulasQueLeciona()
         {
-            var lista = _context.Aulas.Where(x => x.NumProfessor == HttpContext.Session.GetString("UserId"))
+            IQueryable<Aula> lista = _context.Aulas.Where(x => x.NumProfessor == HttpContext.Session.GetString("UserId"))
                 .Where(y => y.ValidoAte > DateTime.Now && y.ValidoDe < DateTime.Now);
             return View(lista);
         }

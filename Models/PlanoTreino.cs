@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Models
 {
@@ -23,9 +20,9 @@ namespace HealthUp.Models
 
         [Display(Name = "Número do professor")]
         public string NumProfessor { get; set; }
-        
+
         public bool Ativo { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(500)]
         [Display(Name = "Descrição")]
@@ -35,12 +32,12 @@ namespace HealthUp.Models
         [InverseProperty(nameof(Professor.PlanoTreino))]
         [Display(Name = "Número de navegação do professor")]
         public virtual Professor NumProfessorNavigation { get; set; }
-        
+
         [ForeignKey(nameof(NumSocio))]
         [InverseProperty(nameof(Socio.PlanoTreino))]
         [Display(Name = "Número de navegação do sócio")]
         public virtual Socio NumSocioNavigation { get; set; }
-        
+
         [InverseProperty("IdPlanoNavigation")]
         public virtual ICollection<Contem> Contem { get; set; }
     }

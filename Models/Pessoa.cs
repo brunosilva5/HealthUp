@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Models
 {
@@ -15,7 +13,7 @@ namespace HealthUp.Models
             MensagensEntrada = new HashSet<Mensagem>();
             MensagensSaida = new HashSet<Mensagem>();
         }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -25,15 +23,15 @@ namespace HealthUp.Models
 
         [Display(Name = "Número de administrador")]
         public string NumAdmin { get; set; }
-       
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(30)]
         public string Nome { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(3)]
         public string Sexo { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(100)]
         public string Fotografia { get; set; }
@@ -75,7 +73,7 @@ namespace HealthUp.Models
         public string Password { get; set; }
 
 
-       
+
         //----------------------------------------------------------------------------------------
         // REFERENCIA A ADMIN
         [InverseProperty("NumAdminNavigation")]
@@ -84,10 +82,10 @@ namespace HealthUp.Models
 
         [InverseProperty("NumProfessorNavigation")]
         public virtual Professor Professor { get; set; }
-        
+
         [InverseProperty("NumSocioNavigation")]
         public virtual Socio Socio { get; set; }
-        
+
         [InverseProperty("IdPessoaReceiverNavigation")]
         public virtual ICollection<Mensagem> MensagensEntrada { get; set; }
         [InverseProperty("IdPessoaSenderNavigation")]

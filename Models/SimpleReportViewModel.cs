@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HealthUp.Models
+﻿namespace HealthUp.Models
 {
     public class SimpleReportViewModel
     {

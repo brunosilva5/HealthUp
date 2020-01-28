@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Models
 {
@@ -21,7 +19,7 @@ namespace HealthUp.Models
 
         [Display(Name = "Número de administrador")]
         public string NumAdmin { get; set; }
-        
+
         [DataType(DataType.Date)]
         public DateTime? Data { get; set; }
 
@@ -29,10 +27,10 @@ namespace HealthUp.Models
         [InverseProperty(nameof(Admin.SolicitacaoProfessor))]
         [Display(Name = "Número de navegação do administrador")]
         public virtual Admin NumAdminNavigation { get; set; }
-        
+
         [InverseProperty("IdSolicitacaoNavigation")]
         public virtual ICollection<Professor> Professor { get; set; }
-        
+
         [InverseProperty("IdSolicitacaoNavigation")]
         public virtual ICollection<Socio> Socio { get; set; }
     }

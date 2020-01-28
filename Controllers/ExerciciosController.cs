@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HealthUp.Data;
+using HealthUp.Filters;
+using HealthUp.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using HealthUp.Data;
-using HealthUp.Models;
-using HealthUp.Filters;
-using Microsoft.AspNetCore.Http;
-using System.IO;
-using Microsoft.Extensions.Hosting;
 
 namespace HealthUp.Controllers
 {
@@ -27,11 +24,11 @@ namespace HealthUp.Controllers
 
         // GET: Exercicios
         public async Task<IActionResult> Index()
-        {           
+        {
             return View(await _context.Exercicios.Include(e => e.NumAdminNavigation).ThenInclude(e => e.NumAdminNavigation).ToListAsync());
         }
 
-     
+
 
         // GET: Exercicios/Create
         public IActionResult Create()
@@ -56,7 +53,7 @@ namespace HealthUp.Controllers
             {
                 //--------------------------------------------------------------------------------------------------------------------------------------
                 // Adicionar na tabela de solicitacoes do admin
-                var admin = _context.Admins.Include(x => x.Exercicio).Include(x => x.NumAdminNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
+                Admin admin = _context.Admins.Include(x => x.Exercicio).Include(x => x.NumAdminNavigation).SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
                 admin.Exercicio.Add(exercicio);
                 _context.Admins.Update(admin);
                 // --------------------------------------------------------------------------------------------------------------------------------------
@@ -100,7 +97,7 @@ namespace HealthUp.Controllers
                 return NotFound();
             }
 
-            var exercicio = await _context.Exercicios.FindAsync(id);
+            Exercicio exercicio = await _context.Exercicios.FindAsync(id);
             if (exercicio == null)
             {
                 return NotFound();
@@ -108,7 +105,7 @@ namespace HealthUp.Controllers
             return View(exercicio);
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdExercicio,NumAdmin,Nome,Descricao,Video,Fotografia")] Exercicio exercicio)
@@ -149,8 +146,8 @@ namespace HealthUp.Controllers
                 return NotFound();
             }
 
-            var exercicio = await _context.Exercicios
-                .Include(e => e.NumAdminNavigation).ThenInclude(e=>e.NumAdminNavigation)
+            Exercicio exercicio = await _context.Exercicios
+                .Include(e => e.NumAdminNavigation).ThenInclude(e => e.NumAdminNavigation)
                 .FirstOrDefaultAsync(m => m.IdExercicio == id);
             if (exercicio == null)
             {
@@ -165,7 +162,7 @@ namespace HealthUp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var exercicio = await _context.Exercicios.FindAsync(id);
+            Exercicio exercicio = await _context.Exercicios.FindAsync(id);
             _context.Exercicios.Remove(exercicio);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

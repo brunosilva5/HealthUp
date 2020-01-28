@@ -3,10 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Filters
 {
@@ -22,14 +18,14 @@ namespace HealthUp.Filters
                 string[] Roles = Perfil.Split(",");
                 string[] RolesNormalized = new string[Roles.Length];
                 int i = 0;
-                foreach (var item in Roles)
+                foreach (string item in Roles)
                 {
-                    RolesNormalized[i]=(HelperFunctions.NormalizeWhiteSpace(item));
+                    RolesNormalized[i] = (HelperFunctions.NormalizeWhiteSpace(item));
                     i++;
                 }
-                foreach (var item in RolesNormalized)
+                foreach (string item in RolesNormalized)
                 {
-                    if (context.HttpContext.Session.GetString("Role")==item)
+                    if (context.HttpContext.Session.GetString("Role") == item)
                     {
                         // O utilizador tem permissoes
                         allow = true;
@@ -47,7 +43,7 @@ namespace HealthUp.Filters
             else
             {
                 // Reencaminhamos para o login!
-                var values = new RouteValueDictionary(new
+                RouteValueDictionary values = new RouteValueDictionary(new
                 {
                     action = "Login",
                     controller = "Utilizadores"

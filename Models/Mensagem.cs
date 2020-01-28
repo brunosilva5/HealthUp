@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Models
 {
@@ -15,7 +12,7 @@ namespace HealthUp.Models
 
         [Display(Name = "Id da pessoa")]
         public string IdPessoaReceiver { get; set; }
-        
+
         public string IdPessoaSender { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Data de envio")]
@@ -43,11 +40,11 @@ namespace HealthUp.Models
 
         public void ArquivarMensagem_Sender()
         {
-            this.Arquivada_Sender = true;
+            Arquivada_Sender = true;
         }
         public void ArquivarMensagem_Receiver()
         {
-            this.Arquivada_Receiver = true;
+            Arquivada_Receiver = true;
         }
     }
 }

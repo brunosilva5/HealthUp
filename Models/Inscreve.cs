@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Models
 {
@@ -22,7 +19,7 @@ namespace HealthUp.Models
         [InverseProperty(nameof(Aula.Inscreve))]
         [Display(Name = "Id de navegação da aula")]
         public virtual Aula IdAulaNavigation { get; set; }
-        
+
         [ForeignKey(nameof(NumSocio))]
         [InverseProperty(nameof(Socio.Inscreve))]
         [Display(Name = "Número de navegação do sócio")]

@@ -1,21 +1,15 @@
 ﻿using HealthUp.Data;
 using HealthUp.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Models
 {
-    public partial class Professor 
+    public partial class Professor
     {
         public Professor()
         {
@@ -27,7 +21,7 @@ namespace HealthUp.Models
         {
             NumCC = p.NumCC;
         }
-        
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [StringLength(8, MinimumLength = 8, ErrorMessage = "Tem de possuir 8 caracteres!")]
@@ -40,10 +34,10 @@ namespace HealthUp.Models
 
         [Display(Name = "Id de solicitação")]
         public int? IdSolicitacao { get; set; }
-        
+
         [StringLength(200)]
         public string Motivo { get; set; }
-        
+
         [DataType(DataType.Date)]
         [Display(Name = "Data de suspensão")]
         public DateTime? DataSuspensao { get; set; }
@@ -55,7 +49,7 @@ namespace HealthUp.Models
         //[InverseProperty(nameof(SolicitacaoProfessor.Professor))]
         [Display(Name = "Id de navegação da solicitação")]
         public virtual SolicitacaoProfessor IdSolicitacaoNavigation { get; set; }
-        
+
         //[ForeignKey(nameof(NumAdmin))]
         //[InverseProperty(nameof(Admin.ProfessoresSuspensos))]
         [Display(Name = "Número de navegação do administrador")]
@@ -71,7 +65,7 @@ namespace HealthUp.Models
 
         [InverseProperty("NumProfessorNavigation")]
         public virtual ICollection<Aula> Aula { get; set; }
-         
+
         [InverseProperty("NumProfessorNavigation")]
         public virtual ICollection<PlanoTreino> PlanoTreino { get; set; }
 
@@ -86,19 +80,19 @@ namespace HealthUp.Models
         public List<SimpleReportViewModel> GetRegistoPesosSocio(string idSocio)
         {
             List<SimpleReportViewModel> ListaPesagens = new List<SimpleReportViewModel>();
-            
-            var RegistosSocio = HelperFunctions.JSONDeserialize(RegistoPesos);
-            
 
-            string data=RegistosSocio.Get(idSocio);
-            if (data==null)
+            System.Collections.Specialized.NameValueCollection RegistosSocio = HelperFunctions.JSONDeserialize(RegistoPesos);
+
+
+            string data = RegistosSocio.Get(idSocio);
+            if (data == null)
             {
                 return ListaPesagens;
             }
             string[] splittedData = data.Split(',');
-            foreach (var item in splittedData)
+            foreach (string item in splittedData)
             {
-                var subitem=item.Split("-");
+                string[] subitem = item.Split("-");
                 ListaPesagens.Add(new SimpleReportViewModel() { Quantity = float.Parse(subitem[0], CultureInfo.InvariantCulture.NumberFormat), DimensionOne = subitem[1] });
             }
 
@@ -107,8 +101,8 @@ namespace HealthUp.Models
 
         public void RegistarPesoSocio(float peso, string Data, string idSocio)
         {
-            var RegistosSocios = HelperFunctions.JSONDeserialize(RegistoPesos);
-            RegistosSocios.Add(idSocio, peso.ToString()+"-"+Data);
+            System.Collections.Specialized.NameValueCollection RegistosSocios = HelperFunctions.JSONDeserialize(RegistoPesos);
+            RegistosSocios.Add(idSocio, peso.ToString() + "-" + Data);
             RegistoPesos = HelperFunctions.JSONSerialize(RegistosSocios);
         }
         public void DeleteEntities(HealthUpContext context)

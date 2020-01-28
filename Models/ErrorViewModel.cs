@@ -1,5 +1,3 @@
-using System;
-
 namespace HealthUp.Models
 {
     public class ErrorViewModel

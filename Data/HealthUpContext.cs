@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HealthUp.Models;
 using Microsoft.EntityFrameworkCore;
-using HealthUp.Models;
-using Newtonsoft.Json;
-using System.Collections.Specialized;
-using HealthUp.Helpers;
 
 namespace HealthUp.Data
 {
     public class HealthUpContext : DbContext
     {
-        public HealthUpContext (DbContextOptions<HealthUpContext> options)
+        public HealthUpContext(DbContextOptions<HealthUpContext> options)
             : base(options)
         {
         }
@@ -46,7 +39,7 @@ namespace HealthUp.Data
 
 
 
-            
+
 
         }
     }

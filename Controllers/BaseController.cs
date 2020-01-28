@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HealthUp.Filters;
+﻿using HealthUp.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthUp.Controllers

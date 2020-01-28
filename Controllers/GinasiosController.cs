@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using HealthUp.Data;
+﻿using HealthUp.Data;
+using HealthUp.Filters;
 using HealthUp.Models;
 using Microsoft.AspNetCore.Http;
-using HealthUp.Filters;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HealthUp.Controllers
 {
@@ -37,8 +35,8 @@ namespace HealthUp.Controllers
         // GET: Ginasios/Edit/5
         public IActionResult Edit()
         {
-            var ginasio = _context.Ginasios.FirstOrDefault();
-            if (ginasio.Telemovel.Length>9)
+            Ginasio ginasio = _context.Ginasios.FirstOrDefault();
+            if (ginasio.Telemovel.Length > 9)
             {
                 ginasio.Telemovel = ginasio.Telemovel.Substring(4, 9);
             }
@@ -66,7 +64,7 @@ namespace HealthUp.Controllers
             g.Email = dados["Email"];
             g.Endereco = dados["Endereco"];
             g.Nome = dados["Nome"];
-            
+
             g.Hora_Abertura = TimeSpan.Parse(dados["Hora_Abertura"]);
             g.Hora_Fecho = TimeSpan.Parse(dados["Hora_Fecho"]);
             if (ModelState.IsValid)

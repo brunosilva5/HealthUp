@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Models
 {
     public class Cota
     {
-        
+
         public Cota()
         {
 
@@ -41,7 +38,7 @@ namespace HealthUp.Models
         private int N_Meses { get => Math.Abs(DateTime.Now.Month - DataRegisto.GetValueOrDefault().Month + (12 * (DateTime.Now.Year - DataRegisto.GetValueOrDefault().Year))) + 1; set => N_Meses = value; }
 
         [NotMapped]
-        public int NumeroCotasNaoPagas { get => N_Meses - NumeroCotasPagas; }
+        public int NumeroCotasNaoPagas => N_Meses - NumeroCotasPagas;
 
         public bool AreCotasPagas()
         {

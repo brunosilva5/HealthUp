@@ -6,10 +6,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Filters
 {
@@ -21,8 +18,8 @@ namespace HealthUp.Filters
             if (HelperFunctions.EstaAutenticado(context.HttpContext))
             {
                 bool redirect = false;
-                var NoRedirect = false;
-                var db = context.HttpContext.RequestServices.GetRequiredService<HealthUpContext>();
+                bool NoRedirect = false;
+                HealthUpContext db = context.HttpContext.RequestServices.GetRequiredService<HealthUpContext>();
                 // se ja estiver na pagina, para nao causar loops infinitos de redirecionamento!
                 if (context.HttpContext.Request.Path == "/Utilizadores/CompletarPerfil")
                 {
@@ -38,15 +35,15 @@ namespace HealthUp.Filters
                 {
                     if (HelperFunctions.IsCurrentUserProfessor(context.HttpContext))
                     {
-                        var professor = db.Professores.Include(p => p.NumProfessorNavigation).SingleOrDefault(p => p.NumCC == context.HttpContext.Session.GetString("UserId"));
-                        if (String.IsNullOrWhiteSpace(professor.Especialidade))
+                        Models.Professor professor = db.Professores.Include(p => p.NumProfessorNavigation).SingleOrDefault(p => p.NumCC == context.HttpContext.Session.GetString("UserId"));
+                        if (string.IsNullOrWhiteSpace(professor.Especialidade))
                         {
                             redirect = true;
                         }
                     }
                     if (HelperFunctions.IsCurrentUserSocio(context.HttpContext))
                     {
-                        var socio = db.Socios.Include(s => s.NumSocioNavigation).SingleOrDefault(p => p.NumCC == context.HttpContext.Session.GetString("UserId"));
+                        Models.Socio socio = db.Socios.Include(s => s.NumSocioNavigation).SingleOrDefault(p => p.NumCC == context.HttpContext.Session.GetString("UserId"));
                         if (socio.Peso == null || socio.Altura == null)
                         {
                             redirect = true;
@@ -54,10 +51,10 @@ namespace HealthUp.Filters
 
                     }
                 }
-                
+
                 if (redirect)
                 {
-                    var values = new RouteValueDictionary(new
+                    RouteValueDictionary values = new RouteValueDictionary(new
                     {
                         action = "CompletarPerfil",
                         controller = "Utilizadores"

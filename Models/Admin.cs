@@ -1,11 +1,8 @@
 ﻿using HealthUp.Data;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 namespace HealthUp.Models
 {
     public partial class Admin
@@ -20,7 +17,7 @@ namespace HealthUp.Models
             SociosSuspensos = new HashSet<Socio>();
             SolicitacaoProfessor = new HashSet<SolicitacaoProfessor>();
         }
-        public Admin(Pessoa p) : base ()
+        public Admin(Pessoa p) : base()
         {
             NumCC = p.NumCC;
         }
@@ -42,27 +39,27 @@ namespace HealthUp.Models
         //----------------------------------------------------------------------------------------
         [InverseProperty("NumAdminNavigation")]
         public virtual ICollection<Aula> Aula { get; set; }
-        
+
         [InverseProperty("NumAdminNavigation")]
         [Display(Name = "Exercício")]
         public virtual ICollection<Exercicio> Exercicio { get; set; }
-        
+
         [InverseProperty("NumAdminNavigation")]
         [Display(Name = "Ginásio")]
         public virtual ICollection<Ginasio> Ginasio { get; set; }
-        
+
         [InverseProperty("NumAdminNavigation")]
         [Display(Name = "Pedidos de sócio")]
         public virtual ICollection<PedidoSocio> PedidosSocio { get; set; }
-        
+
         [InverseProperty("NumAdminNavigation")]
         [Display(Name = "Professores suspensos")]
         public virtual ICollection<Professor> ProfessoresSuspensos { get; set; }
-        
+
         [InverseProperty("NumAdminNavigation")]
         [Display(Name = "Sócios suspensos")]
         public virtual ICollection<Socio> SociosSuspensos { get; set; }
-        
+
         [InverseProperty("NumAdminNavigation")]
         [Display(Name = "Solicitação de professor")]
         public virtual ICollection<SolicitacaoProfessor> SolicitacaoProfessor { get; set; }

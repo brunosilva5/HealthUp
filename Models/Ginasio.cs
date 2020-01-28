@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Models
 {
@@ -16,16 +13,16 @@ namespace HealthUp.Models
 
         [Display(Name = "Número do administrador")]
         public string NumAdmin { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(30)]
         public string Nome { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(200)]
         [Display(Name = "Endereço")]
         public string Endereco { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(50)]
         [EmailAddress]
@@ -35,7 +32,7 @@ namespace HealthUp.Models
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Display(Name = "Hora de abertura")]
         public TimeSpan Hora_Abertura { get; set; }
-        [Display(Name ="Hora de fecho")]
+        [Display(Name = "Hora de fecho")]
         public TimeSpan Hora_Fecho { get; set; }
 
 
@@ -44,7 +41,7 @@ namespace HealthUp.Models
         [Display(Name = "Telemóvel")]
         [Remote("IsValidPhoneNumber", "Validation_Register", HttpMethod = "POST", ErrorMessage = "Insira um número de telemóvel válido!")]
         public string Telemovel { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(200)]
         [Remote("IsValidCoordinates", "Validation_Register", HttpMethod = "POST", ErrorMessage = "Insira as coordernadas válidas!")]

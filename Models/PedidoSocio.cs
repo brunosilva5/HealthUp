@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Models
 {
@@ -20,38 +17,38 @@ namespace HealthUp.Models
 
         [Display(Name = "Número de administrador")]
         public string NumAdmin { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(30)]
         public string Nome { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(3)]
         public string Sexo { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(100)]
         public string Fotografia { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Display(Name = "Data de nascimento")]
         [DataType(DataType.Date)]
         public DateTime DataNascimento { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(50)]
         [Remote("IsValidEmail", "Validation_Register", HttpMethod = "POST", ErrorMessage = "Insira um email válido!")]
         public string Email { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [Display(Name = "Número de telemóvel")]
         [Remote("IsValidPhoneNumber", "Validation_Register", HttpMethod = "POST", ErrorMessage = "Insira um número de telemóvel válido!")]
         public string Telemovel { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(20)]
         public string Nacionalidade { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório!")]
         [StringLength(20)]
         [Remote("IsValidUsername", "Validation_Register", HttpMethod = "POST", ErrorMessage = "Insira um username válido!")]

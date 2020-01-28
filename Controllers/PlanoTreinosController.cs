@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HealthUp.Data;
+using HealthUp.Filters;
+using HealthUp.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using HealthUp.Data;
-using HealthUp.Models;
-using Microsoft.AspNetCore.Http;
-using HealthUp.Helpers;
-using HealthUp.Filters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HealthUp.Controllers
 {
@@ -39,7 +38,7 @@ namespace HealthUp.Controllers
         [HttpPost]
         public IActionResult Index_Filtered(IFormCollection data)
         {
-            var socio = _context.Socios.Include(x=>x.PlanoTreino).ThenInclude(p => p.Contem).Include(p=>p.PlanoTreino).ThenInclude(x => x.NumProfessorNavigation).ThenInclude(x=>x.NumProfessorNavigation).SingleOrDefault(s => s.NumCC == data["SocioEscolhido"].ToString());
+            Socio socio = _context.Socios.Include(x => x.PlanoTreino).ThenInclude(p => p.Contem).Include(p => p.PlanoTreino).ThenInclude(x => x.NumProfessorNavigation).ThenInclude(x => x.NumProfessorNavigation).SingleOrDefault(s => s.NumCC == data["SocioEscolhido"].ToString());
             ViewBag.Socio = socio;
             return PartialView(nameof(Index_Filtered), socio.PlanoTreino.OrderBy(x => x.Descricao).ToList());
         }
@@ -51,7 +50,7 @@ namespace HealthUp.Controllers
                 return NotFound();
             }
 
-            var planoTreino = await _context.PlanosTreino
+            PlanoTreino planoTreino = await _context.PlanosTreino
                 .Include(p => p.NumProfessorNavigation)
                 .Include(p => p.NumSocioNavigation)
                 .FirstOrDefaultAsync(m => m.IdPlano == id);
@@ -103,7 +102,7 @@ namespace HealthUp.Controllers
             return View(planoTreino);
         }
 
-        
+
 
         // GET: PlanoTreinos/Delete/5
         public async Task<IActionResult> Delete(int? IdPlano)
@@ -113,7 +112,7 @@ namespace HealthUp.Controllers
                 return NotFound();
             }
 
-            var planoTreino = await _context.PlanosTreino
+            PlanoTreino planoTreino = await _context.PlanosTreino
                 .Include(p => p.NumProfessorNavigation)
                 .Include(p => p.NumSocioNavigation)
                 .FirstOrDefaultAsync(m => m.IdPlano == IdPlano);
@@ -130,7 +129,7 @@ namespace HealthUp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int IdPlano)
         {
-            var planoTreino = await _context.PlanosTreino.FindAsync(IdPlano);
+            PlanoTreino planoTreino = await _context.PlanosTreino.FindAsync(IdPlano);
             _context.PlanosTreino.Remove(planoTreino);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -146,9 +145,9 @@ namespace HealthUp.Controllers
 
         public IActionResult VerExerciciosSocio(string IdPlano)
         {
-           
-            var ListaContem = _context.PlanosTreino.Include(p => p.Contem).ThenInclude(c => c.IdExercicioNavigation).SingleOrDefault(p => p.IdPlano == Convert.ToInt32(IdPlano)).Contem;
-            
+
+            ICollection<Contem> ListaContem = _context.PlanosTreino.Include(p => p.Contem).ThenInclude(c => c.IdExercicioNavigation).SingleOrDefault(p => p.IdPlano == Convert.ToInt32(IdPlano)).Contem;
+
             ViewBag.PlanoId = IdPlano;
 
             return View(nameof(VerExerciciosSocio), ListaContem.ToList());
@@ -156,22 +155,22 @@ namespace HealthUp.Controllers
 
         public IActionResult AdicionarExercicioSocio(string IdPlano)
         {
-            if (IdPlano==null)
+            if (IdPlano == null)
             {
                 return NotFound();
             }
             ViewBag.PlanoId = IdPlano;
-            var plano = _context.PlanosTreino.Include(x=>x.Contem).SingleOrDefault(x => x.IdPlano == Convert.ToInt32(IdPlano));
+            PlanoTreino plano = _context.PlanosTreino.Include(x => x.Contem).SingleOrDefault(x => x.IdPlano == Convert.ToInt32(IdPlano));
 
             List<Exercicio> Lista = _context.Exercicios.ToList();
-            foreach (var item in plano.Contem)
+            foreach (Contem item in plano.Contem)
             {
-                if (Lista.Contains(_context.Exercicios.SingleOrDefault(p=>p.IdExercicio==item.IdExercicio)))
+                if (Lista.Contains(_context.Exercicios.SingleOrDefault(p => p.IdExercicio == item.IdExercicio)))
                 {
                     Lista.Remove(_context.Exercicios.SingleOrDefault(p => p.IdExercicio == item.IdExercicio));
                 }
             }
-            
+
             ViewBag.Exercicios = Lista.Select(e => new SelectListItem()
             {
                 Text = e.Nome,
@@ -189,8 +188,8 @@ namespace HealthUp.Controllers
 
             if (ModelState.IsValid)
             {
-                var plano = _context.PlanosTreino.Include(x => x.Contem).Include(p => p.NumSocioNavigation).Include(p => p.NumProfessorNavigation).SingleOrDefault(p => p.IdPlano == Convert.ToInt32(data["PlanoId"]));
-                var exercicio = _context.Exercicios.SingleOrDefault(e => e.IdExercicio == Convert.ToInt32(data["ExercicioEscolhido"]));
+                PlanoTreino plano = _context.PlanosTreino.Include(x => x.Contem).Include(p => p.NumSocioNavigation).Include(p => p.NumProfessorNavigation).SingleOrDefault(p => p.IdPlano == Convert.ToInt32(data["PlanoId"]));
+                Exercicio exercicio = _context.Exercicios.SingleOrDefault(e => e.IdExercicio == Convert.ToInt32(data["ExercicioEscolhido"]));
                 Contem c = new Contem()
                 {
                     IdExercicio = Convert.ToInt32(data["ExercicioEscolhido"]),
@@ -217,14 +216,14 @@ namespace HealthUp.Controllers
 
         public IActionResult TornarPlanoAtivo(string IdPlano)
         {
-            var plano = _context.PlanosTreino.Include(p => p.NumSocioNavigation).SingleOrDefault(p => p.IdPlano == Convert.ToInt32(IdPlano));
-            var socio = _context.Socios.Include(x => x.PlanoTreino).ThenInclude(p => p.NumProfessorNavigation).ThenInclude(x => x.NumProfessorNavigation).SingleOrDefault(p => p.NumCC == plano.NumSocio);
+            PlanoTreino plano = _context.PlanosTreino.Include(p => p.NumSocioNavigation).SingleOrDefault(p => p.IdPlano == Convert.ToInt32(IdPlano));
+            Socio socio = _context.Socios.Include(x => x.PlanoTreino).ThenInclude(p => p.NumProfessorNavigation).ThenInclude(x => x.NumProfessorNavigation).SingleOrDefault(p => p.NumCC == plano.NumSocio);
             socio.TornarPlanosInativos();
             plano.Ativo = true;
             _context.PlanosTreino.Update(plano);
             _context.Socios.Update(socio);
             _context.SaveChanges();
-            return PartialView("Index_Filtered", socio.PlanoTreino.OrderBy(x=>x.Descricao));
+            return PartialView("Index_Filtered", socio.PlanoTreino.OrderBy(x => x.Descricao));
         }
 
         public async Task<IActionResult> ApagarExercicio(int? id)
@@ -234,7 +233,7 @@ namespace HealthUp.Controllers
                 return NotFound();
             }
 
-            var contem = await _context.Contem
+            Contem contem = await _context.Contem
                 .Include(c => c.IdExercicioNavigation)
                 .Include(c => c.IdPlanoNavigation)
                 .FirstOrDefaultAsync(m => m.IdPlano == id);
@@ -259,9 +258,9 @@ namespace HealthUp.Controllers
 
         public IActionResult EditarExercicio(int IdExercicio, int IdPlano)
         {
-            
+
             ViewBag.PlanoId = IdPlano;
-            var contem = _context.Contem.SingleOrDefault(x => x.IdPlano==IdPlano && x.IdExercicio==IdExercicio);
+            Contem contem = _context.Contem.SingleOrDefault(x => x.IdPlano == IdPlano && x.IdExercicio == IdExercicio);
             if (contem == null)
             {
                 return NotFound();
@@ -277,7 +276,7 @@ namespace HealthUp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditarExercicio([Bind("IdPlano,IdExercicio,NumRepeticoes,PeriodoDescanso,QuantidadeSeries")] Contem contem)
         {
-            
+
             if (ModelState.IsValid)
             {
                 try
@@ -298,7 +297,7 @@ namespace HealthUp.Controllers
                 }
                 return RedirectToAction(nameof(VerExerciciosSocio), new { contem.IdPlano });
             }
-            
+
             return View(contem);
         }
         private bool ContemExists(int id)

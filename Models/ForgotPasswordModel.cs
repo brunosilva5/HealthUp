@@ -3,12 +3,9 @@ using HealthUp.Data;
 using HealthUp.Filters;
 using HealthUp.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthUp.Models
 {
@@ -43,7 +40,7 @@ namespace HealthUp.Models
             {
                 return Json(new string("Password inválida!"));
             }
-            var Pessoa = _context.Pessoas.SingleOrDefault(p => p.NumCC == IdPessoa);
+            Pessoa Pessoa = _context.Pessoas.SingleOrDefault(p => p.NumCC == IdPessoa);
 
             if (Pessoa == null)
             {
@@ -69,7 +66,7 @@ namespace HealthUp.Models
             {
                 return Json(new string("Password inválida!"));
             }
-            var Pessoa = _context.Pessoas.SingleOrDefault(p => p.NumCC == IdPessoa);
+            Pessoa Pessoa = _context.Pessoas.SingleOrDefault(p => p.NumCC == IdPessoa);
 
             if (Pessoa == null)
             {

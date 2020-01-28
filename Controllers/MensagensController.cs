@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HealthUp.Data;
+using HealthUp.Filters;
+using HealthUp.Helpers;
+using HealthUp.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using HealthUp.Data;
-using HealthUp.Models;
-using Microsoft.AspNetCore.Http;
-using HealthUp.Filters;
-using HealthUp.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HealthUp.Controllers
 {
@@ -24,38 +24,38 @@ namespace HealthUp.Controllers
         }
 
         #region Caixa de Entrada
-        public async Task<IActionResult> CaixaEntrada(bool ? arquivadas = false)
+        public async Task<IActionResult> CaixaEntrada(bool? arquivadas = false)
         {
-        
-            if (arquivadas==true)
+
+            if (arquivadas == true)
             {
                 ViewBag.Arquivadas = true;
             }
-            var mensagens = _context.Mensagens.Include(m => m.IdPessoaReceiverNavigation).Include(m => m.IdPessoaSenderNavigation).Where(x => x.IdPessoaReceiver == HttpContext.Session.GetString("UserId") && x.Arquivada_Receiver == arquivadas).OrderByDescending(x=>x.DataEnvio);
+            IOrderedQueryable<Mensagem> mensagens = _context.Mensagens.Include(m => m.IdPessoaReceiverNavigation).Include(m => m.IdPessoaSenderNavigation).Where(x => x.IdPessoaReceiver == HttpContext.Session.GetString("UserId") && x.Arquivada_Receiver == arquivadas).OrderByDescending(x => x.DataEnvio);
 
             return View(await mensagens.ToListAsync());
         }
         #endregion
         #region Caixa de Saída
-        public async Task<IActionResult> CaixaSaida(bool ? arquivadas = false)
+        public async Task<IActionResult> CaixaSaida(bool? arquivadas = false)
         {
-            if (arquivadas==true)
+            if (arquivadas == true)
             {
                 ViewBag.Arquivadas = true;
             }
-            var mensagens = _context.Mensagens.Include(m => m.IdPessoaReceiverNavigation).Include(m => m.IdPessoaSenderNavigation).Where(x => x.IdPessoaSender == HttpContext.Session.GetString("UserId") && x.Arquivada_Sender == arquivadas).OrderByDescending(x => x.DataEnvio);
+            IOrderedQueryable<Mensagem> mensagens = _context.Mensagens.Include(m => m.IdPessoaReceiverNavigation).Include(m => m.IdPessoaSenderNavigation).Where(x => x.IdPessoaSender == HttpContext.Session.GetString("UserId") && x.Arquivada_Sender == arquivadas).OrderByDescending(x => x.DataEnvio);
             return View(await mensagens.ToListAsync());
         }
         #endregion
         #region Ler Mensagem
-        public IActionResult LerMensagem(int IdMensagem, bool ? arquivadas = false)
+        public IActionResult LerMensagem(int IdMensagem, bool? arquivadas = false)
         {
             if (arquivadas == true)
             {
                 ViewBag.Arquivadas = true;
             }
 
-            var Msg = _context.Mensagens.Include(m=>m.IdPessoaSenderNavigation).Include(m=>m.IdPessoaReceiverNavigation).SingleOrDefault(x => x.IdMensagem == IdMensagem);
+            Mensagem Msg = _context.Mensagens.Include(m => m.IdPessoaSenderNavigation).Include(m => m.IdPessoaReceiverNavigation).SingleOrDefault(x => x.IdMensagem == IdMensagem);
             if (Msg.Lida == false && Msg.IdPessoaReceiver == HttpContext.Session.GetString("UserId"))
             {
                 Msg.Lida = true;
@@ -70,7 +70,7 @@ namespace HealthUp.Controllers
         #region Ver Mensagem
         public IActionResult VerMensagem(int IdMensagem)
         {
-            var Message = _context.Mensagens.Include(x => x.IdPessoaReceiverNavigation).Include(x => x.IdPessoaSenderNavigation).SingleOrDefault(x => x.IdMensagem == IdMensagem);
+            Mensagem Message = _context.Mensagens.Include(x => x.IdPessoaReceiverNavigation).Include(x => x.IdPessoaSenderNavigation).SingleOrDefault(x => x.IdMensagem == IdMensagem);
 
             return View(Message);
         }
@@ -90,12 +90,12 @@ namespace HealthUp.Controllers
 
             if (ModelState.IsValid)
             {
-                var Receiver = _context.Pessoas.SingleOrDefault(x => x.NumCC == Destino);
-                var Sender = _context.Pessoas.SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
+                Pessoa Receiver = _context.Pessoas.SingleOrDefault(x => x.NumCC == Destino);
+                Pessoa Sender = _context.Pessoas.SingleOrDefault(x => x.NumCC == HttpContext.Session.GetString("UserId"));
 
-                var date = DateTime.Now;
+                DateTime date = DateTime.Now;
                 date = new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, date.Second, date.Kind);
-                var Msg = new Mensagem
+                Mensagem Msg = new Mensagem
                 {
                     DataEnvio = date,
                     IdPessoaSender = Sender.NumCC,
@@ -152,9 +152,9 @@ namespace HealthUp.Controllers
 
             if (ModelState.IsValid)
             {
-                var Receiver = _context.Pessoas.Include(p => p.MensagensEntrada).Include(p => p.MensagensSaida).SingleOrDefault(p => p.NumCC == Dados["Destino"].ToString());
-                var Sender = _context.Pessoas.Include(p => p.MensagensEntrada).Include(p => p.MensagensSaida).SingleOrDefault(p => p.NumCC == HttpContext.Session.GetString("UserId"));
-                var Msg = new Mensagem()
+                Pessoa Receiver = _context.Pessoas.Include(p => p.MensagensEntrada).Include(p => p.MensagensSaida).SingleOrDefault(p => p.NumCC == Dados["Destino"].ToString());
+                Pessoa Sender = _context.Pessoas.Include(p => p.MensagensEntrada).Include(p => p.MensagensSaida).SingleOrDefault(p => p.NumCC == HttpContext.Session.GetString("UserId"));
+                Mensagem Msg = new Mensagem()
                 {
                     DataEnvio = DateTime.Now,
                     Conteudo = Dados["Conteudo"],
@@ -169,7 +169,7 @@ namespace HealthUp.Controllers
                 _context.Mensagens.Add(Msg);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(CaixaSaida));
-                
+
             }
             // verificar se é sócio 
             if (HelperFunctions.IsSocio(_context, HttpContext.Session.GetString("UserId")))
@@ -200,8 +200,8 @@ namespace HealthUp.Controllers
         #region Arquivar Mensagens
         public IActionResult ArquivarMensagensEntrada()
         {
-            var Msgs = _context.Pessoas.Include(p=>p.MensagensEntrada).SingleOrDefault(p => p.NumCC == HttpContext.Session.GetString("UserId")).MensagensEntrada.Where(m => m.Arquivada_Receiver == false);
-            foreach (var msg in Msgs)
+            IEnumerable<Mensagem> Msgs = _context.Pessoas.Include(p => p.MensagensEntrada).SingleOrDefault(p => p.NumCC == HttpContext.Session.GetString("UserId")).MensagensEntrada.Where(m => m.Arquivada_Receiver == false);
+            foreach (Mensagem msg in Msgs)
             {
                 msg.ArquivarMensagem_Receiver();
                 _context.Mensagens.Update(msg);
@@ -212,8 +212,8 @@ namespace HealthUp.Controllers
 
         public IActionResult ArquivarMensagensSaida()
         {
-            var Msgs = _context.Pessoas.Include(p=>p.MensagensSaida).SingleOrDefault(p => p.NumCC == HttpContext.Session.GetString("UserId")).MensagensSaida.Where(m => m.Arquivada_Sender == false);
-            foreach (var msg in Msgs)
+            IEnumerable<Mensagem> Msgs = _context.Pessoas.Include(p => p.MensagensSaida).SingleOrDefault(p => p.NumCC == HttpContext.Session.GetString("UserId")).MensagensSaida.Where(m => m.Arquivada_Sender == false);
+            foreach (Mensagem msg in Msgs)
             {
                 msg.ArquivarMensagem_Sender();
                 _context.Mensagens.Update(msg);
@@ -228,7 +228,7 @@ namespace HealthUp.Controllers
         #region Ver Mensagens Arquivadas
         public IActionResult VerMensagensEntradaArquivadas()
         {
-            return RedirectToAction(nameof(CaixaEntrada), new { arquivadas = true }) ;
+            return RedirectToAction(nameof(CaixaEntrada), new { arquivadas = true });
         }
         public IActionResult VerMensagensSaidaArquivadas()
         {
