@@ -136,34 +136,6 @@ namespace HealthUp.Controllers
         }
         #endregion
 
-        #region PlanoSemanal
-        public IActionResult PlanoSemanal()
-        {
-            return View();
-        }
-        public IActionResult PartialPlanoSemanal(string week)
-        {
-            
-            DateTime data =HelperFunctions.GetData(week);
-            DateTime segunda = HelperFunctions.GetMonday(data);
-            DateTime domingo = HelperFunctions.Next(data, DayOfWeek.Monday);
-            ViewBag.Segunda = segunda.ToShortDateString();
-            ViewBag.Domingo = domingo.ToShortDateString();
-            List<Aula> lista = new List<Aula>();
-            foreach (var aula in _context.Aulas)
-            {
-                if (aula.VerificarValidade(segunda, domingo))
-                {
-                    lista.Add(aula);
-                }
-            }
-
-            
-            return PartialView(nameof(PartialPlanoSemanal),lista);
-        }
-
-
-        #endregion
 
         #region Completar Perfil
         [Autenticado]
@@ -192,6 +164,7 @@ namespace HealthUp.Controllers
                     var socio = _context.Socios.SingleOrDefault(s => s.NumCC == HttpContext.Session.GetString("UserId"));
                     socio.Peso = double.Parse(dados["Socio.Peso"].ToString(), CultureInfo.InvariantCulture);
                     socio.Altura = dados["Socio.Altura"].ToString();
+                    socio.DataRegisto_Peso = DateTime.Now;
                     _context.Socios.Update(socio);
                     _context.SaveChanges();
                 }

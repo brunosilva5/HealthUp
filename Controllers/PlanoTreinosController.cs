@@ -39,7 +39,7 @@ namespace HealthUp.Controllers
         [HttpPost]
         public IActionResult Index_Filtered(IFormCollection data)
         {
-            var socio = _context.Socios.Include(x=>x.PlanoTreino).ThenInclude(p=>p.NumProfessorNavigation).ThenInclude(x=>x.NumProfessorNavigation).SingleOrDefault(s => s.NumCC == data["SocioEscolhido"].ToString());
+            var socio = _context.Socios.Include(x=>x.PlanoTreino).ThenInclude(p => p.Contem).Include(p=>p.PlanoTreino).ThenInclude(x => x.NumProfessorNavigation).ThenInclude(x=>x.NumProfessorNavigation).SingleOrDefault(s => s.NumCC == data["SocioEscolhido"].ToString());
             ViewBag.Socio = socio;
             return PartialView(nameof(Index_Filtered), socio.PlanoTreino.OrderBy(x => x.Descricao).ToList());
         }
@@ -259,10 +259,7 @@ namespace HealthUp.Controllers
 
         public IActionResult EditarExercicio(int IdExercicio, int IdPlano)
         {
-            if (IdExercicio == null || IdPlano==null)
-            {
-                return NotFound();
-            }
+            
             ViewBag.PlanoId = IdPlano;
             var contem = _context.Contem.SingleOrDefault(x => x.IdPlano==IdPlano && x.IdExercicio==IdExercicio);
             if (contem == null)

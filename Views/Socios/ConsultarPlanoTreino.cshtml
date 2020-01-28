@@ -13,35 +13,87 @@
 {
     if (item.Ativo)
     {
-       <p>Plano de treino atual:</p>
+       <h3>Plano de treino atual</h3>
     
        <div>
-           <p>-Descrição do plano:</p>
-           @item.Descricao
+           <dl class="row">
+               <dt class="col-sm-2">
+                   @Html.DisplayNameFor(model => item.Descricao)
+               </dt>
+               <dd class="col-sm-10">
+                   @Html.DisplayFor(model => item.Descricao)
+               </dd>
+           </dl>
            <br />
            @if (item.Contem != null)
            {
-               <p>Exercícios:</p>
+               <h3>Exercícios:</h3>
 
                @foreach (var exercicio in item.Contem)
                {
-                   <span>
-                       -Nome: @exercicio.IdExercicioNavigation.Nome
-                       <br />
-                       -Descrição: @exercicio.IdExercicioNavigation.Descricao
-                       <br />
-                       -Número de repetições: @exercicio.NumRepeticoes
-                       <br />
-                       -Tempo de descanso: @exercicio.PeriodoDescanso segundos
-                       <br />
-                       -Quantidade de séries: @exercicio.QuantidadeSeries
-                       <br />
-                   </span>
+                   <hr />
+                   <dl class="row">
+                       <dt class="col-sm-2">
+                           @Html.DisplayNameFor(model => exercicio.IdExercicioNavigation.Nome)
+                       </dt>
+                       <dd class="col-sm-10">
+                           @Html.DisplayFor(model => exercicio.IdExercicioNavigation.Nome)
+                       </dd>
+                       <dt class="col-sm-2">
+                           @Html.DisplayNameFor(model => exercicio.IdExercicioNavigation.Descricao)
+                       </dt>
+                       <dd class="col-sm-10">
+                           @Html.DisplayFor(model => exercicio.IdExercicioNavigation.Descricao)
+                       </dd>
+                       <dt class="col-sm-2">
+                           @Html.DisplayNameFor(model => exercicio.IdExercicioNavigation.Fotografia)
+                       </dt>
+                       <dd class="col-sm-10">
+                           <img src="~/Ficheiros/@exercicio.IdExercicioNavigation.Fotografia" height="100" width="100" />
+                       </dd>
+                       <dt class="col-sm-2">
+                           @Html.DisplayNameFor(model => exercicio.IdExercicioNavigation.Video)
+                       </dt>
+                       <dd class="col-sm-10">
+                           <video width="320" height="240" controls>
+                               <source src="~/Ficheiros/@exercicio.IdExercicioNavigation.Video" type="video/mp4">
+                           </video>
+                       </dd>
+                       <dt class="col-sm-2">
+                           @Html.DisplayNameFor(model => exercicio.NumRepeticoes)
+                       </dt>
+                       <dd class="col-sm-10">
+                           @Html.DisplayFor(model => exercicio.NumRepeticoes)
+                       </dd>
+                       <dt class="col-sm-2">
+                           @Html.DisplayNameFor(model => exercicio.PeriodoDescanso)
+                       </dt>
+                       <dd class="col-sm-10">
+                           @Html.DisplayFor(model => exercicio.PeriodoDescanso) segundos
+                       </dd>
+
+                       <dt class="col-sm-2">
+                           @Html.DisplayNameFor(model => exercicio.QuantidadeSeries)
+                       </dt>
+                       <dd class="col-sm-10">
+                           @Html.DisplayFor(model => exercicio.QuantidadeSeries)
+                       </dd>
+                   </dl>
+
                }
            }
-
-            <p>-Atribuído por: @item.NumProfessorNavigation.NumProfessorNavigation.Nome</p>
-
+           <dl class="row">
+               <dt class="col-sm-2">
+                   Atribuído por
+               </dt>
+               <dd class="col-sm-10">
+                   <div>
+                       <img src="~/Ficheiros/@item.NumProfessorNavigation.NumProfessorNavigation.Fotografia" height="100" width="100" />
+                       <br />
+                       @item.NumProfessorNavigation.NumProfessorNavigation.Nome
+                   </div>
+               </dd>
+           </dl>
        </div>
     }
 }

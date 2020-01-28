@@ -26,11 +26,13 @@ namespace HealthUp.Controllers
         #region Caixa de Entrada
         public async Task<IActionResult> CaixaEntrada(bool ? arquivadas = false)
         {
+        
             if (arquivadas==true)
             {
                 ViewBag.Arquivadas = true;
             }
-            var mensagens = _context.Mensagens.Include(m => m.IdPessoaReceiverNavigation).Include(m => m.IdPessoaSenderNavigation).Where(x => x.IdPessoaReceiver == HttpContext.Session.GetString("UserId") && x.Arquivada_Receiver == arquivadas);
+            var mensagens = _context.Mensagens.Include(m => m.IdPessoaReceiverNavigation).Include(m => m.IdPessoaSenderNavigation).Where(x => x.IdPessoaReceiver == HttpContext.Session.GetString("UserId") && x.Arquivada_Receiver == arquivadas).OrderByDescending(x=>x.DataEnvio);
+
             return View(await mensagens.ToListAsync());
         }
         #endregion
@@ -41,7 +43,7 @@ namespace HealthUp.Controllers
             {
                 ViewBag.Arquivadas = true;
             }
-            var mensagens = _context.Mensagens.Include(m => m.IdPessoaReceiverNavigation).Include(m => m.IdPessoaSenderNavigation).Where(x => x.IdPessoaSender == HttpContext.Session.GetString("UserId") && x.Arquivada_Sender == arquivadas);
+            var mensagens = _context.Mensagens.Include(m => m.IdPessoaReceiverNavigation).Include(m => m.IdPessoaSenderNavigation).Where(x => x.IdPessoaSender == HttpContext.Session.GetString("UserId") && x.Arquivada_Sender == arquivadas).OrderByDescending(x => x.DataEnvio);
             return View(await mensagens.ToListAsync());
         }
         #endregion

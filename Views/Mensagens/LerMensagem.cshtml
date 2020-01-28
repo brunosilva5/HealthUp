@@ -29,30 +29,20 @@
             <textarea rows="4" cols="50" readonly style="resize:none">@Model.Conteudo</textarea>
         </dd>
     </dl>
+    @if (ViewBag.Arquivadas != true)
+    {
+        <div id="Resposta">
+            <a asp-action="Responder" class="primary-btn-msg" asp-route-Destino=@Model.IdPessoaSenderNavigation.NumCC
+                data-ajax="true"
+                data-ajax-method="GET"
+                data-ajax-mode="replace"
+                data-ajax-update="#Resposta">Responder</a>
+        </div>
+    }
 </div>
 
-@if (ViewBag.Arquivadas != true)
-{
-    <div id="Resposta">
-        <a asp-action="Responder" asp-route-Destino=@Model.IdPessoaSenderNavigation.NumCC
-           data-ajax="true"
-           data-ajax-method="GET"
-           data-ajax-mode="replace"
-           data-ajax-update="#Resposta">Responder</a>
-    </div>
-}
 
 
-@if (ViewBag.Arquivadas == true)
-{
-    <div>
-        <a asp-action="VerMensagensEntradaArquivadas">Voltar atrás</a>
-    </div>
-}
-else
-{
-    <div>
-        <a asp-action="CaixaEntrada">Voltar atrás</a>
-    </div>
-}
+
+
 
