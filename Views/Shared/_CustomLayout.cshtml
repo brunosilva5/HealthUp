@@ -33,7 +33,6 @@
         </div>
         <ul class="nav">
             <li><a asp-controller="Home" asp-action="Index">Página Inicial</a></li>
-            <li><a asp-controller="Home" asp-action="Sobrenos">Sobre Nós</a></li>
             <li><a asp-controller="Home" asp-action="Contactos">Contactos</a></li>
             <li><a asp-controller="Home" asp-action="MapaAulas">Mapa semanal de aulas</a></li>
             <li>
@@ -51,7 +50,7 @@
                 @if (Context.Session.GetString("Role") == "Socio")
                 {
                     <a href="#">
-                        Perfil
+                        Painel de sócios
                         <i class="fa fa-chevron-down" style="font-size: .8em;"></i>
                     </a>
                     <ul>

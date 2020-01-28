@@ -35,11 +35,6 @@ namespace HealthUp.Controllers
             return View(gym);
         }
 
-        public IActionResult Sobrenos()
-        {
-            return View();
-        }
-        
         public IActionResult Contactos()
         {
             var gym = _context.Ginasios.SingleOrDefault();
